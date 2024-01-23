@@ -4,11 +4,11 @@ datasources:
   - name: InfluxDB
     type: influxdb
     access: proxy
-    user: test
+    user: $PV_DB_USER
     url: http://influxdb:8086
     basicAuth: true
     jsonData:
-      dbName: test
+      dbName: $PV_DB_NAME
       httpMode: GET
     secureJsonData:
-      password: test
+      password: $PV_DB_PASSWORD

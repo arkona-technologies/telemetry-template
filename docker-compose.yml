@@ -25,6 +25,9 @@ services:
       - ./grafana/provisioning:/etc/grafana/provisioning
       - ./grafana/dashboards:/etc/grafana/dashboards
     environment:
+      - PV_DB_NAME=${DB_NAME}
+      - PV_DB_PASSWORD=${DB_PASSWORD}
+      - PV_DB_USER=${DB_USER}
       - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PW}
   vtelemetry:
