@@ -1,0 +1,1 @@
+ALTER RETENTION POLICY "autogen" ON "runin" DURATION 8d

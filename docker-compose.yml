@@ -7,6 +7,7 @@ services:
     ports:
       - '8088:8086'
     volumes:
+      - ./influx_retention_policy.iql:/docker-entrypoint-initdb.d/influx_retention_policy.iql
       - ./.influxdb/:/var/lib/influxdb
     environment:
       - INFLUXDB_DB=test
