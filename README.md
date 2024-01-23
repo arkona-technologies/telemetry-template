@@ -61,6 +61,14 @@ Before deploying the Docker Compose setup, ensure the following prerequisites ar
 
 7. Create dashboards in Grafana to visualize telemetry data from BLADE//runner processors. Take a look at the supplied Dashboards as a guide.
 
+
+## Links
+
+- [VTelemetry2](https://hub.docker.com/r/arkonatechnologies/vtelemetry2)
+- [InfluxDB](https://hub.docker.com/_/influxdb)
+- [Grafana-OSS](https://hub.docker.com/r/grafana/grafana-oss)
+  
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
