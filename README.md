@@ -67,6 +67,7 @@ Before deploying the Docker Compose setup, ensure the following prerequisites ar
 - [VTelemetry2](https://hub.docker.com/r/arkonatechnologies/vtelemetry2)
 - [InfluxDB](https://hub.docker.com/_/influxdb)
 - [Grafana-OSS](https://hub.docker.com/r/grafana/grafana-oss)
+- [Docker](https://www.docker.com/)
   
 
 ## License
