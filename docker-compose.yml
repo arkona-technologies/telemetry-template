@@ -1,0 +1,48 @@
+version: '3'
+services:
+  influxdb:
+    image: influxdb:1.8
+    networks:
+      - backend
+    ports:
+      - '8088:8086'
+    volumes:
+      - ./.influxdb/:/var/lib/influxdb
+    environment:
+      - INFLUXDB_DB=test
+      - INFLUXDB_ADMIN_USER=test
+      - INFLUXDB_ADMIN_PASSWORD=test
+  grafana:
+    image: grafana/grafana:latest
+    networks:
+      - backend
+    ports:
+      - '3000:3000'
+    depends_on:
+      - influxdb
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/etc/grafana/dashboards
+    environment:
+      - GF_SECURITY_ADMIN_USER=test
+      - GF_SECURITY_ADMIN_PASSWORD=test
+  vtelemetry:
+    image: arkonatechnologies/vtelemetry2
+    networks:
+      - backend
+    depends_on:
+      - influxdb
+    environment:
+      - MACHINES=${BLADES}
+      - BLACKLIST='\.audio\.signals,\.output\.signals,\.user_labels,\.monitoring_objects\.audio,software_update,audio_source_slices,peak_meter'
+      - WHITELIST='p_t_p,genlock,system'
+      - INFLUX_API=1
+      - DB_HOST=influxdb
+      - DB_USER=test
+      - DB_PASSWORD=test
+      - DB_NAME=test
+      - DB_PORT=8086
+      - VERBOSITY=1
+networks:
+  backend:
+    driver: bridge
