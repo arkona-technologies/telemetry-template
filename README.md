@@ -52,7 +52,7 @@ Before deploying the Docker Compose setup, ensure the following prerequisites ar
 5. Run the Docker Compose setup:
 
    ```bash
-   docker-compose up -d --env-file .env
+   docker-compose -d --env-file .env up
    ```
 
    This command will start the telemetry service, InfluxDB, and Grafana in detached mode.
