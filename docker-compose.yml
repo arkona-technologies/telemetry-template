@@ -14,7 +14,7 @@ services:
       - INFLUXDB_ADMIN_USER=${DB_USER}
       - INFLUXDB_ADMIN_PASSWORD=${DB_PASSWORD}
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana-oss:10.3.1
     networks:
       - backend
     ports:
