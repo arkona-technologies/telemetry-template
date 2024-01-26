@@ -68,7 +68,11 @@ Before deploying the Docker Compose setup, ensure the following prerequisites ar
 - [InfluxDB](https://hub.docker.com/_/influxdb)
 - [Grafana-OSS](https://hub.docker.com/r/grafana/grafana-oss)
 - [Docker](https://www.docker.com/)
-  
+
+## Further Reading
+- [Arista EOS Telemetry ](https://arista.my.site.com/AristaCommunity/s/article/streaming-eos-telemetry-states-to-influxdb)
+- [Cisco Telemetry](https://ultraconfig.com.au/blog/cisco-telemetry-tutorial-with-telegraf-influxdb-and-grafana/)
+- [General Linux Server Telemetry](https://community.hetzner.com/tutorials/server-monitoring-using-grafana-and-influxdb)
 
 ## License
 
