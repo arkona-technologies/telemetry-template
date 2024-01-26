@@ -39,7 +39,7 @@ Before deploying the Docker Compose setup, ensure the following prerequisites ar
 4. **Configure via `.env` file:** Customize the `.env` file as needed, specifying parameters such as processor IPs, ports, and authentication details. Example configuration in `.env`:
 
    ```env
-   BLADES=ws://172.16.210.107
+   BLADES=ws://172.16.210.107,ws://172.16.120.170
    DB_NAME=test
    DB_PASSWORD=test
    DB_USER=test
