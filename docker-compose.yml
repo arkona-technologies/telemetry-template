@@ -1,7 +1,7 @@
 version: '3'
 services:
   influxdb:
-    image: influxdb:1.8
+    image: docker.io/influxdb:1.8
     networks:
       - backend
     ports:
@@ -14,7 +14,7 @@ services:
       - INFLUXDB_ADMIN_USER=${DB_USER}
       - INFLUXDB_ADMIN_PASSWORD=${DB_PASSWORD}
   grafana:
-    image: grafana/grafana-oss:10.3.1
+    image: docker.io/grafana/grafana-oss:10.3.1
     networks:
       - backend
     ports:
@@ -31,7 +31,7 @@ services:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PW}
   vtelemetry:
-    image: arkonatechnologies/vtelemetry2
+    image: docker.io/arkonatechnologies/vtelemetry2
     networks:
       - backend
     depends_on:
