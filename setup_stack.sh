@@ -9,9 +9,9 @@ printf  "Setting up influxDB bucket ${RED}$DB_NAME${NC} and token\n"
 docker compose -f docker-compose.yml down > /dev/null
 
 mkdir -p influxdb2
-
+docker rm -f influxdb_setup
 # Step 1: Run InfluxDB container
-docker run -d --replace --name=influxdb_setup \
+docker run -d --name=influxdb_setup \
   -p 8086:8086 \
   -v ./influxdb2:/var/lib/influxdb2 \
   -e INFLUXDB_ADMIN_USER=$DB_USER \

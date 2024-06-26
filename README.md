@@ -60,6 +60,12 @@ Before deploying the Docker Compose setup, ensure the following prerequisites ar
 
 5. Execute the setup script:
 
+   For docker users:
+   ```bash
+   sudo ./run.sh
+   ```
+
+   For podman users
    ```bash
    ./run.sh
    ```
