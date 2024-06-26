@@ -16,8 +16,15 @@ if [[ ! -f "$RSYSLOG" ]]; then
 fi
 
 printf "enabling udp reception of log data"
-sed -i "s|#module(load="imudp")|module(load="imudp")|g" "$RSYSLOG"
-sed -i "s|#input(type="imudp" port="514")|input(type="imudp" port="514")|g" "$RSYSLOG"
+
+search_module=$(grep -i '#module(load=\"imudp\")' "$RSYSLOG")
+search_input=$(grep -i '#input(type=\"imudp\" port=\"514\")' "$RSYSLOG")
+replace_module='module(load="imudp")'
+replace_input='input(type="imudp" port="514")'
+
+
+sed -i "s|$search_module|$replace_module|g" "$RSYSLOG"
+sed -i "s|$search_input|$replace_input|g" "$RSYSLOG"
 # Search for the string in the file
 if ! grep -q "$SEARCH_STRING" "$RSYSLOG"; then
   echo "Adding forwarding rule to the file."
