@@ -1,4 +1,4 @@
-# Arkona Technologies Telemetry Template
+# Arkona Technologies Telemetry Template (version 2)
 
 ![Telemetry Logo](.readme/blade-runner.png)
 
@@ -14,7 +14,7 @@
 - **Scalable Monitoring:** Monitor multiple BLADE//runner processors seamlessly with the scalability of containerized deployments.
 - **Added features in version 2:**
    - Using influxDB version 2
-   - Setting up rsyslog, loki and promtail to provide syslog inspectation via Grafana
+   - Setting up rsyslog, loki and promtail to provide syslog inspection via Grafana
 
 ## Prerequisites
 
@@ -64,7 +64,7 @@ Before deploying the Docker Compose setup, ensure the following prerequisites ar
    ./run.sh
    ```
 
-   This command will try to setup rsyslog first, then setup influxDB and providing the mandatory authorization token and finally start the telemetry service, InfluxDB, Loki, Promtail and Grafana in detached mode.
+   This command will try to setup rsyslog first, so please provide the sudo password when asked. Afterwards it will run a setup instance of influxDB to provide the mandatory authorization token and finally start the telemetry service, InfluxDB, Loki, Promtail and Grafana in detached mode.
 
 6. Access Grafana at [http://localhost:3000](http://localhost:3000) in your browser. Log in with the supplied credentials.
 
@@ -76,6 +76,8 @@ Before deploying the Docker Compose setup, ensure the following prerequisites ar
 - [VTelemetry2](https://hub.docker.com/r/arkonatechnologies/vtelemetry2)
 - [InfluxDB](https://hub.docker.com/_/influxdb)
 - [Grafana-OSS](https://hub.docker.com/r/grafana/grafana-oss)
+- [Loki, Promtail](https://grafana.com/docs/loki/latest/send-data/promtail/)
+- [Rsyslog](https://www.rsyslog.com/doc/index.html)
 - [Docker](https://www.docker.com/)
 
 ## Further Reading
