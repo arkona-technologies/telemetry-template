@@ -12,6 +12,9 @@
 - **Integrated Database:** The setup provisions InfluxDB, a powerful and efficient time-series database, for storing telemetry data.
 - **Visualization with Grafana:** Grafana is included in the setup, providing a user-friendly interface for visualizing and analyzing telemetry data.
 - **Scalable Monitoring:** Monitor multiple BLADE//runner processors seamlessly with the scalability of containerized deployments.
+- **Added features in version 2:**
+   - Using influxDB version 2
+   - Setting up rsyslog, loki and promtail to provide syslog inspectation via Grafana
 
 ## Prerequisites
 
@@ -19,6 +22,7 @@ Before deploying the Docker Compose setup, ensure the following prerequisites ar
 
 - Docker installed on the host machine.
 - Docker Compose installed on the host machine.
+- Apt package manager, otherwise rsyslog has to be installed manually before setup
 
 ## Installation
 
@@ -28,10 +32,11 @@ Before deploying the Docker Compose setup, ensure the following prerequisites ar
    git clone https://github.com/arkona-technologies/telemetry-template.git
    ```
 
-2. Navigate to the project directory:
+2. Navigate to the project directory and select new branch:
 
    ```bash
    cd telemetry-template
+   git checkout v2
    ```
 
 3. Create a `.env` file in the project root with your desired configurations. Use the provided `.env` file as a template:
@@ -39,23 +44,27 @@ Before deploying the Docker Compose setup, ensure the following prerequisites ar
 4. **Configure via `.env` file:** Customize the `.env` file as needed, specifying parameters such as processor IPs, ports, and authentication details. Example configuration in `.env`:
 
    ```env
-   BLADES=ws://172.16.210.107,ws://172.16.120.170
-   DB_NAME=test
-   DB_PASSWORD=test
+   BLADES=172.16.10.2
+
+   DB_NAME=bladerunner
+   DB_PASSWORD=blade__runner # at least 8 characters!
    DB_USER=test
    DB_PORT=8086
+   DB_ORG=myorg
+   DB_RETENTION=7d # can be n d/w/m/y (days/weeks/months/years)
+   DB_TOKEN=
 
    GRAFANA_USER=test
    GRAFANA_PW=test
    ```
 
-5. Run the Docker Compose setup:
+5. Execute the setup script:
 
    ```bash
-   docker-compose --env-file .env up -d
+   ./run.sh
    ```
 
-   This command will start the telemetry service, InfluxDB, and Grafana in detached mode.
+   This command will try to setup rsyslog first, then setup influxDB and providing the mandatory authorization token and finally start the telemetry service, InfluxDB, Loki, Promtail and Grafana in detached mode.
 
 6. Access Grafana at [http://localhost:3000](http://localhost:3000) in your browser. Log in with the supplied credentials.
 

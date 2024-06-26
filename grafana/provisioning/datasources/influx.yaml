@@ -1,14 +1,16 @@
 apiVersion: 1
 
 datasources:
-  - name: InfluxDB
+  - name: ${PV_DB_NAME}
     type: influxdb
     access: proxy
-    user: $PV_DB_USER
     url: http://influxdb:8086
-    basicAuth: true
+    editable: true
+    user: ${PV_DB_USER}
     jsonData:
-      dbName: $PV_DB_NAME
-      httpMode: GET
+      dbName: ${PV_DB_NAME}
+      httpHeaderName1: "Authorization"
     secureJsonData:
-      password: $PV_DB_PASSWORD
+      # user: ${PV_DB_USER}
+      httpHeaderValue1: "Token ${PV_DB_TOKEN}"
+      password: ${PV_DB_PASSWORD}

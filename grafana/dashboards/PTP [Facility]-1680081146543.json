@@ -1,0 +1,1582 @@
+{
+	"__inputs": [
+		{
+			"name": "DS_BLADERUNNER",
+			"label": "bladerunner",
+			"description": "",
+			"type": "datasource",
+			"pluginId": "influxdb",
+			"pluginName": "InfluxDB"
+		}
+	],
+	"__elements": {
+		"FEioZHgnz": {
+			"name": "PTP / Genlock State",
+			"uid": "FEioZHgnz",
+			"kind": 1,
+			"model": {
+				"datasource": {
+					"type": "influxdb",
+					"uid": "${DS_BLADERUNNER}"
+				},
+				"description": "",
+				"fieldConfig": {
+					"defaults": {
+						"color": {
+							"mode": "thresholds"
+						},
+						"custom": {
+							"fillOpacity": 70,
+							"lineWidth": 0,
+							"spanNulls": false
+						},
+						"mappings": [
+							{
+								"options": {
+									"Calibrated": {
+										"color": "green",
+										"index": 0
+									},
+									"FreeRun": {
+										"color": "yellow",
+										"index": 1
+									},
+									"Uncalibrated": {
+										"color": "red",
+										"index": 2
+									}
+								},
+								"type": "value"
+							}
+						],
+						"thresholds": {
+							"mode": "absolute",
+							"steps": [
+								{
+									"color": "green",
+									"value": null
+								}
+							]
+						}
+					},
+					"overrides": []
+				},
+				"options": {
+					"alignValue": "left",
+					"legend": {
+						"displayMode": "list",
+						"placement": "bottom",
+						"showLegend": false
+					},
+					"mergeValues": true,
+					"rowHeight": 0.9,
+					"showValue": "auto",
+					"tooltip": {
+						"mode": "single",
+						"sort": "none"
+					}
+				},
+				"targets": [
+					{
+						"alias": "Genlock $tag_ip #$tag_instances",
+						"datasource": {
+							"type": "influxdb",
+							"uid": "${DS_BLADERUNNER}"
+						},
+						"groupBy": [
+							{
+								"params": ["ip"],
+								"type": "tag"
+							},
+							{
+								"params": ["instances"],
+								"type": "tag"
+							}
+						],
+						"hide": false,
+						"measurement": "genlock.instances.lanes.video_f50_ish",
+						"orderByTime": "ASC",
+						"policy": "default",
+						"query": "SELECT \"state\" FROM \"genlock.instances.lanes.video_f50_ish\" WHERE (\"ip\" =~ /^$blades$/) AND $timeFilter GROUP BY \"ip\"",
+						"rawQuery": false,
+						"refId": "video_f50_ish",
+						"resultFormat": "time_series",
+						"select": [
+							[
+								{
+									"params": ["state"],
+									"type": "field"
+								}
+							]
+						],
+						"tags": [
+							{
+								"key": "ip",
+								"operator": "=~",
+								"value": "/^$blades$/"
+							}
+						]
+					},
+					{
+						"alias": "PTP Clock $tag_ip",
+						"datasource": {
+							"type": "influxdb",
+							"uid": "${DS_BLADERUNNER}"
+						},
+						"groupBy": [
+							{
+								"params": ["ip"],
+								"type": "tag"
+							}
+						],
+						"hide": false,
+						"measurement": "p_t_p_clock",
+						"orderByTime": "ASC",
+						"policy": "default",
+						"refId": "ptp clock",
+						"resultFormat": "time_series",
+						"select": [
+							[
+								{
+									"params": ["state"],
+									"type": "field"
+								}
+							]
+						],
+						"tags": [
+							{
+								"key": "ip",
+								"operator": "=~",
+								"value": "/^$blades$/"
+							}
+						]
+					}
+				],
+				"title": "PTP / Genlock State",
+				"type": "state-timeline"
+			}
+		},
+		"7LjVRQf4z": {
+			"name": "GPS Time rx",
+			"uid": "7LjVRQf4z",
+			"kind": 1,
+			"model": {
+				"datasource": {
+					"type": "influxdb",
+					"uid": "${DS_BLADERUNNER}"
+				},
+				"description": "don't try to interpret these curves, this panel is just meant to check whether we've lost the GPS signal",
+				"fieldConfig": {
+					"defaults": {
+						"color": {
+							"mode": "palette-classic"
+						},
+						"custom": {
+							"axisCenteredZero": false,
+							"axisColorMode": "text",
+							"axisLabel": "",
+							"axisPlacement": "auto",
+							"barAlignment": 0,
+							"drawStyle": "line",
+							"fillOpacity": 0,
+							"gradientMode": "none",
+							"hideFrom": {
+								"legend": false,
+								"tooltip": false,
+								"viz": false
+							},
+							"lineInterpolation": "linear",
+							"lineWidth": 1,
+							"pointSize": 5,
+							"scaleDistribution": {
+								"type": "linear"
+							},
+							"showPoints": "auto",
+							"spanNulls": false,
+							"stacking": {
+								"group": "A",
+								"mode": "none"
+							},
+							"thresholdsStyle": {
+								"mode": "off"
+							}
+						},
+						"mappings": [],
+						"thresholds": {
+							"mode": "absolute",
+							"steps": [
+								{
+									"color": "green",
+									"value": null
+								},
+								{
+									"color": "red",
+									"value": 80
+								}
+							]
+						}
+					},
+					"overrides": []
+				},
+				"libraryPanel": {
+					"name": "GPS Time rx",
+					"uid": ""
+				},
+				"options": {
+					"legend": {
+						"calcs": [],
+						"displayMode": "list",
+						"placement": "right",
+						"showLegend": true
+					},
+					"tooltip": {
+						"mode": "single",
+						"sort": "none"
+					}
+				},
+				"targets": [
+					{
+						"alias": "Minutes GPS Receiver #$tag_gps_receivers",
+						"datasource": {
+							"type": "influxdb",
+							"uid": "_Mt57O3Gk"
+						},
+						"groupBy": [
+							{
+								"params": ["$__interval"],
+								"type": "time"
+							},
+							{
+								"params": ["gps_receivers"],
+								"type": "tag"
+							},
+							{
+								"params": ["null"],
+								"type": "fill"
+							}
+						],
+						"hide": true,
+						"measurement": "master_clock.gps_receivers.time_of_day",
+						"orderByTime": "ASC",
+						"policy": "default",
+						"refId": "C",
+						"resultFormat": "time_series",
+						"select": [
+							[
+								{
+									"params": ["minutes"],
+									"type": "field"
+								},
+								{
+									"params": [],
+									"type": "distinct"
+								},
+								{
+									"params": [" / 100"],
+									"type": "math"
+								}
+							]
+						],
+						"tags": []
+					},
+					{
+						"alias": "Minutes GPS Receiver #$tag_gps_receivers",
+						"datasource": {
+							"type": "influxdb",
+							"uid": "_Mt57O3Gk"
+						},
+						"groupBy": [
+							{
+								"params": ["$__interval"],
+								"type": "time"
+							},
+							{
+								"params": ["gps_receivers"],
+								"type": "tag"
+							},
+							{
+								"params": ["null"],
+								"type": "fill"
+							}
+						],
+						"hide": true,
+						"measurement": "master_clock.gps_receivers.time_of_day",
+						"orderByTime": "ASC",
+						"policy": "default",
+						"refId": "A",
+						"resultFormat": "time_series",
+						"select": [
+							[
+								{
+									"params": ["seconds"],
+									"type": "field"
+								},
+								{
+									"params": [],
+									"type": "distinct"
+								},
+								{
+									"params": [" / 100"],
+									"type": "math"
+								}
+							]
+						],
+						"tags": []
+					},
+					{
+						"alias": "minutes $tag_ip/$tag_gps_receivers",
+						"datasource": {
+							"type": "influxdb",
+							"uid": "${DS_BLADERUNNER}"
+						},
+						"groupBy": [
+							{
+								"params": ["$__interval"],
+								"type": "time"
+							},
+							{
+								"params": ["ip"],
+								"type": "tag"
+							},
+							{
+								"params": ["gps_receivers"],
+								"type": "tag"
+							},
+							{
+								"params": ["null"],
+								"type": "fill"
+							}
+						],
+						"hide": false,
+						"measurement": "master_clock.gps_receivers.time_of_day",
+						"orderByTime": "ASC",
+						"policy": "default",
+						"refId": "B",
+						"resultFormat": "time_series",
+						"select": [
+							[
+								{
+									"params": ["minutes"],
+									"type": "field"
+								},
+								{
+									"params": [],
+									"type": "mean"
+								}
+							]
+						],
+						"tags": [
+							{
+								"key": "ip",
+								"operator": "=~",
+								"value": "/^$blades$/"
+							}
+						]
+					},
+					{
+						"alias": "seconds $tag_ip/$tag_gps_receivers",
+						"datasource": {
+							"type": "influxdb",
+							"uid": "${DS_BLADERUNNER}"
+						},
+						"groupBy": [
+							{
+								"params": ["$__interval"],
+								"type": "time"
+							},
+							{
+								"params": ["ip"],
+								"type": "tag"
+							},
+							{
+								"params": ["gps_receivers"],
+								"type": "tag"
+							},
+							{
+								"params": ["null"],
+								"type": "fill"
+							}
+						],
+						"hide": false,
+						"measurement": "master_clock.gps_receivers.time_of_day",
+						"orderByTime": "ASC",
+						"policy": "default",
+						"refId": "D",
+						"resultFormat": "time_series",
+						"select": [
+							[
+								{
+									"params": ["seconds"],
+									"type": "field"
+								},
+								{
+									"params": [],
+									"type": "mean"
+								}
+							]
+						],
+						"tags": [
+							{
+								"key": "ip",
+								"operator": "=~",
+								"value": "/^$blades$/"
+							}
+						]
+					}
+				],
+				"title": "GPS Time rx",
+				"type": "timeseries"
+			}
+		},
+		"_-w2ZHg7k": {
+			"name": "PTP Clock - Relative Clock Speed",
+			"uid": "_-w2ZHg7k",
+			"kind": 1,
+			"model": {
+				"datasource": {
+					"type": "influxdb",
+					"uid": "${DS_BLADERUNNER}"
+				},
+				"description": "",
+				"fieldConfig": {
+					"defaults": {
+						"color": {
+							"mode": "palette-classic"
+						},
+						"custom": {
+							"axisCenteredZero": false,
+							"axisColorMode": "text",
+							"axisLabel": "",
+							"axisPlacement": "auto",
+							"barAlignment": 0,
+							"drawStyle": "line",
+							"fillOpacity": 0,
+							"gradientMode": "none",
+							"hideFrom": {
+								"legend": false,
+								"tooltip": false,
+								"viz": false
+							},
+							"lineInterpolation": "linear",
+							"lineWidth": 2,
+							"pointSize": 5,
+							"scaleDistribution": {
+								"type": "linear"
+							},
+							"showPoints": "never",
+							"spanNulls": true,
+							"stacking": {
+								"group": "A",
+								"mode": "none"
+							},
+							"thresholdsStyle": {
+								"mode": "off"
+							}
+						},
+						"mappings": [],
+						"thresholds": {
+							"mode": "absolute",
+							"steps": [
+								{
+									"color": "green",
+									"value": null
+								},
+								{
+									"color": "red",
+									"value": 80
+								}
+							]
+						},
+						"unit": "ppm"
+					},
+					"overrides": []
+				},
+				"options": {
+					"legend": {
+						"calcs": ["mean", "lastNotNull", "max", "min"],
+						"displayMode": "table",
+						"placement": "right",
+						"showLegend": true
+					},
+					"tooltip": {
+						"mode": "single",
+						"sort": "none"
+					}
+				},
+				"pluginVersion": "8.0.0",
+				"targets": [
+					{
+						"alias": "$tag_ip",
+						"datasource": {
+							"type": "influxdb",
+							"uid": "${DS_BLADERUNNER}"
+						},
+						"groupBy": [
+							{
+								"params": ["$__interval"],
+								"type": "time"
+							},
+							{
+								"params": ["ip"],
+								"type": "tag"
+							},
+							{
+								"params": ["none"],
+								"type": "fill"
+							}
+						],
+						"measurement": "p_t_p_clock",
+						"orderByTime": "ASC",
+						"policy": "default",
+						"refId": "A",
+						"resultFormat": "time_series",
+						"select": [
+							[
+								{
+									"params": ["relative_clock_speed"],
+									"type": "field"
+								},
+								{
+									"params": [],
+									"type": "mean"
+								},
+								{
+									"params": [" * 1000000"],
+									"type": "math"
+								}
+							]
+						],
+						"tags": [
+							{
+								"key": "ip",
+								"operator": "=~",
+								"value": "/^$blades$/"
+							}
+						]
+					}
+				],
+				"timeFrom": null,
+				"timeShift": null,
+				"title": "PTP Clock - Relative Clock Speed",
+				"type": "timeseries"
+			}
+		},
+		"EWIDRwBVz": {
+			"name": "PTP Agent - drift",
+			"uid": "EWIDRwBVz",
+			"kind": 1,
+			"model": {
+				"datasource": {
+					"type": "influxdb",
+					"uid": "${DS_BLADERUNNER}"
+				},
+				"description": "",
+				"fieldConfig": {
+					"defaults": {
+						"color": {
+							"mode": "palette-classic"
+						},
+						"custom": {
+							"axisCenteredZero": false,
+							"axisColorMode": "text",
+							"axisLabel": "",
+							"axisPlacement": "auto",
+							"barAlignment": 0,
+							"drawStyle": "line",
+							"fillOpacity": 0,
+							"gradientMode": "none",
+							"hideFrom": {
+								"legend": false,
+								"tooltip": false,
+								"viz": false
+							},
+							"lineInterpolation": "linear",
+							"lineStyle": {
+								"fill": "solid"
+							},
+							"lineWidth": 1,
+							"pointSize": 5,
+							"scaleDistribution": {
+								"type": "linear"
+							},
+							"showPoints": "auto",
+							"spanNulls": false,
+							"stacking": {
+								"group": "A",
+								"mode": "none"
+							},
+							"thresholdsStyle": {
+								"mode": "off"
+							}
+						},
+						"mappings": [],
+						"thresholds": {
+							"mode": "absolute",
+							"steps": [
+								{
+									"color": "green",
+									"value": null
+								},
+								{
+									"color": "red",
+									"value": 80
+								}
+							]
+						},
+						"unit": "ppm"
+					},
+					"overrides": []
+				},
+				"libraryPanel": {
+					"name": "PTP Agent - drift",
+					"uid": ""
+				},
+				"options": {
+					"legend": {
+						"calcs": [],
+						"displayMode": "list",
+						"placement": "right",
+						"showLegend": true
+					},
+					"tooltip": {
+						"mode": "single",
+						"sort": "none"
+					}
+				},
+				"targets": [
+					{
+						"alias": " Agent $tag_agents @ $tag_ip",
+						"datasource": {
+							"type": "influxdb",
+							"uid": "${DS_BLADERUNNER}"
+						},
+						"groupBy": [
+							{
+								"params": ["$__interval"],
+								"type": "time"
+							},
+							{
+								"params": ["ip"],
+								"type": "tag"
+							},
+							{
+								"params": ["agents"],
+								"type": "tag"
+							},
+							{
+								"params": ["linear"],
+								"type": "fill"
+							}
+						],
+						"hide": false,
+						"measurement": "p_t_p_flows.agents.output.drift",
+						"orderByTime": "ASC",
+						"policy": "default",
+						"refId": "A",
+						"resultFormat": "time_series",
+						"select": [
+							[
+								{
+									"params": ["value"],
+									"type": "field"
+								},
+								{
+									"params": [],
+									"type": "mean"
+								},
+								{
+									"params": [" * 1000000"],
+									"type": "math"
+								}
+							]
+						],
+						"tags": [
+							{
+								"key": "ip",
+								"operator": "=~",
+								"value": "/^$blades$/"
+							},
+							{
+								"condition": "AND",
+								"key": "agents",
+								"operator": "=~",
+								"value": "/^$agents$/"
+							}
+						]
+					}
+				],
+				"title": "PTP Agent - drift",
+				"type": "timeseries"
+			}
+		},
+		"lowNRwfVz": {
+			"name": "PTP Agent - offset",
+			"uid": "lowNRwfVz",
+			"kind": 1,
+			"model": {
+				"datasource": {
+					"type": "influxdb",
+					"uid": "${DS_BLADERUNNER}"
+				},
+				"description": "",
+				"fieldConfig": {
+					"defaults": {
+						"color": {
+							"mode": "palette-classic"
+						},
+						"custom": {
+							"axisCenteredZero": false,
+							"axisColorMode": "text",
+							"axisLabel": "",
+							"axisPlacement": "auto",
+							"barAlignment": 0,
+							"drawStyle": "line",
+							"fillOpacity": 0,
+							"gradientMode": "none",
+							"hideFrom": {
+								"legend": false,
+								"tooltip": false,
+								"viz": false
+							},
+							"lineInterpolation": "linear",
+							"lineStyle": {
+								"fill": "solid"
+							},
+							"lineWidth": 1,
+							"pointSize": 5,
+							"scaleDistribution": {
+								"type": "linear"
+							},
+							"showPoints": "auto",
+							"spanNulls": false,
+							"stacking": {
+								"group": "A",
+								"mode": "none"
+							},
+							"thresholdsStyle": {
+								"mode": "off"
+							}
+						},
+						"mappings": [],
+						"max": 0.000005,
+						"min": -0.000005,
+						"thresholds": {
+							"mode": "absolute",
+							"steps": [
+								{
+									"color": "green",
+									"value": null
+								},
+								{
+									"color": "red",
+									"value": 80
+								}
+							]
+						},
+						"unit": "s"
+					},
+					"overrides": []
+				},
+				"options": {
+					"legend": {
+						"calcs": [],
+						"displayMode": "list",
+						"placement": "right",
+						"showLegend": true
+					},
+					"tooltip": {
+						"mode": "single",
+						"sort": "none"
+					}
+				},
+				"targets": [
+					{
+						"alias": "$tag_ip/agent $tag_agents",
+						"datasource": {
+							"type": "influxdb",
+							"uid": "${DS_BLADERUNNER}"
+						},
+						"groupBy": [
+							{
+								"params": ["$__interval"],
+								"type": "time"
+							},
+							{
+								"params": ["agents"],
+								"type": "tag"
+							},
+							{
+								"params": ["ip"],
+								"type": "tag"
+							},
+							{
+								"params": ["linear"],
+								"type": "fill"
+							}
+						],
+						"hide": false,
+						"measurement": "p_t_p_flows.agents.output.offset",
+						"orderByTime": "ASC",
+						"policy": "default",
+						"refId": "B",
+						"resultFormat": "time_series",
+						"select": [
+							[
+								{
+									"params": ["value"],
+									"type": "field"
+								},
+								{
+									"params": [],
+									"type": "mean"
+								}
+							]
+						],
+						"tags": [
+							{
+								"key": "ip",
+								"operator": "=~",
+								"value": "/^$blades$/"
+							}
+						]
+					}
+				],
+				"title": "PTP Agent - offset",
+				"type": "timeseries"
+			}
+		},
+		"i5yQgQfVk": {
+			"name": "PTP Message rates (10s derivative) [heavy]",
+			"uid": "i5yQgQfVk",
+			"kind": 1,
+			"model": {
+				"datasource": {
+					"type": "influxdb",
+					"uid": "${DS_BLADERUNNER}"
+				},
+				"description": "",
+				"fieldConfig": {
+					"defaults": {
+						"color": {
+							"mode": "palette-classic"
+						},
+						"custom": {
+							"axisCenteredZero": false,
+							"axisColorMode": "text",
+							"axisLabel": "",
+							"axisPlacement": "auto",
+							"axisSoftMin": 0,
+							"barAlignment": 0,
+							"drawStyle": "line",
+							"fillOpacity": 0,
+							"gradientMode": "none",
+							"hideFrom": {
+								"legend": false,
+								"tooltip": false,
+								"viz": false
+							},
+							"lineInterpolation": "linear",
+							"lineStyle": {
+								"fill": "solid"
+							},
+							"lineWidth": 1,
+							"pointSize": 5,
+							"scaleDistribution": {
+								"log": 2,
+								"type": "log"
+							},
+							"showPoints": "auto",
+							"spanNulls": false,
+							"stacking": {
+								"group": "A",
+								"mode": "none"
+							},
+							"thresholdsStyle": {
+								"mode": "off"
+							}
+						},
+						"mappings": [],
+						"thresholds": {
+							"mode": "absolute",
+							"steps": [
+								{
+									"color": "green",
+									"value": null
+								},
+								{
+									"color": "red",
+									"value": 80
+								}
+							]
+						},
+						"unit": "none"
+					},
+					"overrides": []
+				},
+				"libraryPanel": {
+					"name": "PTP Message rates (10s derivative) [heavy]",
+					"uid": ""
+				},
+				"options": {
+					"legend": {
+						"calcs": [],
+						"displayMode": "list",
+						"placement": "right",
+						"showLegend": true
+					},
+					"tooltip": {
+						"mode": "single",
+						"sort": "none"
+					}
+				},
+				"targets": [
+					{
+						"alias": "syncs received $tag_ip/agent $tag_agents",
+						"datasource": {
+							"type": "influxdb",
+							"uid": "${DS_BLADERUNNER}"
+						},
+						"groupBy": [
+							{
+								"params": ["agents"],
+								"type": "tag"
+							},
+							{
+								"params": ["ip"],
+								"type": "tag"
+							}
+						],
+						"hide": false,
+						"measurement": "p_t_p_flows.agents.slave_statistics",
+						"orderByTime": "ASC",
+						"policy": "default",
+						"refId": "syncs received",
+						"resultFormat": "time_series",
+						"select": [
+							[
+								{
+									"params": ["num_syncs_received"],
+									"type": "field"
+								},
+								{
+									"params": ["10s"],
+									"type": "derivative"
+								}
+							]
+						],
+						"tags": [
+							{
+								"key": "ip",
+								"operator": "=~",
+								"value": "/^$blades$/"
+							},
+							{
+								"condition": "AND",
+								"key": "agents",
+								"operator": "=~",
+								"value": "/^$agents$/"
+							}
+						]
+					},
+					{
+						"alias": "num sync $tag_ip/agent $tag_agents",
+						"datasource": {
+							"type": "influxdb",
+							"uid": "${DS_BLADERUNNER}"
+						},
+						"groupBy": [
+							{
+								"params": ["agents"],
+								"type": "tag"
+							},
+							{
+								"params": ["ip"],
+								"type": "tag"
+							}
+						],
+						"hide": false,
+						"measurement": "p_t_p_flows.agents.slave_statistics",
+						"orderByTime": "ASC",
+						"policy": "default",
+						"refId": "num sync measurements",
+						"resultFormat": "time_series",
+						"select": [
+							[
+								{
+									"params": ["num_sync_measurements"],
+									"type": "field"
+								},
+								{
+									"params": ["10s"],
+									"type": "derivative"
+								}
+							]
+						],
+						"tags": [
+							{
+								"key": "ip",
+								"operator": "=~",
+								"value": "/^$blades$/"
+							},
+							{
+								"condition": "AND",
+								"key": "agents",
+								"operator": "=~",
+								"value": "/^$agents$/"
+							}
+						]
+					},
+					{
+						"alias": "num delayres rec $tag_ip/agent $tag_agents",
+						"datasource": {
+							"type": "influxdb",
+							"uid": "${DS_BLADERUNNER}"
+						},
+						"groupBy": [
+							{
+								"params": ["agents"],
+								"type": "tag"
+							},
+							{
+								"params": ["ip"],
+								"type": "tag"
+							}
+						],
+						"hide": false,
+						"measurement": "p_t_p_flows.agents.slave_statistics",
+						"orderByTime": "ASC",
+						"policy": "default",
+						"refId": "num delayres rec",
+						"resultFormat": "time_series",
+						"select": [
+							[
+								{
+									"params": ["num_delayresps_received"],
+									"type": "field"
+								},
+								{
+									"params": ["10s"],
+									"type": "derivative"
+								}
+							]
+						],
+						"tags": [
+							{
+								"key": "ip",
+								"operator": "=~",
+								"value": "/^$blades$/"
+							},
+							{
+								"condition": "AND",
+								"key": "agents",
+								"operator": "=~",
+								"value": "/^$agents$/"
+							}
+						]
+					},
+					{
+						"alias": "num delay $tag_ip/agent $tag_agents",
+						"datasource": {
+							"type": "influxdb",
+							"uid": "${DS_BLADERUNNER}"
+						},
+						"groupBy": [
+							{
+								"params": ["agents"],
+								"type": "tag"
+							},
+							{
+								"params": ["ip"],
+								"type": "tag"
+							}
+						],
+						"hide": false,
+						"measurement": "p_t_p_flows.agents.slave_statistics",
+						"orderByTime": "ASC",
+						"policy": "default",
+						"refId": "num delay measurements",
+						"resultFormat": "time_series",
+						"select": [
+							[
+								{
+									"params": ["num_delay_measurements"],
+									"type": "field"
+								},
+								{
+									"params": ["10s"],
+									"type": "derivative"
+								}
+							]
+						],
+						"tags": [
+							{
+								"key": "ip",
+								"operator": "=~",
+								"value": "/^$blades$/"
+							},
+							{
+								"condition": "AND",
+								"key": "agents",
+								"operator": "=~",
+								"value": "/^$agents$/"
+							}
+						]
+					}
+				],
+				"title": "PTP Message rates (10s derivative) [heavy]",
+				"type": "timeseries"
+			}
+		},
+		"ZIWUkQBVk": {
+			"name": "PTP Message counts",
+			"uid": "ZIWUkQBVk",
+			"kind": 1,
+			"model": {
+				"datasource": {
+					"type": "influxdb",
+					"uid": "${DS_BLADERUNNER}"
+				},
+				"description": "",
+				"fieldConfig": {
+					"defaults": {
+						"color": {
+							"mode": "palette-classic"
+						},
+						"custom": {
+							"axisCenteredZero": false,
+							"axisColorMode": "text",
+							"axisLabel": "",
+							"axisPlacement": "auto",
+							"axisSoftMin": 0,
+							"barAlignment": 0,
+							"drawStyle": "line",
+							"fillOpacity": 0,
+							"gradientMode": "none",
+							"hideFrom": {
+								"legend": false,
+								"tooltip": false,
+								"viz": false
+							},
+							"lineInterpolation": "linear",
+							"lineStyle": {
+								"fill": "solid"
+							},
+							"lineWidth": 1,
+							"pointSize": 5,
+							"scaleDistribution": {
+								"type": "linear"
+							},
+							"showPoints": "auto",
+							"spanNulls": false,
+							"stacking": {
+								"group": "A",
+								"mode": "none"
+							},
+							"thresholdsStyle": {
+								"mode": "off"
+							}
+						},
+						"mappings": [],
+						"thresholds": {
+							"mode": "absolute",
+							"steps": [
+								{
+									"color": "green",
+									"value": null
+								},
+								{
+									"color": "red",
+									"value": 80
+								}
+							]
+						},
+						"unit": "none"
+					},
+					"overrides": []
+				},
+				"libraryPanel": {
+					"name": "PTP Message counts",
+					"uid": ""
+				},
+				"options": {
+					"legend": {
+						"calcs": [],
+						"displayMode": "list",
+						"placement": "right",
+						"showLegend": true
+					},
+					"tooltip": {
+						"mode": "single",
+						"sort": "none"
+					}
+				},
+				"targets": [
+					{
+						"alias": "syncs received $tag_ip/agent $tag_agents",
+						"datasource": {
+							"type": "influxdb",
+							"uid": "${DS_BLADERUNNER}"
+						},
+						"groupBy": [
+							{
+								"params": ["$__interval"],
+								"type": "time"
+							},
+							{
+								"params": ["agents"],
+								"type": "tag"
+							},
+							{
+								"params": ["ip"],
+								"type": "tag"
+							},
+							{
+								"params": ["linear"],
+								"type": "fill"
+							}
+						],
+						"hide": false,
+						"measurement": "p_t_p_flows.agents.slave_statistics",
+						"orderByTime": "ASC",
+						"policy": "default",
+						"refId": "D",
+						"resultFormat": "time_series",
+						"select": [
+							[
+								{
+									"params": ["num_syncs_received"],
+									"type": "field"
+								},
+								{
+									"params": [],
+									"type": "mean"
+								}
+							]
+						],
+						"tags": [
+							{
+								"key": "ip",
+								"operator": "=~",
+								"value": "/^$blades$/"
+							},
+							{
+								"condition": "AND",
+								"key": "agents",
+								"operator": "=~",
+								"value": "/^$agents$/"
+							}
+						]
+					},
+					{
+						"alias": "num syncs $tag_ip/agent $tag_agents",
+						"datasource": {
+							"type": "influxdb",
+							"uid": "${DS_BLADERUNNER}"
+						},
+						"groupBy": [
+							{
+								"params": ["$__interval"],
+								"type": "time"
+							},
+							{
+								"params": ["agents"],
+								"type": "tag"
+							},
+							{
+								"params": ["ip"],
+								"type": "tag"
+							},
+							{
+								"params": ["linear"],
+								"type": "fill"
+							}
+						],
+						"hide": false,
+						"measurement": "p_t_p_flows.agents.slave_statistics",
+						"orderByTime": "ASC",
+						"policy": "default",
+						"refId": "E",
+						"resultFormat": "time_series",
+						"select": [
+							[
+								{
+									"params": ["num_sync_measurements"],
+									"type": "field"
+								},
+								{
+									"params": [],
+									"type": "mean"
+								}
+							]
+						],
+						"tags": [
+							{
+								"key": "ip",
+								"operator": "=~",
+								"value": "/^$blades$/"
+							},
+							{
+								"condition": "AND",
+								"key": "agents",
+								"operator": "=~",
+								"value": "/^$agents$/"
+							}
+						]
+					},
+					{
+						"alias": "num delayres received $tag_ip/agent $tag_agents",
+						"datasource": {
+							"type": "influxdb",
+							"uid": "${DS_BLADERUNNER}"
+						},
+						"groupBy": [
+							{
+								"params": ["$__interval"],
+								"type": "time"
+							},
+							{
+								"params": ["agents"],
+								"type": "tag"
+							},
+							{
+								"params": ["ip"],
+								"type": "tag"
+							},
+							{
+								"params": ["linear"],
+								"type": "fill"
+							}
+						],
+						"hide": false,
+						"measurement": "p_t_p_flows.agents.slave_statistics",
+						"orderByTime": "ASC",
+						"policy": "default",
+						"refId": "F",
+						"resultFormat": "time_series",
+						"select": [
+							[
+								{
+									"params": ["num_delayresps_received"],
+									"type": "field"
+								},
+								{
+									"params": [],
+									"type": "mean"
+								}
+							]
+						],
+						"tags": [
+							{
+								"key": "ip",
+								"operator": "=~",
+								"value": "/^$blades$/"
+							},
+							{
+								"condition": "AND",
+								"key": "agents",
+								"operator": "=~",
+								"value": "/^$agents$/"
+							}
+						]
+					}
+				],
+				"title": "PTP Message counts",
+				"type": "timeseries"
+			}
+		}
+	},
+	"__requires": [
+		{
+			"type": "grafana",
+			"id": "grafana",
+			"name": "Grafana",
+			"version": "10.1.2"
+		},
+		{
+			"type": "datasource",
+			"id": "influxdb",
+			"name": "InfluxDB",
+			"version": "1.0.0"
+		}
+	],
+	"annotations": {
+		"list": [
+			{
+				"builtIn": 1,
+				"datasource": {
+					"type": "datasource",
+					"uid": "grafana"
+				},
+				"enable": true,
+				"hide": true,
+				"iconColor": "rgba(0, 211, 255, 1)",
+				"name": "Annotations & Alerts",
+				"target": {
+					"limit": 100,
+					"matchAny": false,
+					"tags": [],
+					"type": "dashboard"
+				},
+				"type": "dashboard"
+			}
+		]
+	},
+	"editable": true,
+	"fiscalYearStartMonth": 0,
+	"graphTooltip": 0,
+	"id": null,
+	"links": [],
+	"liveNow": false,
+	"panels": [
+		{
+			"gridPos": {
+				"h": 15,
+				"w": 24,
+				"x": 0,
+				"y": 0
+			},
+			"id": 15,
+			"libraryPanel": {
+				"uid": "FEioZHgnz",
+				"name": "PTP / Genlock State"
+			}
+		},
+		{
+			"gridPos": {
+				"h": 8,
+				"w": 24,
+				"x": 0,
+				"y": 15
+			},
+			"id": 17,
+			"libraryPanel": {
+				"uid": "7LjVRQf4z",
+				"name": "GPS Time rx"
+			}
+		},
+		{
+			"gridPos": {
+				"h": 9,
+				"w": 24,
+				"x": 0,
+				"y": 23
+			},
+			"id": 3,
+			"libraryPanel": {
+				"uid": "_-w2ZHg7k",
+				"name": "PTP Clock - Relative Clock Speed"
+			}
+		},
+		{
+			"gridPos": {
+				"h": 10,
+				"w": 24,
+				"x": 0,
+				"y": 32
+			},
+			"id": 5,
+			"libraryPanel": {
+				"uid": "EWIDRwBVz",
+				"name": "PTP Agent - drift"
+			}
+		},
+		{
+			"gridPos": {
+				"h": 10,
+				"w": 24,
+				"x": 0,
+				"y": 42
+			},
+			"id": 7,
+			"libraryPanel": {
+				"uid": "lowNRwfVz",
+				"name": "PTP Agent - offset"
+			}
+		},
+		{
+			"gridPos": {
+				"h": 10,
+				"w": 24,
+				"x": 0,
+				"y": 52
+			},
+			"id": 12,
+			"libraryPanel": {
+				"uid": "i5yQgQfVk",
+				"name": "PTP Message rates (10s derivative) [heavy]"
+			}
+		},
+		{
+			"gridPos": {
+				"h": 10,
+				"w": 24,
+				"x": 0,
+				"y": 62
+			},
+			"id": 13,
+			"libraryPanel": {
+				"uid": "ZIWUkQBVk",
+				"name": "PTP Message counts"
+			}
+		}
+	],
+	"refresh": "",
+	"revision": 1,
+	"schemaVersion": 38,
+	"style": "dark",
+	"tags": ["PTP", "Facility"],
+	"templating": {
+		"list": [
+			{
+				"current": {},
+				"datasource": {
+					"type": "influxdb",
+					"uid": "${DS_BLADERUNNER}"
+				},
+				"definition": "SHOW TAG VALUES with key=\"ip\"",
+				"description": "Machines listed in InfluxDB",
+				"hide": 0,
+				"includeAll": true,
+				"multi": true,
+				"name": "blades",
+				"options": [],
+				"query": "SHOW TAG VALUES with key=\"ip\"",
+				"refresh": 1,
+				"regex": "",
+				"skipUrlSync": false,
+				"sort": 0,
+				"type": "query"
+			},
+			{
+				"current": {},
+				"datasource": {
+					"type": "influxdb",
+					"uid": "${DS_BLADERUNNER}"
+				},
+				"definition": "SHOW TAG VALUES with key=\"agents\"",
+				"description": "agents listed in InfluxDB",
+				"hide": 0,
+				"includeAll": true,
+				"multi": true,
+				"name": "agents",
+				"options": [],
+				"query": "SHOW TAG VALUES with key=\"agents\"",
+				"refresh": 1,
+				"regex": "",
+				"skipUrlSync": false,
+				"sort": 0,
+				"type": "query"
+			}
+		]
+	},
+	"time": {
+		"from": "now-24h",
+		"to": "now"
+	},
+	"timepicker": {},
+	"timezone": "",
+	"title": "PTP [Facility]",
+	"uid": "k7v8dX6Gz",
+	"version": 47,
+	"weekStart": ""
+}

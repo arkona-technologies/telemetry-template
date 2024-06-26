@@ -1,52 +1,88 @@
 version: '3'
+
+networks:
+  telemetry:
+
 services:
+# influxDB
   influxdb:
-    image: docker.io/influxdb:1.8
+    image: influxdb:2.7.1
     networks:
-      - backend
+      - telemetry
     ports:
-      - ${DB_PORT}:8086
+      - '8086:8086'
     volumes:
-      - ./influx_retention_policy.iql:/docker-entrypoint-initdb.d/influx_retention_policy.iql
-      - ./.influxdb/:/var/lib/influxdb
+      - ./influxdb2:/var/lib/influxdb2
     environment:
-      - INFLUXDB_DB=${DB_NAME}
-      - INFLUXDB_ADMIN_USER=${DB_USER}
-      - INFLUXDB_ADMIN_PASSWORD=${DB_PASSWORD}
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=${DB_USER}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${DB_PASSWORD}
+      - DOCKER_INFLUXDB_INIT_ORG=${DB_ORG}
+      - DOCKER_INFLUXDB_INIT_BUCKET=${DB_NAME}
+      - V1_DB_NAME=v1-${DB_NAME}
+      - V1_RP_NAME=v1-rp
+      - V1_AUTH_USERNAME=${DB_USER}
+      - V1_AUTH_PASSWORD=${DB_PASSWORD}
+# grafana
   grafana:
-    image: docker.io/grafana/grafana-oss:10.3.1
+    image: grafana/grafana-oss
+    user: root
     networks:
-      - backend
+      - telemetry
     ports:
       - '3000:3000'
     depends_on:
       - influxdb
     volumes:
+      - ./grafana/var/:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning
       - ./grafana/dashboards:/etc/grafana/dashboards
     environment:
       - PV_DB_NAME=${DB_NAME}
       - PV_DB_PASSWORD=${DB_PASSWORD}
       - PV_DB_USER=${DB_USER}
+      - PV_DB_TOKEN=${DB_TOKEN}
       - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PW}
-  vtelemetry:
-    image: docker.io/arkonatechnologies/vtelemetry2
+      - GF_SECURITY_ALLOW_EMBEDDING=true
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+# loki for logs
+  loki:
+    image: grafana/loki:2.9.0
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
     networks:
-      - backend
+      - telemetry
+# promtail for loki
+  promtail:
+    image: grafana/promtail:2.9.0
+    user: root
+    volumes:
+      - /var/log:/var/log
+      - ./promtail/config.yml:/etc/promtail/config.yml
+    command: -config.file=/etc/promtail/config.yml
+    networks:
+      - telemetry
+# vtelemetry
+  vtelemetry:
+    image: arkonatechnologies/vtelemetry2
+    networks:
+      - telemetry
     depends_on:
       - influxdb
     environment:
       - MACHINES=${BLADES}
-      - BLACKLIST='\.audio\.signals,\.output\.signals,\.user_labels,\.monitoring_objects\.audio,software_update,audio_source_slices,peak_meter'
-      - WHITELIST='p_t_p,genlock,system'
-      - INFLUX_API=1
-      - DB_HOST=influxdb
+      - BLACKLIST=\.audio\.signals,\.output\.signals,\.user_labels,\.monitoring_objects\.audio,software_update,audio_source_slices,peak_meter
+      - WHITELIST=p_t_p,genlock,system
+      - INFLUX_API=2
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
       - DB_PORT=${DB_PORT}
+      - DB_HOST=influxdb
+      - DB_BUCKET=${DB_NAME}
+      - DB_ORG=${DB_ORG}
+      - DB_TOKEN=${DB_TOKEN}
       - VERBOSITY=1
-networks:
-  backend:
-    driver: bridge
