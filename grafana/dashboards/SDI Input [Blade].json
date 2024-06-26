@@ -1,391 +1,4 @@
 {
-	"__inputs": [
-		{
-			"name": "DS_BLADERUNNER",
-			"label": "bladerunner",
-			"description": "",
-			"type": "datasource",
-			"pluginId": "influxdb",
-			"pluginName": "InfluxDB"
-		}
-	],
-	"__elements": {
-		"xpvX7HR7z": {
-			"name": "SDI Input - Standard",
-			"uid": "xpvX7HR7z",
-			"kind": 1,
-			"model": {
-				"datasource": {
-					"type": "influxdb",
-					"uid": "${DS_BLADERUNNER}"
-				},
-				"description": "",
-				"fieldConfig": {
-					"defaults": {
-						"color": {
-							"mode": "thresholds"
-						},
-						"custom": {
-							"fillOpacity": 70,
-							"lineWidth": 0,
-							"spanNulls": false
-						},
-						"mappings": [],
-						"thresholds": {
-							"mode": "absolute",
-							"steps": [
-								{
-									"color": "green",
-									"value": null
-								},
-								{
-									"color": "red",
-									"value": 80
-								}
-							]
-						}
-					},
-					"overrides": []
-				},
-				"options": {
-					"alignValue": "left",
-					"legend": {
-						"displayMode": "list",
-						"placement": "bottom",
-						"showLegend": true
-					},
-					"mergeValues": true,
-					"rowHeight": 0.9,
-					"showValue": "auto",
-					"tooltip": {
-						"mode": "single",
-						"sort": "none"
-					}
-				},
-				"targets": [
-					{
-						"alias": "input #$tag_input",
-						"datasource": {
-							"type": "influxdb",
-							"uid": "${DS_BLADERUNNER}"
-						},
-						"groupBy": [
-							{
-								"params": ["input"],
-								"type": "tag"
-							}
-						],
-						"hide": false,
-						"measurement": "i_o_module.input.sdi.hw_status",
-						"orderByTime": "ASC",
-						"policy": "default",
-						"refId": "A",
-						"resultFormat": "time_series",
-						"select": [
-							[
-								{
-									"params": ["standard"],
-									"type": "field"
-								}
-							]
-						],
-						"tags": [
-							{
-								"key": "ip",
-								"operator": "=~",
-								"value": "/^$blades$/"
-							}
-						]
-					}
-				],
-				"title": "SDI Input - Standard",
-				"type": "state-timeline"
-			}
-		},
-		"sYa-iwfVz": {
-			"name": "SDI Input Offset to PTP",
-			"uid": "sYa-iwfVz",
-			"kind": 1,
-			"model": {
-				"datasource": {
-					"type": "influxdb",
-					"uid": "${DS_BLADERUNNER}"
-				},
-				"aliasColors": {},
-				"bars": false,
-				"dashLength": 10,
-				"dashes": false,
-				"description": "",
-				"fieldConfig": {
-					"defaults": {
-						"links": []
-					},
-					"overrides": []
-				},
-				"fill": 0,
-				"fillGradient": 0,
-				"hiddenSeries": false,
-				"legend": {
-					"alignAsTable": true,
-					"avg": true,
-					"current": true,
-					"max": true,
-					"min": true,
-					"rightSide": true,
-					"show": true,
-					"total": false,
-					"values": true
-				},
-				"lines": true,
-				"linewidth": 1,
-				"links": [],
-				"nullPointMode": "null",
-				"options": {
-					"alertThreshold": true
-				},
-				"percentage": false,
-				"pluginVersion": "9.4.3",
-				"pointradius": 5,
-				"points": false,
-				"renderer": "flot",
-				"seriesOverrides": [],
-				"spaceLength": 10,
-				"stack": false,
-				"steppedLine": false,
-				"targets": [
-					{
-						"alias": "SDI Input #$tag_input",
-						"datasource": {
-							"type": "influxdb",
-							"uid": "${DS_BLADERUNNER}"
-						},
-						"groupBy": [
-							{
-								"params": ["$__interval"],
-								"type": "time"
-							},
-							{
-								"params": ["input"],
-								"type": "tag"
-							},
-							{
-								"params": ["null"],
-								"type": "fill"
-							}
-						],
-						"hide": false,
-						"measurement": "i_o_module.input.sdi.output.video.media_clock.offset",
-						"orderByTime": "ASC",
-						"policy": "default",
-						"refId": "B",
-						"resultFormat": "time_series",
-						"select": [
-							[
-								{
-									"params": ["value"],
-									"type": "field"
-								},
-								{
-									"params": [],
-									"type": "mean"
-								}
-							]
-						],
-						"tags": [
-							{
-								"key": "ip",
-								"operator": "=~",
-								"value": "/^$blades$/"
-							}
-						]
-					}
-				],
-				"thresholds": [],
-				"timeFrom": null,
-				"timeRegions": [],
-				"timeShift": null,
-				"title": "SDI Input Offset to PTP",
-				"tooltip": {
-					"shared": true,
-					"sort": 0,
-					"value_type": "individual"
-				},
-				"type": "graph",
-				"xaxis": {
-					"buckets": null,
-					"mode": "time",
-					"name": null,
-					"show": true,
-					"values": []
-				},
-				"yaxes": [
-					{
-						"format": "s",
-						"logBase": 1,
-						"show": true
-					},
-					{
-						"format": "short",
-						"logBase": 1,
-						"show": true
-					}
-				],
-				"yaxis": {
-					"align": false
-				}
-			}
-		},
-		"0_7YiwBVk": {
-			"name": "SDI Input Drift to FC",
-			"uid": "0_7YiwBVk",
-			"kind": 1,
-			"model": {
-				"datasource": {
-					"type": "influxdb",
-					"uid": "${DS_BLADERUNNER}"
-				},
-				"description": "",
-				"fieldConfig": {
-					"defaults": {
-						"color": {
-							"mode": "palette-classic"
-						},
-						"custom": {
-							"axisCenteredZero": false,
-							"axisColorMode": "text",
-							"axisLabel": "",
-							"axisPlacement": "auto",
-							"barAlignment": 0,
-							"drawStyle": "line",
-							"fillOpacity": 0,
-							"gradientMode": "none",
-							"hideFrom": {
-								"legend": false,
-								"tooltip": false,
-								"viz": false
-							},
-							"lineInterpolation": "linear",
-							"lineWidth": 1,
-							"pointSize": 5,
-							"scaleDistribution": {
-								"type": "linear"
-							},
-							"showPoints": "never",
-							"spanNulls": false,
-							"stacking": {
-								"group": "A",
-								"mode": "none"
-							},
-							"thresholdsStyle": {
-								"mode": "off"
-							}
-						},
-						"links": [],
-						"mappings": [],
-						"thresholds": {
-							"mode": "absolute",
-							"steps": [
-								{
-									"color": "green",
-									"value": null
-								},
-								{
-									"color": "red",
-									"value": 80
-								}
-							]
-						},
-						"unit": "ppm"
-					},
-					"overrides": []
-				},
-				"links": [],
-				"options": {
-					"legend": {
-						"calcs": ["mean", "lastNotNull", "max", "min"],
-						"displayMode": "table",
-						"placement": "right",
-						"showLegend": true
-					},
-					"tooltip": {
-						"mode": "multi",
-						"sort": "none"
-					}
-				},
-				"pluginVersion": "9.3.1",
-				"targets": [
-					{
-						"alias": "SDI Input#$tag_input",
-						"datasource": {
-							"type": "influxdb",
-							"uid": "${DS_BLADERUNNER}"
-						},
-						"groupBy": [
-							{
-								"params": ["$__interval"],
-								"type": "time"
-							},
-							{
-								"params": ["input"],
-								"type": "tag"
-							},
-							{
-								"params": ["null"],
-								"type": "fill"
-							}
-						],
-						"hide": false,
-						"measurement": "i_o_module.input.sdi.output.video.media_clock.drift",
-						"orderByTime": "ASC",
-						"policy": "default",
-						"refId": "B",
-						"resultFormat": "time_series",
-						"select": [
-							[
-								{
-									"params": ["value"],
-									"type": "field"
-								},
-								{
-									"params": [],
-									"type": "mean"
-								}
-							]
-						],
-						"tags": [
-							{
-								"key": "ip",
-								"operator": "=~",
-								"value": "/^$blades$/"
-							}
-						]
-					}
-				],
-				"title": "SDI Input Drift to FC",
-				"type": "timeseries"
-			}
-		}
-	},
-	"__requires": [
-		{
-			"type": "grafana",
-			"id": "grafana",
-			"name": "Grafana",
-			"version": "10.1.2"
-		},
-		{
-			"type": "datasource",
-			"id": "influxdb",
-			"name": "InfluxDB",
-			"version": "1.0.0"
-		},
-		{
-			"type": "panel",
-			"id": "state-timeline",
-			"name": "State timeline",
-			"version": ""
-		}
-	],
 	"annotations": {
 		"list": [
 			{
@@ -411,11 +24,49 @@
 	"editable": true,
 	"fiscalYearStartMonth": 0,
 	"graphTooltip": 2,
-	"id": null,
+	"id": 12,
 	"links": [],
 	"liveNow": false,
 	"panels": [
 		{
+			"datasource": {
+				"type": "influxdb",
+				"uid": "GIQf3g9MVz"
+			},
+			"description": "",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"custom": {
+						"fillOpacity": 70,
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"insertNulls": false,
+						"lineWidth": 0,
+						"spanNulls": false
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
 			"gridPos": {
 				"h": 12,
 				"w": 24,
@@ -423,15 +74,65 @@
 				"y": 0
 			},
 			"id": 16,
-			"libraryPanel": {
-				"uid": "xpvX7HR7z",
-				"name": "SDI Input - Standard"
-			}
+			"options": {
+				"alignValue": "left",
+				"legend": {
+					"displayMode": "list",
+					"placement": "bottom",
+					"showLegend": true
+				},
+				"mergeValues": true,
+				"rowHeight": 0.9,
+				"showValue": "auto",
+				"tooltip": {
+					"maxHeight": 600,
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"targets": [
+				{
+					"alias": "input #$tag_input",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "GIQf3g9MVz"
+					},
+					"groupBy": [
+						{
+							"params": ["input"],
+							"type": "tag"
+						}
+					],
+					"hide": false,
+					"measurement": "i_o_module.input.sdi.hw_status",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "A",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["standard"],
+								"type": "field"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				}
+			],
+			"title": "SDI Input - Standard",
+			"type": "state-timeline"
 		},
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "${DS_BLADERUNNER}"
+				"uid": "GIQf3g9MVz"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -485,6 +186,7 @@
 				"rowHeight": 0.9,
 				"showValue": "auto",
 				"tooltip": {
+					"maxHeight": 600,
 					"mode": "single",
 					"sort": "none"
 				}
@@ -494,7 +196,7 @@
 					"alias": "input #$tag_input",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "${DS_BLADERUNNER}"
+						"uid": "GIQf3g9MVz"
 					},
 					"groupBy": [
 						{
@@ -529,6 +231,67 @@
 			"type": "state-timeline"
 		},
 		{
+			"datasource": {
+				"type": "influxdb",
+				"uid": "GIQf3g9MVz"
+			},
+			"description": "",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "palette-classic"
+					},
+					"custom": {
+						"axisBorderShow": false,
+						"axisCenteredZero": false,
+						"axisColorMode": "text",
+						"axisLabel": "",
+						"axisPlacement": "auto",
+						"barAlignment": 0,
+						"drawStyle": "line",
+						"fillOpacity": 0,
+						"gradientMode": "none",
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"insertNulls": false,
+						"lineInterpolation": "linear",
+						"lineWidth": 1,
+						"pointSize": 5,
+						"scaleDistribution": {
+							"type": "linear"
+						},
+						"showPoints": "never",
+						"spanNulls": false,
+						"stacking": {
+							"group": "A",
+							"mode": "none"
+						},
+						"thresholdsStyle": {
+							"mode": "off"
+						}
+					},
+					"links": [],
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					},
+					"unit": "s"
+				},
+				"overrides": []
+			},
 			"gridPos": {
 				"h": 10,
 				"w": 24,
@@ -536,12 +299,133 @@
 				"y": 24
 			},
 			"id": 13,
-			"libraryPanel": {
-				"uid": "sYa-iwfVz",
-				"name": "SDI Input Offset to PTP"
-			}
+			"options": {
+				"legend": {
+					"calcs": ["mean", "lastNotNull", "max", "min"],
+					"displayMode": "table",
+					"placement": "right",
+					"showLegend": true
+				},
+				"tooltip": {
+					"maxHeight": 600,
+					"mode": "multi",
+					"sort": "none"
+				}
+			},
+			"pluginVersion": "9.4.3",
+			"targets": [
+				{
+					"alias": "SDI Input #$tag_input",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "GIQf3g9MVz"
+					},
+					"groupBy": [
+						{
+							"params": ["$__interval"],
+							"type": "time"
+						},
+						{
+							"params": ["input"],
+							"type": "tag"
+						},
+						{
+							"params": ["null"],
+							"type": "fill"
+						}
+					],
+					"hide": false,
+					"measurement": "i_o_module.input.sdi.output.video.media_clock.offset",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "B",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["value"],
+								"type": "field"
+							},
+							{
+								"params": [],
+								"type": "mean"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				}
+			],
+			"title": "SDI Input Offset to PTP",
+			"type": "timeseries"
 		},
 		{
+			"datasource": {
+				"type": "influxdb",
+				"uid": "GIQf3g9MVz"
+			},
+			"description": "",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "palette-classic"
+					},
+					"custom": {
+						"axisBorderShow": false,
+						"axisCenteredZero": false,
+						"axisColorMode": "text",
+						"axisLabel": "",
+						"axisPlacement": "auto",
+						"barAlignment": 0,
+						"drawStyle": "line",
+						"fillOpacity": 0,
+						"gradientMode": "none",
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"insertNulls": false,
+						"lineInterpolation": "linear",
+						"lineWidth": 1,
+						"pointSize": 5,
+						"scaleDistribution": {
+							"type": "linear"
+						},
+						"showPoints": "never",
+						"spanNulls": false,
+						"stacking": {
+							"group": "A",
+							"mode": "none"
+						},
+						"thresholdsStyle": {
+							"mode": "off"
+						}
+					},
+					"links": [],
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					},
+					"unit": "ppm"
+				},
+				"overrides": []
+			},
 			"gridPos": {
 				"h": 10,
 				"w": 24,
@@ -549,15 +433,75 @@
 				"y": 34
 			},
 			"id": 14,
-			"libraryPanel": {
-				"uid": "0_7YiwBVk",
-				"name": "SDI Input Drift to FC"
-			}
+			"options": {
+				"legend": {
+					"calcs": ["mean", "lastNotNull", "max", "min"],
+					"displayMode": "table",
+					"placement": "right",
+					"showLegend": true
+				},
+				"tooltip": {
+					"maxHeight": 600,
+					"mode": "multi",
+					"sort": "none"
+				}
+			},
+			"pluginVersion": "9.3.1",
+			"targets": [
+				{
+					"alias": "SDI Input#$tag_input",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "GIQf3g9MVz"
+					},
+					"groupBy": [
+						{
+							"params": ["$__interval"],
+							"type": "time"
+						},
+						{
+							"params": ["input"],
+							"type": "tag"
+						},
+						{
+							"params": ["null"],
+							"type": "fill"
+						}
+					],
+					"hide": false,
+					"measurement": "i_o_module.input.sdi.output.video.media_clock.drift",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "B",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["value"],
+								"type": "field"
+							},
+							{
+								"params": [],
+								"type": "mean"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				}
+			],
+			"title": "SDI Input Drift to FC",
+			"type": "timeseries"
 		},
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "${DS_BLADERUNNER}"
+				"uid": "GIQf3g9MVz"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -611,6 +555,7 @@
 				"rowHeight": 0.9,
 				"showValue": "auto",
 				"tooltip": {
+					"maxHeight": 600,
 					"mode": "single",
 					"sort": "none"
 				}
@@ -620,7 +565,7 @@
 					"alias": "input $tag_input",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "${DS_BLADERUNNER}"
+						"uid": "GIQf3g9MVz"
 					},
 					"groupBy": [
 						{
@@ -663,7 +608,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "${DS_BLADERUNNER}"
+				"uid": "GIQf3g9MVz"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -673,12 +618,6 @@
 					},
 					"custom": {
 						"fillOpacity": 70,
-						"hideFrom": {
-							"legend": false,
-							"tooltip": false,
-							"viz": false
-						},
-						"insertNulls": false,
 						"lineWidth": 0,
 						"spanNulls": false
 					},
@@ -687,8 +626,7 @@
 						"mode": "absolute",
 						"steps": [
 							{
-								"color": "green",
-								"value": null
+								"color": "green"
 							},
 							{
 								"color": "red",
@@ -726,7 +664,7 @@
 					"alias": "input $tag_input",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "${DS_BLADERUNNER}"
+						"uid": "GIQf3g9MVz"
 					},
 					"groupBy": [
 						{
@@ -769,7 +707,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "${DS_BLADERUNNER}"
+				"uid": "GIQf3g9MVz"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -779,12 +717,6 @@
 					},
 					"custom": {
 						"fillOpacity": 70,
-						"hideFrom": {
-							"legend": false,
-							"tooltip": false,
-							"viz": false
-						},
-						"insertNulls": false,
 						"lineWidth": 0,
 						"spanNulls": false
 					},
@@ -793,8 +725,7 @@
 						"mode": "absolute",
 						"steps": [
 							{
-								"color": "green",
-								"value": null
+								"color": "green"
 							},
 							{
 								"color": "red",
@@ -832,7 +763,7 @@
 					"alias": "input #$tag_input",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "${DS_BLADERUNNER}"
+						"uid": "GIQf3g9MVz"
 					},
 					"groupBy": [
 						{
@@ -869,7 +800,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "${DS_BLADERUNNER}"
+				"uid": "GIQf3g9MVz"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -879,12 +810,6 @@
 					},
 					"custom": {
 						"fillOpacity": 70,
-						"hideFrom": {
-							"legend": false,
-							"tooltip": false,
-							"viz": false
-						},
-						"insertNulls": false,
 						"lineWidth": 0,
 						"spanNulls": false
 					},
@@ -893,8 +818,7 @@
 						"mode": "absolute",
 						"steps": [
 							{
-								"color": "green",
-								"value": null
+								"color": "green"
 							},
 							{
 								"color": "red",
@@ -932,7 +856,7 @@
 					"alias": "input #$tag_input",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "${DS_BLADERUNNER}"
+						"uid": "GIQf3g9MVz"
 					},
 					"groupBy": [
 						{
@@ -969,7 +893,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "${DS_BLADERUNNER}"
+				"uid": "GIQf3g9MVz"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -979,12 +903,6 @@
 					},
 					"custom": {
 						"fillOpacity": 70,
-						"hideFrom": {
-							"legend": false,
-							"tooltip": false,
-							"viz": false
-						},
-						"insertNulls": false,
 						"lineWidth": 0,
 						"spanNulls": false
 					},
@@ -993,8 +911,7 @@
 						"mode": "absolute",
 						"steps": [
 							{
-								"color": "green",
-								"value": null
+								"color": "green"
 							},
 							{
 								"color": "red",
@@ -1032,7 +949,7 @@
 					"alias": "input #$tag_input",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "${DS_BLADERUNNER}"
+						"uid": "GIQf3g9MVz"
 					},
 					"groupBy": [
 						{
@@ -1069,16 +986,19 @@
 	],
 	"refresh": "",
 	"revision": 1,
-	"schemaVersion": 38,
-	"style": "dark",
+	"schemaVersion": 39,
 	"tags": ["Blade", "SDI"],
 	"templating": {
 		"list": [
 			{
-				"current": {},
+				"current": {
+					"selected": false,
+					"text": "172.16.116.9",
+					"value": "172.16.116.9"
+				},
 				"datasource": {
 					"type": "influxdb",
-					"uid": "${DS_BLADERUNNER}"
+					"uid": "GIQf3g9MVz"
 				},
 				"definition": "SHOW TAG VALUES WITH KEY=\"ip\"",
 				"hide": 0,
@@ -1099,9 +1019,10 @@
 		]
 	},
 	"time": {
-		"from": "now-2d",
+		"from": "now-24h",
 		"to": "now"
 	},
+	"timeRangeUpdatedDuringEditOrView": false,
 	"timepicker": {
 		"refresh_intervals": [
 			"5s",

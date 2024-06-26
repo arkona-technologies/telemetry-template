@@ -1,4 +1,4 @@
-apiVersion: 1
+apiVersion: 2
 
 datasources:
   - name: ${PV_DB_NAME}
@@ -6,7 +6,9 @@ datasources:
     access: proxy
     url: http://influxdb:8086
     editable: true
+    isDefault: true
     user: ${PV_DB_USER}
+    uid: "GIQf3g9MVz"
     jsonData:
       dbName: ${PV_DB_NAME}
       httpHeaderName1: "Authorization"

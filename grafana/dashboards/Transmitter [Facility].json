@@ -1,0 +1,292 @@
+{
+	"annotations": {
+		"list": [
+			{
+				"builtIn": 1,
+				"datasource": {
+					"type": "datasource",
+					"uid": "grafana"
+				},
+				"enable": true,
+				"hide": true,
+				"iconColor": "rgba(0, 211, 255, 1)",
+				"name": "Annotations & Alerts",
+				"target": {
+					"limit": 100,
+					"matchAny": false,
+					"tags": [],
+					"type": "dashboard"
+				},
+				"type": "dashboard"
+			}
+		]
+	},
+	"editable": true,
+	"fiscalYearStartMonth": 0,
+	"graphTooltip": 0,
+	"id": 139,
+	"links": [],
+	"liveNow": false,
+	"panels": [
+		{
+			"datasource": {
+				"type": "influxdb",
+				"uid": "GIQf3g9MVz"
+			},
+			"description": "",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"custom": {
+						"fillOpacity": 70,
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"insertNulls": false,
+						"lineWidth": 0,
+						"spanNulls": false
+					},
+					"mappings": [
+						{
+							"options": {
+								" HD720p25": {
+									"color": "#b7b7b7",
+									"index": 18
+								},
+								" HD720p29_97": {
+									"color": "#a2a2a2",
+									"index": 17
+								},
+								" HD720p30": {
+									"color": "#747474",
+									"index": 16
+								},
+								" HD720p50": {
+									"color": "#636363",
+									"index": 15
+								},
+								" HD720p59_94": {
+									"color": "super-light-purple",
+									"index": 14
+								},
+								" HD720p60": {
+									"color": "light-purple",
+									"index": 13
+								},
+								"HD1080i50": {
+									"color": "semi-dark-purple",
+									"index": 12
+								},
+								"HD1080i59_94": {
+									"color": "dark-purple",
+									"index": 11
+								},
+								"HD1080i60": {
+									"color": "rgba(114, 37, 152, 1)",
+									"index": 10
+								},
+								"HD1080p24": {
+									"color": "light-blue",
+									"index": 9
+								},
+								"HD1080p24_DCI": {
+									"color": "#dbffbc",
+									"index": 20
+								},
+								"HD1080p25": {
+									"color": "semi-dark-blue",
+									"index": 8
+								},
+								"HD1080p29_97": {
+									"color": "dark-blue",
+									"index": 7
+								},
+								"HD1080p30": {
+									"color": "super-light-green",
+									"index": 6
+								},
+								"HD1080p50": {
+									"color": "light-green",
+									"index": 5
+								},
+								"HD1080p59_94": {
+									"color": "semi-dark-green",
+									"index": 4
+								},
+								"HD1080p60": {
+									"color": "dark-green",
+									"index": 3
+								},
+								"HD1080sF23_98": {
+									"color": "light-yellow",
+									"index": 25
+								},
+								"HD1080sF24": {
+									"color": "semi-dark-yellow",
+									"index": 24
+								},
+								"HD1080sF25": {
+									"color": "dark-yellow",
+									"index": 23
+								},
+								"HD1080sF25_DCI": {
+									"color": "#cbffc8",
+									"index": 19
+								},
+								"HD1080sF29_97": {
+									"color": "super-light-orange",
+									"index": 22
+								},
+								"HD1080sF30": {
+									"color": "light-orange",
+									"index": 21
+								},
+								"HD2160p50": {
+									"color": "red",
+									"index": 2
+								},
+								"HD2160p59_94": {
+									"color": "semi-dark-red",
+									"index": 1
+								},
+								"HD2160p60": {
+									"color": "dark-red",
+									"index": 0
+								},
+								"NTSC": {
+									"color": "transparent",
+									"index": 27
+								},
+								"PAL": {
+									"color": "transparent",
+									"index": 26
+								}
+							},
+							"type": "value"
+						}
+					],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 102,
+				"w": 24,
+				"x": 0,
+				"y": 0
+			},
+			"id": 2,
+			"options": {
+				"alignValue": "left",
+				"legend": {
+					"displayMode": "list",
+					"placement": "bottom",
+					"showLegend": false
+				},
+				"mergeValues": true,
+				"rowHeight": 0.9,
+				"showValue": "auto",
+				"tooltip": {
+					"maxHeight": 600,
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"targets": [
+				{
+					"alias": "$tag_ip $tag_video_transmitters",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "GIQf3g9MVz"
+					},
+					"groupBy": [
+						{
+							"params": ["ip"],
+							"type": "tag"
+						},
+						{
+							"params": ["video_transmitters"],
+							"type": "tag"
+						}
+					],
+					"measurement": "r_t_p_transmitter.video_transmitters.constraints",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "A",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["calculation_standard"],
+								"type": "field"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				}
+			],
+			"title": "Video Transmitters Calculated Standard",
+			"type": "state-timeline"
+		}
+	],
+	"refresh": "",
+	"revision": 1,
+	"schemaVersion": 39,
+	"tags": [],
+	"templating": {
+		"list": [
+			{
+				"current": {
+					"selected": false,
+					"text": "All",
+					"value": "$__all"
+				},
+				"datasource": {
+					"type": "influxdb",
+					"uid": "GIQf3g9MVz"
+				},
+				"definition": "show tag values with key=\"ip\"",
+				"hide": 0,
+				"includeAll": true,
+				"multi": false,
+				"name": "blades",
+				"options": [],
+				"query": "show tag values with key=\"ip\"",
+				"refresh": 1,
+				"regex": "",
+				"skipUrlSync": false,
+				"sort": 0,
+				"type": "query"
+			}
+		]
+	},
+	"time": {
+		"from": "now-24h",
+		"to": "now"
+	},
+	"timeRangeUpdatedDuringEditOrView": false,
+	"timepicker": {},
+	"timezone": "",
+	"title": "Transmitter [Facility]",
+	"uid": "rU6VPLy7z",
+	"version": 5,
+	"weekStart": ""
+}

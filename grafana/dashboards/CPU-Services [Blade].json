@@ -9,462 +9,13 @@
 			"pluginName": "InfluxDB"
 		}
 	],
-	"__elements": {
-		"1KiLBLsnk": {
-			"name": "Partitions [Blade]",
-			"uid": "1KiLBLsnk",
-			"kind": 1,
-			"model": {
-				"datasource": {
-					"type": "influxdb",
-					"uid": "${DS_BLADERUNNER}"
-				},
-				"description": "",
-				"fieldConfig": {
-					"defaults": {
-						"color": {
-							"mode": "palette-classic"
-						},
-						"custom": {
-							"fillOpacity": 70,
-							"lineWidth": 1,
-							"spanNulls": false
-						},
-						"mappings": [],
-						"thresholds": {
-							"mode": "absolute",
-							"steps": [
-								{
-									"color": "green",
-									"value": null
-								},
-								{
-									"color": "red",
-									"value": 80
-								}
-							]
-						}
-					},
-					"overrides": []
-				},
-				"libraryPanel": {
-					"description": "",
-					"meta": {
-						"connectedDashboards": 1,
-						"created": "2022-04-01T15:37:38Z",
-						"createdBy": {
-							"avatarUrl": "/avatar/3a84e232a56a4149ddb467c6d5a94f09",
-							"id": 2,
-							"name": "johannes"
-						},
-						"folderName": "Infrastructure",
-						"folderUid": "qmiGjw3Gk",
-						"updated": "2022-07-28T11:48:27Z",
-						"updatedBy": {
-							"avatarUrl": "/avatar/3a84e232a56a4149ddb467c6d5a94f09",
-							"id": 2,
-							"name": "johannes"
-						}
-					},
-					"name": "Partitions [Blade]",
-					"type": "state-timeline",
-					"uid": "1KiLBLsnk",
-					"version": 4
-				},
-				"options": {
-					"alignValue": "left",
-					"legend": {
-						"displayMode": "list",
-						"placement": "bottom",
-						"showLegend": false
-					},
-					"mergeValues": true,
-					"rowHeight": 0.9,
-					"showValue": "auto",
-					"tooltip": {
-						"mode": "single",
-						"sort": "none"
-					}
-				},
-				"targets": [
-					{
-						"alias": "sys1",
-						"datasource": {
-							"type": "influxdb",
-							"uid": "${DS_BLADERUNNER}"
-						},
-						"groupBy": [
-							{
-								"params": ["ip"],
-								"type": "tag"
-							}
-						],
-						"measurement": "system.partitions.system1",
-						"orderByTime": "ASC",
-						"policy": "default",
-						"refId": "A",
-						"resultFormat": "time_series",
-						"select": [
-							[
-								{
-									"params": ["version"],
-									"type": "field"
-								}
-							]
-						],
-						"tags": [
-							{
-								"key": "ip",
-								"operator": "=~",
-								"value": "/^$blades$/"
-							}
-						]
-					},
-					{
-						"alias": "sys0",
-						"datasource": {
-							"type": "influxdb",
-							"uid": "${DS_BLADERUNNER}"
-						},
-						"groupBy": [
-							{
-								"params": ["ip"],
-								"type": "tag"
-							}
-						],
-						"hide": false,
-						"measurement": "system.partitions.system0",
-						"orderByTime": "ASC",
-						"policy": "default",
-						"refId": "B",
-						"resultFormat": "time_series",
-						"select": [
-							[
-								{
-									"params": ["version"],
-									"type": "field"
-								}
-							]
-						],
-						"tags": [
-							{
-								"key": "ip",
-								"operator": "=~",
-								"value": "/^$blades$/"
-							}
-						]
-					},
-					{
-						"alias": "boot",
-						"datasource": {
-							"type": "influxdb",
-							"uid": "${DS_BLADERUNNER}"
-						},
-						"groupBy": [
-							{
-								"params": ["ip"],
-								"type": "tag"
-							}
-						],
-						"hide": false,
-						"measurement": "system.partitions",
-						"orderByTime": "ASC",
-						"policy": "default",
-						"refId": "C",
-						"resultFormat": "time_series",
-						"select": [
-							[
-								{
-									"params": ["booted"],
-									"type": "field"
-								}
-							]
-						],
-						"tags": [
-							{
-								"key": "ip",
-								"operator": "=~",
-								"value": "/^$blades$/"
-							}
-						]
-					}
-				],
-				"title": "Partitions",
-				"type": "state-timeline"
-			}
-		},
-		"PDQQfLs7z": {
-			"name": "CPU Usage",
-			"uid": "PDQQfLs7z",
-			"kind": 1,
-			"model": {
-				"datasource": {
-					"type": "influxdb",
-					"uid": "${DS_BLADERUNNER}"
-				},
-				"description": "",
-				"fieldConfig": {
-					"defaults": {
-						"color": {
-							"mode": "palette-classic"
-						},
-						"custom": {
-							"axisCenteredZero": false,
-							"axisColorMode": "text",
-							"axisLabel": "",
-							"axisPlacement": "left",
-							"axisWidth": 50,
-							"barAlignment": 0,
-							"drawStyle": "line",
-							"fillOpacity": 25,
-							"gradientMode": "opacity",
-							"hideFrom": {
-								"legend": false,
-								"tooltip": false,
-								"viz": false
-							},
-							"insertNulls": false,
-							"lineInterpolation": "linear",
-							"lineWidth": 1,
-							"pointSize": 4,
-							"scaleDistribution": {
-								"type": "linear"
-							},
-							"showPoints": "auto",
-							"spanNulls": true,
-							"stacking": {
-								"group": "A",
-								"mode": "none"
-							},
-							"thresholdsStyle": {
-								"mode": "off"
-							}
-						},
-						"mappings": [],
-						"min": 0,
-						"thresholds": {
-							"mode": "absolute",
-							"steps": [
-								{
-									"color": "green",
-									"value": null
-								},
-								{
-									"color": "red",
-									"value": 80
-								}
-							]
-						},
-						"unit": "percent"
-					},
-					"overrides": []
-				},
-				"interval": "10s",
-				"links": [],
-				"options": {
-					"legend": {
-						"calcs": ["mean", "lastNotNull", "max"],
-						"displayMode": "table",
-						"placement": "bottom",
-						"showLegend": true
-					},
-					"tooltip": {
-						"mode": "single",
-						"sort": "none"
-					}
-				},
-				"pluginVersion": "8.0.0",
-				"targets": [
-					{
-						"alias": "",
-						"datasource": {
-							"type": "influxdb",
-							"uid": "${DS_BLADERUNNER}"
-						},
-						"groupBy": [
-							{
-								"params": ["$__interval"],
-								"type": "time"
-							},
-							{
-								"params": ["none"],
-								"type": "fill"
-							}
-						],
-						"measurement": "/^$processes$/",
-						"orderByTime": "ASC",
-						"policy": "default",
-						"query": "SELECT max(\"cpu_usage\") FROM \"system.sysinfo.services.vm_frontpanel\",\"system.sysinfo.services.vm_genlock\",\"system.sysinfo.services.vm_i2cserver\",\"system.sysinfo.services.vm_j2kdecoder\",\"system.sysinfo.services.vm_matrix\",\"system.sysinfo.services.vm_metaproc\",\"system.sysinfo.services.vm_multiviewer\",\"system.sysinfo.services.vm_neighborhood_watch\",\"system.sysinfo.services.vm_networkmgr\",\"system.sysinfo.services.vm_ptp\",\"system.sysinfo.services.vm_rtpreceiver\",\"system.sysinfo.services.vm_server\",\"system.sysinfo.services.vm_system\",\"system.sysinfo.services.vm_timeflows\",\"system.sysinfo.services.vm_udx\",\"system.sysinfo.services.vm_uploadmgr\",\"system.sysinfo.services.vm_webserver\",\"system.sysinfo.services.snmpd\",\"rsystem.sysinfo.services.syslog\" WHERE (\"ip\" =~ /^$blades$/) AND $timeFilter GROUP BY time($__interval) fill(none)",
-						"rawQuery": false,
-						"refId": "A",
-						"resultFormat": "time_series",
-						"select": [
-							[
-								{
-									"params": ["cpu_usage"],
-									"type": "field"
-								},
-								{
-									"params": [],
-									"type": "max"
-								}
-							]
-						],
-						"tags": [
-							{
-								"key": "ip",
-								"operator": "=~",
-								"value": "/^$blades$/"
-							}
-						]
-					}
-				],
-				"timeFrom": null,
-				"timeShift": null,
-				"title": "CPU Usage",
-				"type": "timeseries"
-			}
-		},
-		"8NGPfLs7z": {
-			"name": "Memory Usage [Blade]",
-			"uid": "8NGPfLs7z",
-			"kind": 1,
-			"model": {
-				"datasource": {
-					"type": "influxdb",
-					"uid": "${DS_BLADERUNNER}"
-				},
-				"description": "",
-				"fieldConfig": {
-					"defaults": {
-						"color": {
-							"mode": "palette-classic"
-						},
-						"custom": {
-							"axisCenteredZero": false,
-							"axisColorMode": "text",
-							"axisLabel": "",
-							"axisPlacement": "auto",
-							"barAlignment": 0,
-							"drawStyle": "line",
-							"fillOpacity": 25,
-							"gradientMode": "opacity",
-							"hideFrom": {
-								"legend": false,
-								"tooltip": false,
-								"viz": false
-							},
-							"insertNulls": false,
-							"lineInterpolation": "linear",
-							"lineStyle": {
-								"fill": "solid"
-							},
-							"lineWidth": 1,
-							"pointSize": 4,
-							"scaleDistribution": {
-								"type": "linear"
-							},
-							"showPoints": "always",
-							"spanNulls": true,
-							"stacking": {
-								"group": "A",
-								"mode": "normal"
-							},
-							"thresholdsStyle": {
-								"mode": "off"
-							}
-						},
-						"mappings": [],
-						"min": 0,
-						"thresholds": {
-							"mode": "absolute",
-							"steps": [
-								{
-									"color": "green",
-									"value": null
-								},
-								{
-									"color": "red",
-									"value": 80
-								}
-							]
-						},
-						"unit": "decbytes"
-					},
-					"overrides": []
-				},
-				"interval": "10s",
-				"links": [],
-				"options": {
-					"legend": {
-						"calcs": ["mean", "lastNotNull", "max"],
-						"displayMode": "table",
-						"placement": "bottom",
-						"showLegend": true
-					},
-					"tooltip": {
-						"mode": "single",
-						"sort": "none"
-					}
-				},
-				"pluginVersion": "8.0.0",
-				"targets": [
-					{
-						"alias": "",
-						"datasource": {
-							"type": "influxdb",
-							"uid": "${DS_BLADERUNNER}"
-						},
-						"groupBy": [
-							{
-								"params": ["$__interval"],
-								"type": "time"
-							},
-							{
-								"params": ["null"],
-								"type": "fill"
-							}
-						],
-						"measurement": "/^$processes$/",
-						"orderByTime": "ASC",
-						"policy": "default",
-						"query": "from(bucket: \"vmatrix\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_frontpanel\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_genlock\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_i2cserver\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_j2kdecoder\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_matrix\" or \n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_metaproc\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_multiviewer\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_neighborhood_watch\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_networkmgr\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_ptp\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_rtpreceiver\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_server\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_system\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_timeflows\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_udx\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_uploadmgr\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_webserver\")\n  |> filter(fn: (r) => r[\"_field\"] == \"memory_usage\")\n  |> filter(fn: (r) => r.ip == \"${machine}\")\n  |> drop(columns: [\"ip\"])\n  |> drop(columns: [\"_field\"])\n//  |> aggregateWindow(every: 10s, fn: mean, createEmpty: false)\n//  |> yield(name: \"mean\")",
-						"refId": "A",
-						"resultFormat": "time_series",
-						"select": [
-							[
-								{
-									"params": ["memory_usage"],
-									"type": "field"
-								},
-								{
-									"params": [],
-									"type": "max"
-								}
-							]
-						],
-						"tags": [
-							{
-								"key": "ip",
-								"operator": "=~",
-								"value": "/^$blades$/"
-							}
-						]
-					}
-				],
-				"timeFrom": null,
-				"timeShift": null,
-				"title": "Memory Usage",
-				"type": "timeseries"
-			}
-		}
-	},
+	"__elements": {},
 	"__requires": [
 		{
 			"type": "grafana",
 			"id": "grafana",
 			"name": "Grafana",
-			"version": "10.1.2"
+			"version": "11.0.1"
 		},
 		{
 			"type": "datasource",
@@ -476,6 +27,12 @@
 			"type": "panel",
 			"id": "stat",
 			"name": "Stat",
+			"version": ""
+		},
+		{
+			"type": "panel",
+			"id": "state-timeline",
+			"name": "State timeline",
 			"version": ""
 		},
 		{
@@ -517,7 +74,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "${DS_BLADERUNNER}"
+				"uid": "GIQf3g9MVz"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -562,15 +119,17 @@
 					"fields": "",
 					"values": false
 				},
+				"showPercentChange": false,
 				"text": {},
-				"textMode": "value"
+				"textMode": "value",
+				"wideLayout": true
 			},
-			"pluginVersion": "10.1.2",
+			"pluginVersion": "11.0.1",
 			"targets": [
 				{
 					"datasource": {
 						"type": "influxdb",
-						"uid": "${DS_BLADERUNNER}"
+						"uid": "GIQf3g9MVz"
 					},
 					"groupBy": [
 						{
@@ -605,10 +164,47 @@
 			],
 			"timeFrom": "1w",
 			"title": "CPU Clock",
-			"transformations": [],
 			"type": "stat"
 		},
 		{
+			"datasource": {
+				"type": "influxdb",
+				"uid": "GIQf3g9MVz"
+			},
+			"description": "",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "palette-classic"
+					},
+					"custom": {
+						"fillOpacity": 70,
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"insertNulls": false,
+						"lineWidth": 1,
+						"spanNulls": false
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
 			"gridPos": {
 				"h": 4,
 				"w": 24,
@@ -616,15 +212,132 @@
 				"y": 3
 			},
 			"id": 10,
-			"libraryPanel": {
-				"uid": "1KiLBLsnk",
-				"name": "Partitions [Blade]"
-			}
+			"options": {
+				"alignValue": "left",
+				"legend": {
+					"displayMode": "list",
+					"placement": "bottom",
+					"showLegend": false
+				},
+				"mergeValues": true,
+				"rowHeight": 0.9,
+				"showValue": "auto",
+				"tooltip": {
+					"maxHeight": 600,
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"targets": [
+				{
+					"alias": "sys1",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "GIQf3g9MVz"
+					},
+					"groupBy": [
+						{
+							"params": ["ip"],
+							"type": "tag"
+						}
+					],
+					"measurement": "system.partitions.system1",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "A",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["version"],
+								"type": "field"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				},
+				{
+					"alias": "sys0",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "GIQf3g9MVz"
+					},
+					"groupBy": [
+						{
+							"params": ["ip"],
+							"type": "tag"
+						}
+					],
+					"hide": false,
+					"measurement": "system.partitions.system0",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "B",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["version"],
+								"type": "field"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				},
+				{
+					"alias": "boot",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "GIQf3g9MVz"
+					},
+					"groupBy": [
+						{
+							"params": ["ip"],
+							"type": "tag"
+						}
+					],
+					"hide": false,
+					"measurement": "system.partitions",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "C",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["booted"],
+								"type": "field"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				}
+			],
+			"title": "Partitions",
+			"type": "state-timeline"
 		},
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "${DS_BLADERUNNER}"
+				"uid": "GIQf3g9MVz"
 			},
 			"fieldConfig": {
 				"defaults": {
@@ -632,6 +345,7 @@
 						"mode": "palette-classic"
 					},
 					"custom": {
+						"axisBorderShow": false,
 						"axisCenteredZero": false,
 						"axisColorMode": "text",
 						"axisLabel": "",
@@ -689,7 +403,6 @@
 				"y": 7
 			},
 			"id": 11,
-			"links": [],
 			"options": {
 				"legend": {
 					"calcs": ["mean", "lastNotNull", "max"],
@@ -698,6 +411,7 @@
 					"showLegend": true
 				},
 				"tooltip": {
+					"maxHeight": 600,
 					"mode": "single",
 					"sort": "none"
 				}
@@ -708,7 +422,7 @@
 					"alias": "Freeram ",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "${DS_BLADERUNNER}"
+						"uid": "GIQf3g9MVz"
 					},
 					"groupBy": [
 						{
@@ -754,7 +468,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "${DS_BLADERUNNER}"
+				"uid": "GIQf3g9MVz"
 			},
 			"fieldConfig": {
 				"defaults": {
@@ -762,6 +476,7 @@
 						"mode": "palette-classic"
 					},
 					"custom": {
+						"axisBorderShow": false,
 						"axisCenteredZero": false,
 						"axisColorMode": "text",
 						"axisLabel": "",
@@ -819,7 +534,6 @@
 				"y": 14
 			},
 			"id": 4,
-			"links": [],
 			"options": {
 				"legend": {
 					"calcs": ["mean", "lastNotNull", "max"],
@@ -828,6 +542,7 @@
 					"showLegend": true
 				},
 				"tooltip": {
+					"maxHeight": 600,
 					"mode": "single",
 					"sort": "none"
 				}
@@ -838,7 +553,7 @@
 					"alias": "Load_avg",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "${DS_BLADERUNNER}"
+						"uid": "GIQf3g9MVz"
 					},
 					"groupBy": [
 						{
@@ -881,6 +596,68 @@
 			"type": "timeseries"
 		},
 		{
+			"datasource": {
+				"type": "influxdb",
+				"uid": "GIQf3g9MVz"
+			},
+			"description": "",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "palette-classic"
+					},
+					"custom": {
+						"axisBorderShow": false,
+						"axisCenteredZero": false,
+						"axisColorMode": "text",
+						"axisLabel": "",
+						"axisPlacement": "left",
+						"axisWidth": 50,
+						"barAlignment": 0,
+						"drawStyle": "line",
+						"fillOpacity": 25,
+						"gradientMode": "opacity",
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"insertNulls": false,
+						"lineInterpolation": "linear",
+						"lineWidth": 1,
+						"pointSize": 4,
+						"scaleDistribution": {
+							"type": "linear"
+						},
+						"showPoints": "auto",
+						"spanNulls": true,
+						"stacking": {
+							"group": "A",
+							"mode": "none"
+						},
+						"thresholdsStyle": {
+							"mode": "off"
+						}
+					},
+					"mappings": [],
+					"min": 0,
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					},
+					"unit": "percent"
+				},
+				"overrides": []
+			},
 			"gridPos": {
 				"h": 6,
 				"w": 24,
@@ -888,12 +665,134 @@
 				"y": 21
 			},
 			"id": 2,
-			"libraryPanel": {
-				"uid": "PDQQfLs7z",
-				"name": "CPU Usage"
-			}
+			"interval": "10s",
+			"options": {
+				"legend": {
+					"calcs": ["mean", "lastNotNull", "max"],
+					"displayMode": "table",
+					"placement": "bottom",
+					"showLegend": true
+				},
+				"tooltip": {
+					"maxHeight": 600,
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"pluginVersion": "8.0.0",
+			"targets": [
+				{
+					"alias": "",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "GIQf3g9MVz"
+					},
+					"groupBy": [
+						{
+							"params": ["$__interval"],
+							"type": "time"
+						},
+						{
+							"params": ["none"],
+							"type": "fill"
+						}
+					],
+					"measurement": "/^$processes$/",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"query": "SELECT max(\"cpu_usage\") FROM \"system.sysinfo.services.vm_frontpanel\",\"system.sysinfo.services.vm_genlock\",\"system.sysinfo.services.vm_i2cserver\",\"system.sysinfo.services.vm_j2kdecoder\",\"system.sysinfo.services.vm_matrix\",\"system.sysinfo.services.vm_metaproc\",\"system.sysinfo.services.vm_multiviewer\",\"system.sysinfo.services.vm_neighborhood_watch\",\"system.sysinfo.services.vm_networkmgr\",\"system.sysinfo.services.vm_ptp\",\"system.sysinfo.services.vm_rtpreceiver\",\"system.sysinfo.services.vm_server\",\"system.sysinfo.services.vm_system\",\"system.sysinfo.services.vm_timeflows\",\"system.sysinfo.services.vm_udx\",\"system.sysinfo.services.vm_uploadmgr\",\"system.sysinfo.services.vm_webserver\",\"system.sysinfo.services.snmpd\",\"rsystem.sysinfo.services.syslog\" WHERE (\"ip\" =~ /^$blades$/) AND $timeFilter GROUP BY time($__interval) fill(none)",
+					"rawQuery": false,
+					"refId": "A",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["cpu_usage"],
+								"type": "field"
+							},
+							{
+								"params": [],
+								"type": "max"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				}
+			],
+			"title": "CPU Usage",
+			"type": "timeseries"
 		},
 		{
+			"datasource": {
+				"type": "influxdb",
+				"uid": "GIQf3g9MVz"
+			},
+			"description": "",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "palette-classic"
+					},
+					"custom": {
+						"axisBorderShow": false,
+						"axisCenteredZero": false,
+						"axisColorMode": "text",
+						"axisLabel": "",
+						"axisPlacement": "auto",
+						"barAlignment": 0,
+						"drawStyle": "line",
+						"fillOpacity": 25,
+						"gradientMode": "opacity",
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"insertNulls": false,
+						"lineInterpolation": "linear",
+						"lineStyle": {
+							"fill": "solid"
+						},
+						"lineWidth": 1,
+						"pointSize": 4,
+						"scaleDistribution": {
+							"type": "linear"
+						},
+						"showPoints": "always",
+						"spanNulls": true,
+						"stacking": {
+							"group": "A",
+							"mode": "normal"
+						},
+						"thresholdsStyle": {
+							"mode": "off"
+						}
+					},
+					"mappings": [],
+					"min": 0,
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					},
+					"unit": "decbytes"
+				},
+				"overrides": []
+			},
 			"gridPos": {
 				"h": 6,
 				"w": 24,
@@ -901,16 +800,72 @@
 				"y": 27
 			},
 			"id": 5,
-			"libraryPanel": {
-				"uid": "8NGPfLs7z",
-				"name": "Memory Usage [Blade]"
-			}
+			"interval": "10s",
+			"options": {
+				"legend": {
+					"calcs": ["mean", "lastNotNull", "max"],
+					"displayMode": "table",
+					"placement": "bottom",
+					"showLegend": true
+				},
+				"tooltip": {
+					"maxHeight": 600,
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"pluginVersion": "8.0.0",
+			"targets": [
+				{
+					"alias": "",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "GIQf3g9MVz"
+					},
+					"groupBy": [
+						{
+							"params": ["$__interval"],
+							"type": "time"
+						},
+						{
+							"params": ["null"],
+							"type": "fill"
+						}
+					],
+					"measurement": "/^$processes$/",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"query": "from(bucket: \"vmatrix\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_frontpanel\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_genlock\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_i2cserver\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_j2kdecoder\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_matrix\" or \n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_metaproc\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_multiviewer\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_neighborhood_watch\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_networkmgr\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_ptp\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_rtpreceiver\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_server\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_system\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_timeflows\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_udx\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_uploadmgr\" or\n    r[\"_measurement\"] == \"system.sysinfo.services.vmatrix_webserver\")\n  |> filter(fn: (r) => r[\"_field\"] == \"memory_usage\")\n  |> filter(fn: (r) => r.ip == \"${machine}\")\n  |> drop(columns: [\"ip\"])\n  |> drop(columns: [\"_field\"])\n//  |> aggregateWindow(every: 10s, fn: mean, createEmpty: false)\n//  |> yield(name: \"mean\")",
+					"refId": "A",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["memory_usage"],
+								"type": "field"
+							},
+							{
+								"params": [],
+								"type": "max"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				}
+			],
+			"title": "Memory Usage",
+			"type": "timeseries"
 		}
 	],
-	"refresh": "",
+	"refresh": false,
 	"revision": 1,
-	"schemaVersion": 38,
-	"style": "dark",
+	"schemaVersion": 39,
 	"tags": ["CPU", "Blade"],
 	"templating": {
 		"list": [
@@ -918,7 +873,7 @@
 				"current": {},
 				"datasource": {
 					"type": "influxdb",
-					"uid": "${DS_BLADERUNNER}"
+					"uid": "GIQf3g9MVz"
 				},
 				"definition": "show tag values with key=\"ip\"",
 				"hide": 0,
@@ -936,7 +891,6 @@
 			{
 				"current": {
 					"selected": true,
-					"tags": [],
 					"text": ["All"],
 					"value": ["$__all"]
 				},
@@ -1054,9 +1008,10 @@
 		]
 	},
 	"time": {
-		"from": "now-24h",
+		"from": "now-6h",
 		"to": "now"
 	},
+	"timeRangeUpdatedDuringEditOrView": false,
 	"timepicker": {
 		"refresh_intervals": [
 			"10s",

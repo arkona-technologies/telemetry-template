@@ -1,0 +1,803 @@
+{
+	"annotations": {
+		"list": [
+			{
+				"builtIn": 1,
+				"datasource": {
+					"type": "datasource",
+					"uid": "grafana"
+				},
+				"enable": true,
+				"hide": true,
+				"iconColor": "rgba(0, 211, 255, 1)",
+				"name": "Annotations & Alerts",
+				"target": {
+					"limit": 100,
+					"matchAny": false,
+					"tags": [],
+					"type": "dashboard"
+				},
+				"type": "dashboard"
+			}
+		]
+	},
+	"editable": true,
+	"fiscalYearStartMonth": 0,
+	"graphTooltip": 0,
+	"id": 118,
+	"links": [],
+	"liveNow": false,
+	"panels": [
+		{
+			"collapsed": false,
+			"datasource": {
+				"type": "influxdb",
+				"uid": "_Mt57O3Gk"
+			},
+			"gridPos": {
+				"h": 1,
+				"w": 24,
+				"x": 0,
+				"y": 0
+			},
+			"id": 1,
+			"panels": [],
+			"targets": [
+				{
+					"datasource": {
+						"type": "influxdb",
+						"uid": "_Mt57O3Gk"
+					},
+					"refId": "A"
+				}
+			],
+			"title": "FPGA + CPU [Actual]",
+			"type": "row"
+		},
+		{
+			"datasource": {
+				"type": "influxdb",
+				"uid": "GIQf3g9MVz"
+			},
+			"description": "",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"decimals": 1,
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "super-light-green",
+								"value": 80
+							},
+							{
+								"color": "yellow",
+								"value": 85
+							},
+							{
+								"color": "orange",
+								"value": 90
+							},
+							{
+								"color": "red",
+								"value": 95
+							}
+						]
+					},
+					"unit": "celsius"
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 6,
+				"w": 24,
+				"x": 0,
+				"y": 1
+			},
+			"id": 316,
+			"options": {
+				"colorMode": "background",
+				"graphMode": "none",
+				"justifyMode": "center",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"showPercentChange": false,
+				"text": {},
+				"textMode": "value_and_name",
+				"wideLayout": true
+			},
+			"pluginVersion": "11.0.1",
+			"targets": [
+				{
+					"alias": "$tag_ip",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "GIQf3g9MVz"
+					},
+					"groupBy": [
+						{
+							"params": ["$__interval"],
+							"type": "time"
+						},
+						{
+							"params": ["ip"],
+							"type": "tag"
+						},
+						{
+							"params": ["null"],
+							"type": "fill"
+						}
+					],
+					"hide": false,
+					"measurement": "system.temperature",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "B",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["fpga_ext"],
+								"type": "field"
+							},
+							{
+								"params": [],
+								"type": "mean"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				}
+			],
+			"title": "FPGA Temperatures [Tiles]",
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "influxdb",
+				"uid": "GIQf3g9MVz"
+			},
+			"description": "",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"decimals": 1,
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "super-light-green",
+								"value": 80
+							},
+							{
+								"color": "yellow",
+								"value": 85
+							},
+							{
+								"color": "orange",
+								"value": 90
+							},
+							{
+								"color": "red",
+								"value": 95
+							}
+						]
+					},
+					"unit": "celsius"
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 6,
+				"w": 24,
+				"x": 0,
+				"y": 7
+			},
+			"id": 318,
+			"interval": "",
+			"options": {
+				"colorMode": "background",
+				"graphMode": "none",
+				"justifyMode": "center",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"showPercentChange": false,
+				"text": {},
+				"textMode": "value_and_name",
+				"wideLayout": true
+			},
+			"pluginVersion": "11.0.1",
+			"targets": [
+				{
+					"alias": "$tag_ip",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "GIQf3g9MVz"
+					},
+					"groupBy": [
+						{
+							"params": ["$__interval"],
+							"type": "time"
+						},
+						{
+							"params": ["ip"],
+							"type": "tag"
+						},
+						{
+							"params": ["null"],
+							"type": "fill"
+						}
+					],
+					"hide": false,
+					"measurement": "system.temperature",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "B",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["cpu"],
+								"type": "field"
+							},
+							{
+								"params": [],
+								"type": "mean"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				}
+			],
+			"title": "CPU",
+			"type": "stat"
+		},
+		{
+			"collapsed": false,
+			"datasource": {
+				"type": "influxdb",
+				"uid": "_Mt57O3Gk"
+			},
+			"gridPos": {
+				"h": 1,
+				"w": 24,
+				"x": 0,
+				"y": 13
+			},
+			"id": 5,
+			"panels": [],
+			"targets": [
+				{
+					"datasource": {
+						"type": "influxdb",
+						"uid": "_Mt57O3Gk"
+					},
+					"refId": "A"
+				}
+			],
+			"title": "FPGA + CPU [24h MAX]",
+			"type": "row"
+		},
+		{
+			"datasource": {
+				"type": "influxdb",
+				"uid": "GIQf3g9MVz"
+			},
+			"description": "",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"decimals": 1,
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "super-light-green",
+								"value": 80
+							},
+							{
+								"color": "yellow",
+								"value": 85
+							},
+							{
+								"color": "orange",
+								"value": 90
+							},
+							{
+								"color": "red",
+								"value": 95
+							}
+						]
+					},
+					"unit": "celsius"
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 6,
+				"w": 24,
+				"x": 0,
+				"y": 14
+			},
+			"id": 313,
+			"options": {
+				"colorMode": "background",
+				"graphMode": "none",
+				"justifyMode": "center",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"showPercentChange": false,
+				"text": {},
+				"textMode": "value_and_name",
+				"wideLayout": true
+			},
+			"pluginVersion": "11.0.1",
+			"targets": [
+				{
+					"alias": "$tag_ip",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "GIQf3g9MVz"
+					},
+					"groupBy": [
+						{
+							"params": ["ip"],
+							"type": "tag"
+						}
+					],
+					"hide": false,
+					"measurement": "system.temperature",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "A",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["fpga_ext"],
+								"type": "field"
+							},
+							{
+								"params": [],
+								"type": "max"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				},
+				{
+					"alias": "$tag_ip",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "GIQf3g9MVz"
+					},
+					"groupBy": [
+						{
+							"params": ["ip"],
+							"type": "tag"
+						},
+						{
+							"params": ["none"],
+							"type": "fill"
+						}
+					],
+					"hide": false,
+					"measurement": "system.temperature",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "B",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["fpga_ext_core"],
+								"type": "field"
+							},
+							{
+								"params": [],
+								"type": "max"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				},
+				{
+					"alias": "$tag_ip",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "GIQf3g9MVz"
+					},
+					"groupBy": [
+						{
+							"params": ["ip"],
+							"type": "tag"
+						},
+						{
+							"params": ["none"],
+							"type": "fill"
+						}
+					],
+					"hide": false,
+					"measurement": "system.temperature",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "C",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["fpga_ext_etile"],
+								"type": "field"
+							},
+							{
+								"params": [],
+								"type": "max"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				}
+			],
+			"timeFrom": "24h",
+			"title": "FPGA Temperatures Max 24h",
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "influxdb",
+				"uid": "GIQf3g9MVz"
+			},
+			"description": "",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"decimals": 1,
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "super-light-green",
+								"value": 80
+							},
+							{
+								"color": "yellow",
+								"value": 85
+							},
+							{
+								"color": "orange",
+								"value": 90
+							},
+							{
+								"color": "red",
+								"value": 95
+							}
+						]
+					},
+					"unit": "celsius"
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 6,
+				"w": 24,
+				"x": 0,
+				"y": 20
+			},
+			"id": 325,
+			"options": {
+				"colorMode": "background",
+				"graphMode": "none",
+				"justifyMode": "center",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"showPercentChange": false,
+				"text": {},
+				"textMode": "value_and_name",
+				"wideLayout": true
+			},
+			"pluginVersion": "11.0.1",
+			"targets": [
+				{
+					"alias": "$tag_ip",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "GIQf3g9MVz"
+					},
+					"groupBy": [
+						{
+							"params": ["ip"],
+							"type": "tag"
+						}
+					],
+					"hide": false,
+					"measurement": "system.temperature",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "A",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["cpu"],
+								"type": "field"
+							},
+							{
+								"params": [],
+								"type": "max"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				}
+			],
+			"timeFrom": "24h",
+			"title": "CPU Temperatures Max 24h",
+			"type": "stat"
+		},
+		{
+			"collapsed": false,
+			"datasource": {
+				"type": "influxdb",
+				"uid": "_Mt57O3Gk"
+			},
+			"gridPos": {
+				"h": 1,
+				"w": 24,
+				"x": 0,
+				"y": 26
+			},
+			"id": 320,
+			"panels": [],
+			"targets": [
+				{
+					"datasource": {
+						"type": "influxdb",
+						"uid": "_Mt57O3Gk"
+					},
+					"refId": "A"
+				}
+			],
+			"title": "Uptime",
+			"type": "row"
+		},
+		{
+			"datasource": {
+				"type": "influxdb",
+				"uid": "GIQf3g9MVz"
+			},
+			"description": "",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"decimals": 1,
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "red",
+								"value": null
+							},
+							{
+								"color": "#EAB839",
+								"value": 3600
+							},
+							{
+								"color": "green",
+								"value": 86400
+							}
+						]
+					},
+					"unit": "s"
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 8,
+				"w": 24,
+				"x": 0,
+				"y": 27
+			},
+			"id": 324,
+			"maxDataPoints": 100,
+			"options": {
+				"colorMode": "value",
+				"graphMode": "none",
+				"justifyMode": "auto",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "",
+					"values": false
+				},
+				"showPercentChange": false,
+				"text": {},
+				"textMode": "auto",
+				"wideLayout": true
+			},
+			"pluginVersion": "11.0.1",
+			"repeatDirection": "h",
+			"targets": [
+				{
+					"alias": "$tag_ip",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "GIQf3g9MVz"
+					},
+					"groupBy": [
+						{
+							"params": ["$__interval"],
+							"type": "time"
+						},
+						{
+							"params": ["ip"],
+							"type": "tag"
+						},
+						{
+							"params": ["none"],
+							"type": "fill"
+						}
+					],
+					"measurement": "system.sysinfo",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "A",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["uptime"],
+								"type": "field"
+							},
+							{
+								"params": [],
+								"type": "last"
+							}
+						]
+					]
+				}
+			],
+			"title": "Uptime [all]",
+			"type": "stat"
+		}
+	],
+	"refresh": "10s",
+	"revision": 1,
+	"schemaVersion": 39,
+	"tags": ["Temperature", "Facility"],
+	"templating": {
+		"list": [
+			{
+				"current": {
+					"selected": true,
+					"text": ["All"],
+					"value": ["$__all"]
+				},
+				"datasource": {
+					"type": "influxdb",
+					"uid": "GIQf3g9MVz"
+				},
+				"definition": "show tag values with key=\"ip\"",
+				"hide": 0,
+				"includeAll": true,
+				"multi": true,
+				"name": "blades",
+				"options": [],
+				"query": "show tag values with key=\"ip\"",
+				"refresh": 1,
+				"regex": "",
+				"skipUrlSync": false,
+				"sort": 0,
+				"type": "query"
+			}
+		]
+	},
+	"time": {
+		"from": "now-1h",
+		"to": "now"
+	},
+	"timeRangeUpdatedDuringEditOrView": false,
+	"timepicker": {
+		"refresh_intervals": [
+			"10s",
+			"30s",
+			"1m",
+			"5m",
+			"30m",
+			"1h",
+			"6h",
+			"12h",
+			"24h",
+			"5d"
+		],
+		"time_options": ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
+	},
+	"timezone": "",
+	"title": "Temperature FPGA & CPU [Facility]",
+	"uid": "D6GDjwqMz",
+	"version": 18,
+	"weekStart": ""
+}

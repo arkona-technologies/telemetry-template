@@ -1,0 +1,1228 @@
+{
+	"annotations": {
+		"list": [
+			{
+				"builtIn": 1,
+				"datasource": {
+					"type": "datasource",
+					"uid": "grafana"
+				},
+				"enable": true,
+				"hide": true,
+				"iconColor": "rgba(0, 211, 255, 1)",
+				"name": "Annotations & Alerts",
+				"target": {
+					"limit": 100,
+					"matchAny": false,
+					"tags": [],
+					"type": "dashboard"
+				},
+				"type": "dashboard"
+			}
+		]
+	},
+	"description": "",
+	"editable": true,
+	"fiscalYearStartMonth": 0,
+	"graphTooltip": 0,
+	"id": 128,
+	"links": [],
+	"liveNow": false,
+	"panels": [
+		{
+			"datasource": {
+				"type": "influxdb",
+				"uid": "GIQf3g9MVz"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"custom": {
+						"fillOpacity": 70,
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"insertNulls": false,
+						"lineWidth": 0,
+						"spanNulls": false
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 9,
+				"w": 24,
+				"x": 0,
+				"y": 0
+			},
+			"id": 22,
+			"options": {
+				"alignValue": "left",
+				"legend": {
+					"displayMode": "list",
+					"placement": "bottom",
+					"showLegend": false
+				},
+				"mergeValues": true,
+				"rowHeight": 0.9,
+				"showValue": "auto",
+				"tooltip": {
+					"maxHeight": 600,
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"targets": [
+				{
+					"alias": " video $tag_video_receivers",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "GIQf3g9MVz"
+					},
+					"groupBy": [
+						{
+							"params": ["video_receivers"],
+							"type": "tag"
+						},
+						{
+							"params": ["ip"],
+							"type": "tag"
+						}
+					],
+					"measurement": "r_t_p_receiver.video_receivers.generic.egress.tracks",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "A",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["incoming"],
+								"type": "field"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				},
+				{
+					"alias": "audio $tag_audio_receivers",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "GIQf3g9MVz"
+					},
+					"groupBy": [
+						{
+							"params": ["ip"],
+							"type": "tag"
+						},
+						{
+							"params": ["audio_receivers"],
+							"type": "tag"
+						}
+					],
+					"hide": false,
+					"measurement": "r_t_p_receiver.audio_receivers.generic.egress.tracks",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "B",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["incoming"],
+								"type": "field"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				}
+			],
+			"title": "Egress Tracks Incoming",
+			"type": "state-timeline"
+		},
+		{
+			"datasource": {
+				"type": "influxdb",
+				"uid": "GIQf3g9MVz"
+			},
+			"description": "",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"custom": {
+						"fillOpacity": 70,
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"insertNulls": false,
+						"lineWidth": 0,
+						"spanNulls": false
+					},
+					"mappings": [
+						{
+							"options": {
+								"N/A": {
+									"color": "red",
+									"index": 0
+								}
+							},
+							"type": "value"
+						},
+						{
+							"options": {
+								"match": "null",
+								"result": {
+									"color": "red",
+									"index": 1,
+									"text": "null"
+								}
+							},
+							"type": "special"
+						},
+						{
+							"options": {
+								"match": "empty",
+								"result": {
+									"color": "red",
+									"index": 2,
+									"text": "Empty"
+								}
+							},
+							"type": "special"
+						}
+					],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 8,
+				"w": 24,
+				"x": 0,
+				"y": 9
+			},
+			"id": 25,
+			"options": {
+				"alignValue": "left",
+				"legend": {
+					"displayMode": "list",
+					"placement": "bottom",
+					"showLegend": false
+				},
+				"mergeValues": true,
+				"rowHeight": 0.9,
+				"showValue": "auto",
+				"tooltip": {
+					"maxHeight": 600,
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"targets": [
+				{
+					"alias": "$tag_input",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "GIQf3g9MVz"
+					},
+					"groupBy": [
+						{
+							"params": ["ip"],
+							"type": "tag"
+						},
+						{
+							"params": ["input::tag"],
+							"type": "tag"
+						}
+					],
+					"hide": false,
+					"measurement": "i_o_module.input.sdi.output.video",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "B",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["standard"],
+								"type": "field"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				}
+			],
+			"title": "I/O Input",
+			"type": "state-timeline"
+		},
+		{
+			"datasource": {
+				"type": "influxdb",
+				"uid": "GIQf3g9MVz"
+			},
+			"description": "",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"custom": {
+						"fillOpacity": 70,
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"insertNulls": false,
+						"lineWidth": 0,
+						"spanNulls": false
+					},
+					"mappings": [
+						{
+							"options": {
+								"N/A": {
+									"color": "red",
+									"index": 0
+								}
+							},
+							"type": "value"
+						},
+						{
+							"options": {
+								"match": "null",
+								"result": {
+									"color": "red",
+									"index": 1,
+									"text": "null"
+								}
+							},
+							"type": "special"
+						},
+						{
+							"options": {
+								"match": "empty",
+								"result": {
+									"color": "red",
+									"index": 2,
+									"text": "Empty"
+								}
+							},
+							"type": "special"
+						}
+					],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 8,
+				"w": 24,
+				"x": 0,
+				"y": 17
+			},
+			"id": 26,
+			"options": {
+				"alignValue": "left",
+				"legend": {
+					"displayMode": "list",
+					"placement": "bottom",
+					"showLegend": false
+				},
+				"mergeValues": true,
+				"rowHeight": 0.9,
+				"showValue": "auto",
+				"tooltip": {
+					"maxHeight": 600,
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"targets": [
+				{
+					"alias": "$tag_output",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "GIQf3g9MVz"
+					},
+					"groupBy": [
+						{
+							"params": ["ip"],
+							"type": "tag"
+						},
+						{
+							"params": ["output"],
+							"type": "tag"
+						}
+					],
+					"hide": false,
+					"measurement": "i_o_module.output.sdi.v_src_status",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "B",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["source"],
+								"type": "field"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				}
+			],
+			"title": "I/O Output",
+			"type": "state-timeline"
+		},
+		{
+			"datasource": {
+				"type": "influxdb",
+				"uid": "GIQf3g9MVz"
+			},
+			"description": "",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"custom": {
+						"fillOpacity": 70,
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"insertNulls": false,
+						"lineWidth": 0,
+						"spanNulls": false
+					},
+					"mappings": [
+						{
+							"options": {
+								" HD720p25": {
+									"color": "#b7b7b7",
+									"index": 18
+								},
+								" HD720p29_97": {
+									"color": "#a2a2a2",
+									"index": 17
+								},
+								" HD720p30": {
+									"color": "#747474",
+									"index": 16
+								},
+								" HD720p50": {
+									"color": "#636363",
+									"index": 15
+								},
+								" HD720p59_94": {
+									"color": "super-light-purple",
+									"index": 14
+								},
+								" HD720p60": {
+									"color": "light-purple",
+									"index": 13
+								},
+								"HD1080i50": {
+									"color": "semi-dark-purple",
+									"index": 12
+								},
+								"HD1080i59_94": {
+									"color": "dark-purple",
+									"index": 11
+								},
+								"HD1080i60": {
+									"color": "rgba(114, 37, 152, 1)",
+									"index": 10
+								},
+								"HD1080p24": {
+									"color": "light-blue",
+									"index": 9
+								},
+								"HD1080p24_DCI": {
+									"color": "#dbffbc",
+									"index": 20
+								},
+								"HD1080p25": {
+									"color": "semi-dark-blue",
+									"index": 8
+								},
+								"HD1080p29_97": {
+									"color": "dark-blue",
+									"index": 7
+								},
+								"HD1080p30": {
+									"color": "super-light-green",
+									"index": 6
+								},
+								"HD1080p50": {
+									"color": "light-green",
+									"index": 5
+								},
+								"HD1080p59_94": {
+									"color": "semi-dark-green",
+									"index": 4
+								},
+								"HD1080p60": {
+									"color": "dark-green",
+									"index": 3
+								},
+								"HD1080sF23_98": {
+									"color": "light-yellow",
+									"index": 25
+								},
+								"HD1080sF24": {
+									"color": "semi-dark-yellow",
+									"index": 24
+								},
+								"HD1080sF25": {
+									"color": "dark-yellow",
+									"index": 23
+								},
+								"HD1080sF25_DCI": {
+									"color": "#cbffc8",
+									"index": 19
+								},
+								"HD1080sF29_97": {
+									"color": "super-light-orange",
+									"index": 22
+								},
+								"HD1080sF30": {
+									"color": "light-orange",
+									"index": 21
+								},
+								"HD2160p50": {
+									"color": "red",
+									"index": 2
+								},
+								"HD2160p59_94": {
+									"color": "semi-dark-red",
+									"index": 1
+								},
+								"HD2160p60": {
+									"color": "dark-red",
+									"index": 0
+								},
+								"NTSC": {
+									"color": "transparent",
+									"index": 27
+								},
+								"PAL": {
+									"color": "transparent",
+									"index": 26
+								}
+							},
+							"type": "value"
+						}
+					],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 12,
+				"w": 24,
+				"x": 0,
+				"y": 25
+			},
+			"id": 23,
+			"options": {
+				"alignValue": "left",
+				"legend": {
+					"displayMode": "list",
+					"placement": "bottom",
+					"showLegend": false
+				},
+				"mergeValues": true,
+				"rowHeight": 0.9,
+				"showValue": "auto",
+				"tooltip": {
+					"maxHeight": 600,
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"targets": [
+				{
+					"alias": "$tag_ip $tag_video_transmitters",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "GIQf3g9MVz"
+					},
+					"groupBy": [
+						{
+							"params": ["ip"],
+							"type": "tag"
+						},
+						{
+							"params": ["video_transmitters"],
+							"type": "tag"
+						}
+					],
+					"measurement": "r_t_p_transmitter.video_transmitters.constraints",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "A",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["calculation_standard"],
+								"type": "field"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				}
+			],
+			"title": "Video Transmitters Calculated Standard",
+			"type": "state-timeline"
+		},
+		{
+			"datasource": {
+				"type": "influxdb",
+				"uid": "GIQf3g9MVz"
+			},
+			"description": "",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"custom": {
+						"fillOpacity": 70,
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"insertNulls": false,
+						"lineWidth": 0,
+						"spanNulls": false
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 12,
+				"w": 24,
+				"x": 0,
+				"y": 37
+			},
+			"id": 14,
+			"options": {
+				"alignValue": "left",
+				"legend": {
+					"displayMode": "list",
+					"placement": "bottom",
+					"showLegend": false
+				},
+				"mergeValues": true,
+				"rowHeight": 0.9,
+				"showValue": "auto",
+				"tooltip": {
+					"maxHeight": 600,
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"targets": [
+				{
+					"alias": "$tag_video_transmitters",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "GIQf3g9MVz"
+					},
+					"groupBy": [
+						{
+							"params": ["video_transmitters"],
+							"type": "tag"
+						}
+					],
+					"measurement": "r_t_p_transmitter.video_transmitters.v_src_status",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "A",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["source"],
+								"type": "field"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				}
+			],
+			"title": "Video Transmitters Video Source",
+			"type": "state-timeline"
+		},
+		{
+			"datasource": {
+				"type": "influxdb",
+				"uid": "GIQf3g9MVz"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"custom": {
+						"fillOpacity": 70,
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"insertNulls": false,
+						"lineWidth": 0,
+						"spanNulls": false
+					},
+					"mappings": [
+						{
+							"options": {
+								"Uncalibrated": {
+									"color": "red",
+									"index": 0
+								}
+							},
+							"type": "value"
+						}
+					],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 4,
+				"w": 24,
+				"x": 0,
+				"y": 49
+			},
+			"id": 12,
+			"options": {
+				"alignValue": "left",
+				"legend": {
+					"displayMode": "list",
+					"placement": "bottom",
+					"showLegend": false
+				},
+				"mergeValues": true,
+				"rowHeight": 0.9,
+				"showValue": "auto",
+				"tooltip": {
+					"maxHeight": 600,
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"targets": [
+				{
+					"alias": " ",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "_Mt57O3Gk"
+					},
+					"groupBy": [],
+					"measurement": "p_t_p_clock",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "A",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["state"],
+								"type": "field"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				}
+			],
+			"title": "PTP State",
+			"type": "state-timeline"
+		},
+		{
+			"datasource": {
+				"type": "influxdb",
+				"uid": "GIQf3g9MVz"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"custom": {
+						"fillOpacity": 70,
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"insertNulls": false,
+						"lineWidth": 0,
+						"spanNulls": false
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 12,
+				"w": 24,
+				"x": 0,
+				"y": 53
+			},
+			"id": 10,
+			"options": {
+				"alignValue": "left",
+				"legend": {
+					"displayMode": "list",
+					"placement": "bottom",
+					"showLegend": false
+				},
+				"mergeValues": true,
+				"rowHeight": 0.9,
+				"showValue": "auto",
+				"tooltip": {
+					"maxHeight": 600,
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"targets": [
+				{
+					"alias": " $tag_video_receivers",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "_Mt57O3Gk"
+					},
+					"groupBy": [
+						{
+							"params": ["video_receivers"],
+							"type": "tag"
+						}
+					],
+					"measurement": "r_t_p_receiver.video_receivers.media_specific.output.video",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "A",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["standard"],
+								"type": "field"
+							}
+						]
+					],
+					"tags": [
+						{
+							"condition": "AND",
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				}
+			],
+			"title": "Video Receiver Std",
+			"type": "state-timeline"
+		},
+		{
+			"datasource": {},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"custom": {
+						"fillOpacity": 70,
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"insertNulls": false,
+						"lineWidth": 0,
+						"spanNulls": false
+					},
+					"mappings": [
+						{
+							"options": {
+								"match": "empty",
+								"result": {
+									"color": "green",
+									"index": 0,
+									"text": "Empty"
+								}
+							},
+							"type": "special"
+						},
+						{
+							"options": {
+								"match": "null",
+								"result": {
+									"color": "red",
+									"index": 1,
+									"text": "null"
+								}
+							},
+							"type": "special"
+						}
+					],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "yellow",
+								"value": null
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 4,
+				"w": 24,
+				"x": 0,
+				"y": 65
+			},
+			"id": 4,
+			"options": {
+				"alignValue": "left",
+				"legend": {
+					"displayMode": "list",
+					"placement": "bottom",
+					"showLegend": false
+				},
+				"mergeValues": false,
+				"rowHeight": 0.9,
+				"showValue": "auto",
+				"tooltip": {
+					"maxHeight": 600,
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"targets": [
+				{
+					"alias": " ",
+					"datasource": {
+						"type": "influxdb",
+						"uid": "_Mt57O3Gk"
+					},
+					"groupBy": [],
+					"measurement": "system.usrinfo",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "A",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["cur_status"],
+								"type": "field"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$blades$/"
+						}
+					]
+				}
+			],
+			"title": "User info  Status",
+			"type": "state-timeline"
+		},
+		{
+			"datasource": {
+				"type": "influxdb",
+				"uid": "GIQf3g9MVz"
+			},
+			"description": "",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "palette-classic"
+					},
+					"custom": {
+						"axisBorderShow": false,
+						"axisCenteredZero": false,
+						"axisColorMode": "text",
+						"axisLabel": "",
+						"axisPlacement": "auto",
+						"barAlignment": 0,
+						"drawStyle": "line",
+						"fillOpacity": 0,
+						"gradientMode": "none",
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"insertNulls": false,
+						"lineInterpolation": "linear",
+						"lineWidth": 1,
+						"pointSize": 5,
+						"scaleDistribution": {
+							"type": "linear"
+						},
+						"showPoints": "auto",
+						"spanNulls": false,
+						"stacking": {
+							"group": "A",
+							"mode": "none"
+						},
+						"thresholdsStyle": {
+							"mode": "off"
+						}
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 9,
+				"w": 24,
+				"x": 0,
+				"y": 69
+			},
+			"id": 6,
+			"options": {
+				"legend": {
+					"calcs": [],
+					"displayMode": "list",
+					"placement": "bottom",
+					"showLegend": true
+				},
+				"tooltip": {
+					"maxHeight": 600,
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"targets": [
+				{
+					"datasource": {
+						"type": "influxdb",
+						"uid": "GIQf3g9MVz"
+					},
+					"groupBy": [],
+					"measurement": "video_transmitter.pool",
+					"orderByTime": "ASC",
+					"policy": "default",
+					"refId": "A",
+					"resultFormat": "time_series",
+					"select": [
+						[
+							{
+								"params": ["error_irq_counter"],
+								"type": "field"
+							}
+						]
+					],
+					"tags": [
+						{
+							"key": "ip",
+							"operator": "=~",
+							"value": "/^$machines$/"
+						},
+						{
+							"condition": "OR",
+							"key": "pool",
+							"operator": "=",
+							"value": "0"
+						}
+					]
+				}
+			],
+			"title": "Video Transmitters IRQ Counter",
+			"type": "timeseries"
+		}
+	],
+	"refresh": "1m",
+	"revision": 1,
+	"schemaVersion": 39,
+	"tags": [],
+	"templating": {
+		"list": [
+			{
+				"current": {
+					"selected": true,
+					"text": "172.16.135.0",
+					"value": "172.16.135.0"
+				},
+				"datasource": {
+					"type": "influxdb",
+					"uid": "GIQf3g9MVz"
+				},
+				"definition": "show tag values with key=\"ip\"",
+				"hide": 0,
+				"includeAll": false,
+				"multi": false,
+				"name": "blades",
+				"options": [],
+				"query": "show tag values with key=\"ip\"",
+				"refresh": 1,
+				"regex": "",
+				"skipUrlSync": false,
+				"sort": 0,
+				"type": "query"
+			}
+		]
+	},
+	"time": {
+		"from": "now-2d",
+		"to": "now"
+	},
+	"timeRangeUpdatedDuringEditOrView": false,
+	"timepicker": {},
+	"timezone": "",
+	"title": "I/O",
+	"uid": "AJF3T1znk",
+	"version": 33,
+	"weekStart": ""
+}
