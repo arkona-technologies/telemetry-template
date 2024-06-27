@@ -1,6 +1,7 @@
 #!/bin/bash
 RED='\033[0;31m'
 NC='\033[0m' # No Color
+
 set -o allexport
 source .env
 set +o allexport
@@ -54,5 +55,9 @@ printf "Remove setup instance:  ${RED}influx_setup${NC}\n"
 
 $CONTAINER_ENGINE rm -f influxdb_setup
 printf "Start container stack"
+
+set -o allexport
+source .env
+set +o allexport
 
 $CONTAINER_ENGINE compose --env-file .env -f docker-compose.yml up -d
