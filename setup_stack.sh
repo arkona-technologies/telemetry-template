@@ -5,13 +5,15 @@ set -o allexport
 source .env
 set +o allexport
 
+CONTAINER_ENGINE=$(which podman||which docker)
+
 printf  "Setting up influxDB bucket ${RED}$DB_NAME${NC} and token\n"
-docker compose -f docker-compose.yml down > /dev/null
+$CONTAINER_ENGINE compose -f docker-compose.yml down > /dev/null
 
 mkdir -p influxdb2
-docker rm -f influxdb_setup
+$CONTAINER_ENGINE rm -f influxdb_setup
 # Step 1: Run InfluxDB container
-docker run -d --name=influxdb_setup \
+$CONTAINER_ENGINE run -d --name=influxdb_setup \
   -p 8086:8086 \
   -v ./influxdb2:/var/lib/influxdb2 \
   -e INFLUXDB_ADMIN_USER=$DB_USER \
@@ -22,7 +24,7 @@ docker run -d --name=influxdb_setup \
 sleep 15
 
 # Step 2: Initialize InfluxDB instance
-docker exec influxdb_setup influx setup \
+$CONTAINER_ENGINE exec influxdb_setup influx setup \
   --username $DB_USER \
   --password $DB_PASSWORD \
   --org $DB_ORG \
@@ -31,9 +33,9 @@ docker exec influxdb_setup influx setup \
   --force
 
 # Step 3: Create read-write token
-ORG_ID=$(docker exec influxdb_setup influx org list | grep myorg | awk '{print $1}')
+ORG_ID=$($CONTAINER_ENGINE exec influxdb_setup influx org list | grep myorg | awk '{print $1}')
 # echo "$ORG_ID"
-FULLTOKEN=$(docker exec influxdb_setup influx auth create \
+FULLTOKEN=$($CONTAINER_ENGINE exec influxdb_setup influx auth create \
   --org-id $ORG_ID \
   --read-buckets \
   --write-buckets | echo "$(sed -n '1!p')" )
@@ -50,7 +52,7 @@ sed -i "s|$search_text|$replace_text|g" ".env"
 
 printf "Remove setup instance:  ${RED}influx_setup${NC}\n"
 
-docker rm -f influxdb_setup
+$CONTAINER_ENGINE rm -f influxdb_setup
 printf "Start container stack"
 
-docker compose --env-file .env -f docker-compose.yml up -d
+$CONTAINER_ENGINE compose --env-file .env -f docker-compose.yml up -d
