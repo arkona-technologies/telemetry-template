@@ -1,5 +1,3 @@
-version: '3'
-
 networks:
   telemetry:
 
@@ -7,6 +5,7 @@ services:
 # influxDB
   influxdb:
     image: influxdb:2.7.1
+    restart: always
     networks:
       - telemetry
     ports:
@@ -26,6 +25,7 @@ services:
 # grafana
   grafana:
     image: grafana/grafana-oss
+    restart: always
     user: root
     networks:
       - telemetry
@@ -50,6 +50,7 @@ services:
 # loki for logs
   loki:
     image: grafana/loki:2.9.0
+    restart: always
     ports:
       - "3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
@@ -58,6 +59,7 @@ services:
 # promtail for loki
   promtail:
     image: grafana/promtail:2.9.0
+    restart: always
     user: root
     network_mode: host
     # ports:
@@ -71,6 +73,7 @@ services:
 # vtelemetry
   vtelemetry:
     image: arkonatechnologies/vtelemetry2
+    restart: always
     networks:
       - telemetry
     depends_on:
