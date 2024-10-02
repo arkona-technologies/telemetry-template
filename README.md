@@ -1,10 +1,14 @@
 # Arkona Technologies Telemetry Template (version 2)
 
+
+
 ![Telemetry Logo](.readme/blade-runner.png)
 
 ## Overview
 
 `telemetry-template` is a containerized software package for monitoring multiple Arkona Technologies BLADE//runner processors. This repository provides a Docker Compose setup to conveniently deploy the telemetry service, InfluxDB, and Grafana. The Docker Compose file provisions both the database and Grafana installation, eliminating the need for additional configuration.
+
+**If you want an even simpler setup without syslog collection, switch to "main" branch**
 
 ## Features
 
@@ -12,8 +16,8 @@
 - **Integrated Database:** The setup provisions InfluxDB, a powerful and efficient time-series database, for storing telemetry data.
 - **Visualization with Grafana:** Grafana is included in the setup, providing a user-friendly interface for visualizing and analyzing telemetry data.
 - **Scalable Monitoring:** Monitor multiple BLADE//runner processors seamlessly with the scalability of containerized deployments.
-- **Added features in version 2:**
-   - Using influxDB version 2
+- **Added features in version 2 (compared to main branch):**
+   - Using influxDB version ^2.7
    - Setting up rsyslog, loki and promtail to provide syslog inspection via Grafana
 
 ## Prerequisites
