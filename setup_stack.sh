@@ -8,6 +8,11 @@ set +o allexport
 
 CONTAINER_ENGINE=$(which podman||which docker)
 
+if [ -z "$CONTAINER_ENGINE" ]; then
+    echo "Error: Neither docker or podman has been found, please install or make sure that it's in your PATH"
+    exit 1  # Exit with a non-zero status to indicate an error
+fi
+
 printf  "Setting up influxDB bucket ${RED}$DB_NAME${NC} and token\n"
 $CONTAINER_ENGINE compose -f docker-compose.yml down > /dev/null
 
@@ -60,4 +65,9 @@ set -o allexport
 source .env
 set +o allexport
 
-$CONTAINER_ENGINE compose --env-file .env -f docker-compose.yml up -d
+if hash docker-compose 2>/dev/null
+then
+    docker-compose --env-file .env -f docker-compose.yml up -d
+else
+    $CONTAINER_ENGINE compose --env-file .env -f docker-compose.yml up -d
+fi
