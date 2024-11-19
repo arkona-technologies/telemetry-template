@@ -14,7 +14,12 @@ if [ -z "$CONTAINER_ENGINE" ]; then
 fi
 
 printf  "Setting up influxDB bucket ${RED}$DB_NAME${NC} and token\n"
-$CONTAINER_ENGINE compose -f docker-compose.yml down > /dev/null
+if hash docker-compose 2>/dev/null
+then
+    docker-compose -f docker-compose.yml down
+else
+    $CONTAINER_ENGINE compose -f docker-compose.yml down
+fi
 
 mkdir -p influxdb2
 $CONTAINER_ENGINE rm -f influxdb_setup
