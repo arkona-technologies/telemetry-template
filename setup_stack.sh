@@ -43,8 +43,10 @@ $CONTAINER_ENGINE exec influxdb_setup influx setup \
   --retention $DB_RETENTION \
   --force
 
+sleep 5
+
 # Step 3: Create read-write token
-ORG_ID=$($CONTAINER_ENGINE exec influxdb_setup influx org list | grep myorg | awk '{print $1}')
+ORG_ID=$($CONTAINER_ENGINE exec influxdb_setup influx org list | grep $DB_ORG | awk '{print $1}')
 # echo "$ORG_ID"
 FULLTOKEN=$($CONTAINER_ENGINE exec influxdb_setup influx auth create \
   --org-id $ORG_ID \
