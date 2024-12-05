@@ -21,7 +21,6 @@ check_for_whiptail() {
     fi
   fi
 }
-
 determine_editor() {
   CHOICE=$(whiptail --title "Telemetry" --menu "Choose editor:" 15 60 4 \
     "1" "nano" \
@@ -89,8 +88,6 @@ edit_config() {
   fi
 }
 
-
-
 main() {
     CHOICE=$(whiptail --title "Telemetry" --menu "Choose your action:" 15 60 6 \
     "1" "Install" \
@@ -102,7 +99,7 @@ main() {
     if [ $exitstatus = 0 ]; then
         case $CHOICE in
           "1")
-            sh run.sh
+            ./run.sh
             ;;
           "2")
             $(which podman||which docker) compose --env-file .env -f docker-compose.yml up -d
