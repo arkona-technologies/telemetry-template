@@ -76,6 +76,13 @@ Before deploying the Docker Compose setup, ensure the following prerequisites ar
 
    This command will try to setup rsyslog first, so please provide the sudo password when asked. Afterwards it will run a setup instance of influxDB to provide the mandatory authorization token and finally start the telemetry service, InfluxDB, Loki, Promtail and Grafana in detached mode.
 
+   You can alternatively use the whiptail wizard for a simpler overview by executing:
+   ```bash
+   ./wizard.sh
+   ```
+
+![Stack Overview](.readme/whiptail.png)
+
 6. Access Grafana at [http://localhost:3000](http://localhost:3000) in your browser. Log in with the supplied credentials.
 
 7. Create dashboards in Grafana to visualize telemetry data from BLADE//runner processors. Take a look at the supplied Dashboards as a guide.
