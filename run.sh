@@ -4,12 +4,12 @@ PODMAN=$(which podman)
 DOCKER=$(which docker)
 
 ensure_linger(){
-  LINGER_STATUS=$(loginctl show-user $(whoami) | grep -i 'linger' | sed 's/Linger=//g')
+  LINGER_STATUS=$(loginctl show-user $(logname) | grep -i 'linger' | sed 's/Linger=//g')
   echo $LINGER_STATUS
   if [[ "$LINGER_STATUS" == "no" ]]
   then
-    printf "Setting [loginctl enable-linger $(whoami)] is set\n"
-    sudo loginctl enable-linger $(whoami)
+    printf "Setting [loginctl enable-linger $(logname)] is set\n"
+    sudo loginctl enable-linger $(logname)
   fi
 }
 
