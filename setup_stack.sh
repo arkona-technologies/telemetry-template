@@ -1,7 +1,8 @@
 #!/bin/bash
-RED='\033[0;31m'
-NC='\033[0m' # No Color
 
+set -o allexport
+source terminal-colors.env
+set +o allexport
 set -o allexport
 source .env
 set +o allexport
@@ -9,11 +10,11 @@ set +o allexport
 CONTAINER_ENGINE=$(which podman||which docker)
 
 if [ -z "$CONTAINER_ENGINE" ]; then
-    echo "Error: Neither docker or podman has been found, please install or make sure that it's in your PATH"
+    printf "${COLOR_RED}Error: Neither docker or podman has been found, please install or make sure that it's in your PATH\n"
     exit 1  # Exit with a non-zero status to indicate an error
 fi
 
-printf  "Setting up influxDB bucket ${RED}$DB_NAME${NC} and token\n"
+printf  "${COLOR_LIGHT_BLUE}[InfluxDB]${COLOR_NC} Setting up influxDB bucket ${COLOR_LIGHT_RED}$DB_NAME${COLOR_NC} and token\n"
 if hash docker-compose 2>/dev/null
 then
     docker-compose -f docker-compose.yml down
@@ -55,7 +56,7 @@ FULLTOKEN=$($CONTAINER_ENGINE exec influxdb_setup influx auth create \
 
 ARR=($FULLTOKEN)
 TOKEN=${ARR[1]}
-printf "Your read-write token is:  ${RED}${TOKEN}${NC}\n"
+printf "Your read-write token is:  ${COLOR_RED}${TOKEN}${COLOR_NC}\n"
 # echo "Your read-write token is: ${ARR[1]}"
 
 search_text=$(grep -i "DB_TOKEN" ".env")
@@ -63,7 +64,7 @@ replace_text="DB_TOKEN=$TOKEN"
 
 sed -i "s|$search_text|$replace_text|g" ".env"
 
-printf "Remove setup instance:  ${RED}influx_setup${NC}\n"
+printf "Remove setup instance: influxdb_setup\n"
 
 $CONTAINER_ENGINE rm -f influxdb_setup
 printf "Start container stack"

@@ -128,6 +128,16 @@ graph LR
    end
 ``` -->
 
+## ShortA brief excerpt of features
+
+- Filtered / Sorted Logging of all devices that are logging to the telemetry stack with Loki
+- Flexible alarming system with Grafana
+- Shareable and embeddable dashboards
+   - e.g. to display in a manifold multiviewer head
+      - currently you're bound to grafana version 9 for that, soon will be updated to support latest grafana versions
+- BLADE//runner specific images for use in grafana canvas panels, to use those, execute:
+   `ls ./grafana/images/* | xargs -I {} docker cp {} telemetry-template-grafana-1:/usr/share/grafana/public/img/icons/iot/`
+   from the telemetry directory (note: the name "telemetry-template-grafana-1" could differ)
 
 ## Links
 

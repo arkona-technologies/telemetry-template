@@ -70,14 +70,17 @@ edit_config() {
         "1")
           determine_editor
           $EDITOR docker-compose.yml
+          edit_config
           ;;
         "2")
           determine_editor
           $EDITOR .env
+          edit_config
           ;;
         "3")
           determine_editor
           $EDITOR promtail/config.yml
+          edit_config
           ;;
         *)
           main
@@ -91,9 +94,10 @@ edit_config() {
 main() {
     CHOICE=$(whiptail --title "Telemetry" --menu "Choose your action:" 15 60 6 \
     "1" "Install" \
-    "2" "Start telemetry" \
-    "3" "Stop telemetry" \
-    "4" "Edit config files" 3>&1 1>&2 2>&3)
+    "2" "Install - without rsyslog" \
+    "3" "Start telemetry" \
+    "4" "Stop telemetry" \
+    "5" "Edit config files" 3>&1 1>&2 2>&3)
 
     exitstatus=$?
     if [ $exitstatus = 0 ]; then
@@ -101,13 +105,17 @@ main() {
           "1")
             ./run.sh
             ;;
-          "2")
-            $(which podman||which docker) compose --env-file .env -f docker-compose.yml up -d
+          "2
+          ")
+            ./run.sh NO_SYSLOG=true
             ;;
           "3")
-            $(which podman||which docker) compose -f docker-compose.yml down
+            $(which podman||which docker) compose --env-file .env -f docker-compose.yml up -d
             ;;
           "4")
+            $(which podman||which docker) compose -f docker-compose.yml down
+            ;;
+          "5")
             edit_config
             ;;
           *)
