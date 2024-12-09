@@ -135,6 +135,16 @@ graph LR
 
    from the telemetry directory (note: the name "telemetry-template-grafana-1" could differ)
 
+# Hardware recommendations
+
+As a very rough recommendation there are two scenarios:
+
+Small installations like up to 8 blades with the default configuration can be monitored by a mid range PC, roughly: {cpu: i5/Ryzen 5, ram: 16GB RAM, disk: SSD}.
+
+Bigger installations like up to ~40 blades or more* with the default configuration can be monitored by a higher range PC (i7/i9/Ryzen 7/Ryzen 9, 64GB RAM, SSD raid). It scales better with more cores/threads than pure clock speed. 64GB of RAM are not needed, but 32GB could be right at the edge without any in-mem handling for the database, and therefore not recommended for that scenario.
+
+> *Provided numbers are to be handled with caution. The lab has around 45 blades running, all being monitored on one server (32 core EPYC, 192GB RAM, SSD raid), data stored for 7d plus downsampled data for a year plus some other data and services with a load of 30GB RAM used, 140GB RAM cached for influx, 30% CPU in average.
+
 ## Links
 
 - [VTelemetry2](https://hub.docker.com/r/arkonatechnologies/vtelemetry2)
