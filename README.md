@@ -128,7 +128,7 @@ graph LR
    end
 ``` -->
 
-## ShortA brief excerpt of features
+## A brief excerpt of features
 
 - Filtered / Sorted Logging of all devices that are logging to the telemetry stack with Loki
 - Flexible alarming system with Grafana
