@@ -2358,7 +2358,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "5s",
+  "refresh": false,
   "schemaVersion": 39,
   "tags": [],
   "templating": {
@@ -2470,8 +2470,8 @@
     ]
   },
   "time": {
-    "from": "now-3h",
-    "to": "now"
+    "from": "2025-01-09T08:36:28.221Z",
+    "to": "2025-01-09T14:36:28.221Z"
   },
   "timepicker": {},
   "timezone": "",
