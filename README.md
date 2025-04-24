@@ -135,6 +135,10 @@ graph LR
 
    from the telemetry directory (note: the name "telemetry-template-grafana-1" could differ)
 
+## Optional configuration
+
+- [Downsampling data in influxDB > v1](.readme/influxdb.md#-Downsampling-data)
+
 # Hardware recommendations
 
 As a very rough recommendation there are two scenarios:
