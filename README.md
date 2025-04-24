@@ -137,7 +137,7 @@ graph LR
 
 ## Optional configuration
 
-- [Downsampling data in influxDB > v1](.readme/influxdb.md#-Downsampling-data)
+- [Downsampling data in influxDB > v1](.readme/optional-configuration.md#-Downsampling-data)
 
 # Hardware recommendations
 
