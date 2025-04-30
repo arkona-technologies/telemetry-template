@@ -1,14 +1,13 @@
-#!/bin/env bash
+#!/bin/bash
 
 set -o allexport
 source /etc/default/telegraf
 set +o allexport
 
-# Run eAPI command via curl
-# NOTE EAPI_PROTOCOL is http|https
-response=$(curl -sk -u "$ARISTA_USER:$ARISTA_PASS" \
-  -X POST "$EAPI_PROTOCOL://$ARISTA_HOST/command-api" \
-  -H 'Content-Type: application/json' \
+# Fetch response and write to a temp file
+json_file=$(mktemp)
+curl -s -k -u "$ARISTA_USER:$ARISTA_PASS" -X POST \
+  -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
     "method": "runCmds",
@@ -17,31 +16,42 @@ response=$(curl -sk -u "$ARISTA_USER:$ARISTA_PASS" \
       "cmds": ["show interfaces counters rates"],
       "format": "json"
     },
-    "id": "1"
-  }')
+    "id": 1
+  }' "$EAPI_PROTOCOL://127.0.0.1/command-api" > "$json_file"
 
-echo "$response" | tr '{},' '\n' | while read -r line; do
-  # New interface starts
-  if [[ "$line" =~ ^[[:space:]]*\"Ethernet[0-9/]+\"[[:space:]]*:$ ]]; then
-    # Output previous interface (if any)
-    if [[ -n "$iface" ]]; then
-      echo "arista_interface,interface=$iface in_bps=$in_bps,out_bps=$out_bps,in_pps=$in_pps,out_pps=$out_pps"
-    fi
-    # Capture new interface name
-    iface=$(echo "$line" | sed -E 's/^[[:space:]]*"([^"]+)":.*/\1/')
-    # Reset counters
-    in_bps=0; out_bps=0; in_pps=0; out_pps=0
-    continue
-  fi
-
-  # Capture metrics
-  [[ "$line" == *'"inBpsRate"'* ]]  && in_bps=$(echo "$line" | sed -E 's/.*: *([0-9.]+).*/\1/')
-  [[ "$line" == *'"outBpsRate"'* ]] && out_bps=$(echo "$line" | sed -E 's/.*: *([0-9.]+).*/\1/')
-  [[ "$line" == *'"inPpsRate"'* ]]  && in_pps=$(echo "$line" | sed -E 's/.*: *([0-9.]+).*/\1/')
-  [[ "$line" == *'"outPpsRate"'* ]] && out_pps=$(echo "$line" | sed -E 's/.*: *([0-9.]+).*/\1/')
-done
-
-# Output last interface block
-if [[ -n "$iface" ]]; then
-  echo "arista_interface,interface=$iface in_bps=$in_bps,out_bps=$out_bps,in_pps=$in_pps,out_pps=$out_pps"
+# Check validity
+if ! grep -q '"jsonrpc"' "$json_file"; then
+  echo "ERROR: Invalid or missing JSON response:"
+  cat "$json_file"
+  rm "$json_file"
+  exit 1
 fi
+
+# Parse with Python
+python3 <<EOF
+import json
+import time
+
+with open("$json_file", "r") as f:
+    data = json.load(f)
+
+interfaces = data["result"][0].get("interfaces", {})
+timestamp = int(time.time())
+
+for ifname, stats in interfaces.items():
+    if "Ethernet" in ifname or "Management" in ifname:
+        tags = f'interface={ifname}'
+        fields = {
+            'inBpsRate': stats.get('inBpsRate', 0),
+            'inPktsRate': stats.get('inPktsRate', 0),
+            'inPpsRate': stats.get('inPpsRate', 0),
+            'outBpsRate': stats.get('outBpsRate', 0),
+            'outPktsRate': stats.get('outPktsRate', 0),
+            'outPpsRate': stats.get('outPpsRate', 0)
+        }
+        field_str = ','.join(f'{k}={v}' for k, v in fields.items())
+        print(f'arista_interface,{tags} {field_str} {timestamp}')
+EOF
+
+# Cleanup
+rm "$json_file"
