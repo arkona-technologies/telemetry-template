@@ -107,7 +107,7 @@ On the switch:
     admin       5              7669           13554           1433 seconds ago 
     ```
     Depending if server is configured/running with http or https, set in /etc/default/telegraf `EAPI_PROTOCOL=https` (best to use https)
-1. Start bash `Arista#bash` and copy/create extras/arista_ifstats.sh to/at `/usr/local/bin/arista_ifstats` as an executable script (note the missing .sh ending)
+1. Start bash `Arista#bash` and copy/create extras/arista_ifstats to/at `/usr/local/bin/arista_ifstats` as an executable script
     - Check if the script works with `sudo arista_ifstats`, it should print out a lot of data in the influx format
 1. Check if `/etc/telegraf/telegraf.conf` has inputs.exec configured:
     ```conf

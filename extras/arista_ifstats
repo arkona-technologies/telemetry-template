@@ -36,7 +36,7 @@ with open("$json_file", "r") as f:
     data = json.load(f)
 
 interfaces = data["result"][0].get("interfaces", {})
-timestamp = int(time.time())
+timestamp = int(time.time() * 1e9)
 
 for ifname, stats in interfaces.items():
     if "Ethernet" in ifname or "Management" in ifname:
