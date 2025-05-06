@@ -15,28 +15,28 @@ if [ -z "$CONTAINER_ENGINE" ]; then
 fi
 
 printf  "${COLOR_LIGHT_BLUE}[InfluxDB]${COLOR_NC} Setting up influxDB bucket ${COLOR_LIGHT_RED}$DB_NAME${COLOR_NC} and token\n"
-if hash docker-compose 2>/dev/null
-then
-    docker-compose -f docker-compose.yml down
-else
-    $CONTAINER_ENGINE compose -f docker-compose.yml down
-fi
+# if hash docker-compose 2>/dev/null
+# then
+    # docker-compose -f docker-compose.yml down
+# else
+ $CONTAINER_ENGINE compose -f docker-compose.yml down
+# fi
 
 mkdir -p influxdb2
-$CONTAINER_ENGINE rm -f influxdb_setup
+ $CONTAINER_ENGINE rm -f influxdb_setup
 # Step 1: Run InfluxDB container
-$CONTAINER_ENGINE run -d --name=influxdb_setup \
+ $CONTAINER_ENGINE run -d --name=influxdb_setup \
   -p 8086:8086 \
   -v ./influxdb2:/var/lib/influxdb2 \
   -e INFLUXDB_ADMIN_USER=$DB_USER \
   -e INFLUXDB_ADMIN_PASSWORD=$DB_PASSWORD \
-  influxdb:latest
+  docker.io/influxdb:2
 
 # Wait for InfluxDB to start up
 sleep 15
 
 # Step 2: Initialize InfluxDB instance
-$CONTAINER_ENGINE exec influxdb_setup influx setup \
+ $CONTAINER_ENGINE exec influxdb_setup influx setup \
   --username $DB_USER \
   --password $DB_PASSWORD \
   --org $DB_ORG \
@@ -66,16 +66,16 @@ sed -i "s|$search_text|$replace_text|g" ".env"
 
 printf "Remove setup instance: influxdb_setup\n"
 
-$CONTAINER_ENGINE rm -f influxdb_setup
+ $CONTAINER_ENGINE rm -f influxdb_setup
 printf "Start container stack"
 
 set -o allexport
 source .env
 set +o allexport
 
-if hash docker-compose 2>/dev/null
-then
-    docker-compose --env-file .env -f docker-compose.yml up -d
-else
-    $CONTAINER_ENGINE compose --env-file .env -f docker-compose.yml up -d
-fi
+# if hash docker-compose 2>/dev/null
+# then
+#     docker-compose --env-file .env -f docker-compose.yml up -d
+# else
+ $CONTAINER_ENGINE compose --env-file .env -f docker-compose.yml up -d
+# fi

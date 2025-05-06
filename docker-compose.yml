@@ -4,7 +4,7 @@ networks:
 services:
 # influxDB
   influxdb:
-    image: influxdb:2.7.1
+    image: docker.io/influxdb:2
     restart: always
     networks:
       - telemetry
