@@ -12,26 +12,9 @@ Create bucket "arista" and token:
 1. Copy into /mnt/flash and execute rpm -i <telegraf-<version>-i386.rpm> -U
     - If something gets stuck, check: https://arista.my.site.com/AristaCommunity/s/article/graphing-arista-eos-with-grafanatelegraf-and-influxdb#Comm_Kna_ka08C0000008SJFQA2_55
     - Maybe check for installation script "installtelegraf.sh" (but that should not be necessary)
-1. Edit config file, maybe preconfigured in influxdb gui.
+1. Create a config file like `/etc/telegraf/telegraf.d/default.conf`
     - Example config:
     ```conf
-    # Configuration for telegraf agent
-    [agent]
-      ## Default data collection interval for all inputs
-      interval = "30s"
-      round_interval = true
-      metric_batch_size = 1000
-      metric_buffer_limit = 10000
-      collection_jitter = "0s"
-      flush_interval = "10s"
-      flush_jitter = "0s"
-      precision = ""
-
-      ## Override default hostname, if empty use os.Hostname()
-      hostname = ""
-      ## If set to true, do no set the "host" tag in the telegraf agent.
-      omit_hostname = false
-
     [[outputs.influxdb_v2]]
       urls = ["http://<influxdb-location>:8086"]
       token = "${INFLUX_TOKEN}"
@@ -40,23 +23,13 @@ Create bucket "arista" and token:
       ## Timeout for HTTP messages.
       # timeout = "5s"
 
-    [[inputs.cpu]]
-      percpu = false
-      totalcpu = true
-      collect_cpu_time = false
-      ## If true, compute and report the sum of all non-idle CPU states
-      report_active = false
-
-    [[inputs.net]]
-
-    [[inputs.system]]
-
     [[inputs.exec]]
       commands = ["/usr/local/bin/arista_ifstats"]
       timeout = "5s"
       data_format = "influx"
       interval = "30s"
     ```
+      - this config will be loaded in addition to the telegraf.conf file which should include a lot of arista-specific metrics already
 1. Edit environment file used by systemd in `/etc/default/telegraf`:
     ```bash
     NET_NS=default
