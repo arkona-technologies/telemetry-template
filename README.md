@@ -77,6 +77,8 @@ Before deploying the Docker Compose setup, ensure the following prerequisites ar
 
 ![Stack Overview](.readme/whiptail.png)
 
+>The wizard tries to enable a simple setup on a variety of systems, so if you run into issues, please provide feedback on which system you had trouble. Besides providing some overview it tries to cover essential setup steps like installing a missing docker or podman installation, setting lingering for users and more.
+
 6. Access Grafana at [http://localhost:3000](http://localhost:3000) in your browser. Log in with the supplied credentials.
 
 7. Create dashboards in Grafana to visualize telemetry data from BLADE//runner processors. Take a look at the supplied Dashboards as a guide.

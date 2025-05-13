@@ -79,7 +79,6 @@ check_for_podman() {
   fi
 }
 check_for_docker() {
-
   if ! command -v docfker 2>&1 >/dev/null
   then
     CHOICE=$($WIZARD --title "Install docker" --menu "No docker installation found.\nThis wizard can install it for you, but without guaranteed success. For more information, please refer to:\n - https://docs.docker.com/engine/install/\nPress 'y' to continue\n" 20 60 4 \
