@@ -47,27 +47,63 @@ Example (*If you have additional files in /etc/telegraf/telegraf.d, you have to 
   ```
 3. Reboot and test if changes that you made are still there, also check `/mn/flash/rc.eos.log`.
 
-#### rc.eos seems to fail
+#### files are still overwritten after rc.eos is executed
 
-If an unknown process replaces the config files after rc.eos runs, you can modify the the telegraf systemd unit with a "drop-in":
+a) Add an event-handler, executing rc.eos and restarting telegraf after some delay on-boot:
 
-1. Create the drop-in directory:
-    ```
-    sudo mkdir -p /etc/systemd/system/telegraf.service.d
-    ```
-2. Create the override file:
-    ```
-    sudo nano /etc/systemd/system/telegraf.service.d/override.conf
-    ```
-3. Add the following content:
-    ```
-    [Service]
-    ExecStartPre=/bin/bash -c '/bin/cp -f /persist/secure/telegraf /etc/default/telegraf'
-    ExecStartPre=/bin/bash -c '/bin/cp -f /persist/local/default.conf /etc/telegraf/telegraf.d/'
-    ```
-4. Reload systemd and restart telegraf:
-    ```
-    sudo systemctl daemon-reexec
-    sudo systemctl daemon-reload
-    sudo systemctl restart telegraf
-    ```
+```
+localhost(config)#event-handler telegraf
+localhost(config-handler-telegraf)#trigger on-boot
+localhost(config-handler-telegraf)#action bash sudo sh /mnt/flash/rc.eos; sudo systemctl restart telegraf
+localhost(config-handler-telegraf)#delay 5
+localhost(config-handler-telegraf)#write memory
+localhost(config-handler-telegraf)#exit
+```
+
+b) Add a cronjob via
+
+```
+Arista(config)# schedule job-name
+Arista(config-job-name)# interval 15
+Arista(config-job-name)# command
+Arista(config-job-name)#  sh /persist/local/heal-telegraf.sh
+Arista(config-job-name)# end
+```
+
+and add the file (`+x` permissions) `/persist/local/heal-telegraf.sh`:
+
+```bash
+#!/bin/bash
+
+LOG="/mnt/flash/telegraf-restore.log"
+ENV_SRC="/persist/secure/telegraf"
+ENV_DEST="/etc/default/telegraf"
+CONF_SRC="/persist/local/default.conf"
+CONF_DEST="/etc/telegraf/telegraf.d/default.conf"
+
+restore_needed=false
+
+# Check if telegraf is running
+if ! systemctl is-active --quiet telegraf; then
+  echo "$(date) Telegraf not running." >> "$LOG"
+  restore_needed=true
+fi
+
+# Check if files differ
+cmp -s "$ENV_SRC" "$ENV_DEST" || restore_needed=true
+cmp -s "$CONF_SRC" "$CONF_DEST" || restore_needed=true
+
+
+# Restore if needed
+if [ "$restore_needed" = true ]; then
+  echo "$(date) Restoring telegraf files and restarting service." >> "$LOG"
+
+  cp "$ENV_SRC" "$ENV_DEST"
+  cp "$CONF_SRC" "$CONF_DEST"
+  systemctl restart telegraf
+
+  echo "$(date) Restore complete." >> "$LOG"
+else
+  echo "$(date) No changes detected, telegraf OK." >> "$LOG"
+fi
+```
