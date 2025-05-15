@@ -1,6 +1,6 @@
-# Monitor Arista switch
+# Monitoring Arista switches
 
-Prerequisit:
+Prerequisites in InfluxDB:
 
 Create bucket "arista" and token:
 - [Create bucket](https://docs.influxdata.com/influxdb/v2/admin/buckets/create-bucket/#create-a-bucket-from-the-load-data-menu)
@@ -8,12 +8,26 @@ Create bucket "arista" and token:
 
 ## Setup Telegraf on Arista
 
-1. Install version  of telegraf from here (i386.rpm): https://github.com/influxdata/telegraf/releases
-1. Copy into /mnt/flash and execute rpm -i <telegraf-<version>-i386.rpm> -U
-    - If something gets stuck, check: https://arista.my.site.com/AristaCommunity/s/article/graphing-arista-eos-with-grafanatelegraf-and-influxdb#Comm_Kna_ka08C0000008SJFQA2_55
-    - Maybe check for installation script "installtelegraf.sh" (but that should not be necessary)
-1. Create a config file like `/etc/telegraf/telegraf.d/default.conf`
-    - Example config:
+### FYI
+
+>The systemd controlled Telegraf uses the config files
+>  - `/etc/telegraf/telegraf.conf`
+>  - `/etc/telegraf/telegraf.d/*.conf`
+>
+>and variables or secrets like influx token should be stored in
+>  - `/etc/default/telegraf`
+>
+>But as Arista switches often use overlay fs, changes made in those files may not be persistent.
+>
+>The following steps will setup telegraf persistently, whether the root directory is mounted on an overlay fs or not.
+
+### Setup
+
+1. Install version  of telegraf from here (i386.rpm): 
+    -   https://github.com/influxdata/telegraf/releases
+1. Copy into `/mnt/flash` and execute `rpm -i <telegraf-<version>-i386.rpm> -U`
+    - If something gets stuck, check [this site](https://arista.my.site.com/AristaCommunity/s/article/graphing-arista-eos-with-grafanatelegraf-and-influxdb#Comm_Kna_ka08C0000008SJFQA2_55)
+1. Create a config file `/persist/local/default.conf`
     ```conf
     [[outputs.influxdb_v2]]
       urls = ["http://<influxdb-location>:8086"]
@@ -30,20 +44,26 @@ Create bucket "arista" and token:
       interval = "30s"
     ```
       - this config will be loaded in addition to the telegraf.conf file which should include a lot of arista-specific metrics already
-1. Edit environment file used by systemd in `/etc/default/telegraf`:
+1. Create environment file (used by systemd) in `/persist/secure/telegraf`
     ```bash
     NET_NS=default
     INFLUX_TOKEN=token-with-write-permissions-for-your-bucket
-    ```
-    - optional values if you want to execute eapi scripts with telegraf:
-    ```bash
     ARISTA_USER=<your-user>
     ARISTA_PASS=<your-password>
     ARISTA_HOST=<ip-address-of-Management1-interface>
     EAPI_PROTOCOL=<https|http>
     ```
     > all env variables in /etc/default/telegraf can be used in config file like: ${INFLUX_TOKEN}
-1. Start telegraf with `[sudo] systemctl start telegraf`
+1. Create `/mnt/flash/rc.eos` (with `+x`), containing:
+    ```bash
+    #!/bin/bash
+    echo "Starting rc.eos script..." >> /mnt/flash/rc.eos.log
+    /bin/cp /persist/local/default.conf /etc/telegraf/telegraf.d/default.conf
+    /bin/cp /persist/secure/telegraf /etc/default/telegraf
+    echo "Finished rc.eos" >> /mnt/flash/rc.eos.log
+    ```
+1. Enable telegraf with `[sudo] systemctl enable telegraf`
+1. Reboot switch to see if made configs are persistent. If not, check [these steps](./arista_telemetry_troubleshoot.md).
 
 ## Monitor Arista interface traffic rates with script
 
@@ -59,7 +79,7 @@ On the switch:
     Arista(config-mgmt-api-http-cmds)# protocol https
     Arista(config-mgmt-api-http-cmds)# no protocol http
     ```
-1. Check with :
+1. Check with:
     ```
     Arista# show management api http-commands 
     Enabled: Yes 
