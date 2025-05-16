@@ -63,11 +63,7 @@ localhost(config-handler-telegraf)#exit
 b) Add a cronjob via
 
 ```
-Arista(config)# schedule job-name
-Arista(config-job-name)# interval 15
-Arista(config-job-name)# command
-Arista(config-job-name)#  sh /persist/local/heal-telegraf.sh
-Arista(config-job-name)# end
+Arista(config)#schedule telegraf interval 5 timeout 1 max-log-files 0 command bash /mnt/flash/heal-telegraf.sh
 ```
 
 and add the file (`+x` permissions) `/persist/local/heal-telegraf.sh`:
