@@ -1,5 +1,7 @@
 # Monitoring manifold
 
+>This is tested with telegraf version 1.34 
+
 Prerequisites in InfluxDB:
 
 Create bucket "manifold" and token:
@@ -7,6 +9,8 @@ Create bucket "manifold" and token:
 - [Create token](https://docs.influxdata.com/influxdb/v2/admin/tokens/create-token/#create-a-token-in-the-influxdb-ui)
 
 ## Setup Telegraf on manifold server
+
+### Setup for manifold database
 
 On the manifold server:
 
@@ -37,15 +41,43 @@ bucket = "manifold"
       FROM ui.afu_processors
     '''
     measurement = "afu_processors_load"
+
+  [[inputs.sql.query]]
+    query = '''
+      SELECT
+        link_is_up,
+        ingress_load,
+        egress_load,
+        egress_bandwidth,
+        ingress_bandwidth,
+        local_lldp_port_id,
+        afu_ethernet_port_id
+      FROM ui.afu_ethernet_ports
+    '''
+    measurement = "port_statistics"
+
+[[processors.converter]]
+  namepass = ["afu_processors_load"]
+  [processors.converter.fields]
+    tag = ["server", "accelerator", "processor_id"]
+
+[[processors.converter]]
+  namepass = ["port_statistics"]
+  [processors.converter.fields]
+    tag = ["local_lldp_port_id", "afu_ethernet_port_id"]
 ```
-5. Add as many queries as needed.
+5. Add as many queries as needed, if you want to specify fields as tags explicitly, define "processors.converter" as seen above for every measurement.
 6. `sudo systemctl restart telegraf`
 7. `sudo systemctl enable telegraf`
 8. `sudo loginctl enable-linger <current-user>`
 
 You can set the polling of telegraf to another interval, default is 10s, in `/etc/telegraf/telegraf.conf -> "agent"`
 
-This setting will change polling for all metrics, either postgresql or any other inputs defined for telegraf (it's recommended to also monitor cpu,ram,disk of the server with standard inputs), like:
+This setting will change polling for all metrics, either postgresql or any other inputs defined for telegraf.
+
+### Setup of additional inputs
+
+It's recommended to also monitor cpu,ram,disk of the server with standard inputs, like:
 
 ```conf
 [[inputs.cpu]]

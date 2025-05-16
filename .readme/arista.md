@@ -1,5 +1,7 @@
 # Monitoring Arista switches
 
+>This is tested with telegraf version 1.34
+
 Prerequisites in InfluxDB:
 
 Create bucket "arista" and token:
