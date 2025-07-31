@@ -25,7 +25,28 @@ Create bucket "arista" and token:
 
 ### Setup
 
-1. Install version  of telegraf from here (i386.rpm): 
+#### Create eapi user
+
+```
+ Arista>enable
+ Arista#configure
+ Arista(config)#username <ARISTA_USER> secret <ARISTA_PASS> (same as in `/persist/secure/telegraf`)
+```
+
+#### Enable eapi with https:
+
+```
+Arista> enable
+Arista# configure terminal
+Arista(config)# management api http-commands
+Arista(config-mgmt-api-http-cmds)# no shutdown
+Arista(config-mgmt-api-http-cmds)# protocol https
+Arista(config-mgmt-api-http-cmds)# no protocol http
+```
+
+#### Setup telegraf
+
+1. Install version of telegraf from here (i386.rpm): 
     -   https://github.com/influxdata/telegraf/releases
 1. Copy into `/mnt/flash` and execute `rpm -i <telegraf-<version>-i386.rpm> -U`
     - If something gets stuck, check [this site](https://arista.my.site.com/AristaCommunity/s/article/graphing-arista-eos-with-grafanatelegraf-and-influxdb#Comm_Kna_ka08C0000008SJFQA2_55)
@@ -53,7 +74,7 @@ Create bucket "arista" and token:
     ARISTA_USER=<your-user>
     ARISTA_PASS=<your-password>
     ARISTA_HOST=<ip-address-of-Management1-interface>
-    EAPI_PROTOCOL=<https|http>
+    EAPI_PROTOCOL=<https|http> # https preferred as defined in "Enable eapi with https"
     ```
     > all env variables in /etc/default/telegraf can be used in config file like: ${INFLUX_TOKEN}
 1. Create `/mnt/flash/rc.eos` (with `+x`), containing:
@@ -64,6 +85,8 @@ Create bucket "arista" and token:
     /bin/cp /persist/secure/telegraf /etc/default/telegraf
     echo "Finished rc.eos" >> /mnt/flash/rc.eos.log
     ```
+1. Delete `>> /var/log/agents/Telegraf 2>&1` from the "ExecStart" line in the service file to prevent telegraf logging to the disk
+1. `[sudo] systemctl daemon-reload`
 1. Enable telegraf with `[sudo] systemctl enable telegraf`
 1. Reboot switch to see if made configs are persistent. If not, check [these steps](./arista_telemetry_troubleshoot.md).
 
@@ -72,15 +95,6 @@ Create bucket "arista" and token:
 On the switch:
 
 1. [Setup Telegraf on Arista](#setup-telegraf-on-arista)
-1. Enable eapi with https:
-    ```
-    Arista> enable
-    Arista# configure terminal
-    Arista(config)# management api http-commands
-    Arista(config-mgmt-api-http-cmds)# no shutdown
-    Arista(config-mgmt-api-http-cmds)# protocol https
-    Arista(config-mgmt-api-http-cmds)# no protocol http
-    ```
 1. Check with:
     ```
     Arista# show management api http-commands 

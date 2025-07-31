@@ -103,3 +103,4 @@ else
   echo "$(date) No changes detected, telegraf OK." >> "$LOG"
 fi
 ```
+

@@ -15,12 +15,8 @@ if [ -z "$CONTAINER_ENGINE" ]; then
 fi
 
 printf  "${COLOR_LIGHT_BLUE}[InfluxDB]${COLOR_NC} Setting up influxDB bucket ${COLOR_LIGHT_RED}$DB_NAME${COLOR_NC} and token\n"
-# if hash docker-compose 2>/dev/null
-# then
-    # docker-compose -f docker-compose.yml down
-# else
- $CONTAINER_ENGINE compose -f docker-compose.yml down
-# fi
+
+$CONTAINER_ENGINE compose -f docker-compose.yml down
 
 mkdir -p influxdb2
  $CONTAINER_ENGINE rm -f influxdb_setup
@@ -73,9 +69,4 @@ set -o allexport
 source .env
 set +o allexport
 
-# if hash docker-compose 2>/dev/null
-# then
-#     docker-compose --env-file .env -f docker-compose.yml up -d
-# else
- $CONTAINER_ENGINE compose --env-file .env -f docker-compose.yml up -d
-# fi
+$CONTAINER_ENGINE compose --env-file .env -f docker-compose.yml up -d
