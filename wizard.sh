@@ -118,6 +118,7 @@ check_for_docker() {
               sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
               sudo groupadd docker
               sudo usermod -aG docker $USER
+              sudo systemctl enable --now docker
             elif command -v dnf 2>&1 >/dev/null
             then
               sudo dnf remove docker \
