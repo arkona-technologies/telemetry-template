@@ -6,7 +6,7 @@ set +o allexport
 set -o allexport
 source .env
 set +o allexport
-
+# TODO optional to install influx bare-metal
 CONTAINER_ENGINE=$(which podman||which docker)
 
 if [ -z "$CONTAINER_ENGINE" ]; then
