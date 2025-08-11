@@ -163,6 +163,8 @@ Bigger installations like up to ~40 blades or more* with the default configurati
 - [Docker](https://www.docker.com/)
 
 ## Further Reading
+
+- [Optimizing your environment](.readme/optimizations.md#optimize-your-environment-for-the-database)
 - [Arista EOS Telemetry ](https://arista.my.site.com/AristaCommunity/s/article/streaming-eos-telemetry-states-to-influxdb)
 - [Cisco Telemetry](https://ultraconfig.com.au/blog/cisco-telemetry-tutorial-with-telegraf-influxdb-and-grafana/)
 - [General Linux Server Telemetry](https://community.hetzner.com/tutorials/server-monitoring-using-grafana-and-influxdb)
