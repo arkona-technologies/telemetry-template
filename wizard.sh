@@ -79,7 +79,7 @@ check_for_podman() {
   fi
 }
 check_for_docker() {
-  if ! command -v docfker 2>&1 >/dev/null
+  if ! command -v docker 2>&1 >/dev/null
   then
     CHOICE=$($WIZARD --title "Install docker" --menu "No docker installation found.\nThis wizard can install it for you, but without guaranteed success. For more information, please refer to:\n - https://docs.docker.com/engine/install/\nPress 'y' to continue\n" 20 60 4 \
     "y" "Install docker" \
@@ -224,14 +224,14 @@ edit_config() {
 }
 
 main() {
-    CHOICE=$($WIZARD --title "Telemetry" --menu "Welcome to the telemetry wizard.\nFor a first setup, do the following:\n - check for a container engine installation first (docker or podman)\n - edit your config files (usually only .env is necessary)\n - Install with or without rsyslog\nFor more information, refer to: https://github.com/arkona-technologies/telemetry-template" 22 80 6 \
+    CHOICE=$($WIZARD --title "Telemetry" --menu "Welcome to the telemetry wizard.\nFor a first setup, do the following:\n - check for a container engine installation first (docker or podman)\n - edit your config files (usually only .env is necessary)\n - Install with or without rsyslog\nFor more information, refer to: https://github.com/arkona-technologies/telemetry-template" 22 80 7 \
     "1" "Install" \
     "2" "Install - without rsyslog" \
     "3" "Start telemetry" \
     "4" "Stop telemetry" \
     "5" "Edit config files" \
-    "6" "Check for docker" \
-    "7" "Check for podman" 3>&1 1>&2 2>&3)
+    "6" "Check/Install docker" \
+    "7" "Check/Install podman" 3>&1 1>&2 2>&3)
 
     exitstatus=$?
     if [ $exitstatus = 0 ]; then

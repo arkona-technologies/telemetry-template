@@ -24,8 +24,8 @@
 
 Before deploying the Docker Compose setup, ensure the following prerequisites are met:
 
-- Docker installed on the host machine.
-- Docker Compose installed on the host machine.
+- git installed
+   - best case, it's used to clone the repository which could also be done by downloading the zip file from the website
 - Apt package manager, otherwise rsyslog has to be installed manually before setup
 
 ## Installation
@@ -36,44 +36,31 @@ Before deploying the Docker Compose setup, ensure the following prerequisites ar
    git clone https://github.com/arkona-technologies/telemetry-template.git
    ```
 
-2. Navigate to the project directory and select new branch:
+2. Go into the telemetry-template directory and open the wizard with `./wizard.sh`
 
-   ```bash
-   cd telemetry-template
-   git checkout v2
-   ```
+3. Go to "5 Edit config files" -> .env to configure the provided `.env` file selecting the editor you want.
 
-3. Create a `.env` file in the project root with your desired configurations. Use the provided `.env` file as a template:
-
-4. **Configure via `.env` file:** Customize the `.env` file as needed, specifying parameters such as processor IPs, ports, and authentication details. Example configuration in `.env`:
+4. **Configure via `.env` file:** Customize the `.env` file as needed, specifying parameters such as processor IPs, ports, and authentication details. Save and close the editor afterwards to get back to the wizard.
 
    ```env
    BLADES=172.16.10.2,172.16.20.2
 
    DB_NAME=bladerunner
    DB_PASSWORD=blade__runner # at least 8 characters!
-   DB_USER=test
+   DB_USER=arkona
    DB_PORT=8086
-   DB_ORG=myorg
-   DB_RETENTION=7d # can be n d/w/m/y (days/weeks/months/years)
+   DB_ORG=arkona
+   DB_RETENTION=7d # can be n d/w (days/weeks)
    DB_TOKEN=
 
-   GRAFANA_USER=test
-   GRAFANA_PW=test
+   GRAFANA_USER=arkona
+   GRAFANA_PW=arkona
    ```
 
-5. Execute the setup script:
+5. Go to the main menu and select "Install"
 
-   ```bash
-   ./run.sh
-   ```
-
-   This command will try to setup rsyslog first, so please provide the sudo password when asked. Afterwards it will run a setup instance of influxDB to provide the mandatory authorization token and finally start the telemetry service, InfluxDB, Loki, Promtail and Grafana in detached mode.
-
-   You can alternatively use the whiptail wizard for a simpler overview by executing:
-   ```bash
-   ./wizard.sh
-   ```
+   It will first look if docker or podman is available as a command. If not it will tell to install one of them via the wizard, when installed the command has to be run again.
+   If docker or podman is installed, the command will try to setup rsyslog first, so please provide the sudo password when asked. Afterwards it will run a setup instance of influxDB to provide the mandatory authorization token and finally start the telemetry service, InfluxDB, Loki, Promtail and Grafana in detached mode.
 
 ![Stack Overview](.readme/whiptail.png)
 

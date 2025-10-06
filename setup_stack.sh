@@ -10,7 +10,7 @@ set +o allexport
 CONTAINER_ENGINE=$(which podman||which docker)
 
 if [ -z "$CONTAINER_ENGINE" ]; then
-    printf "${COLOR_RED}Error: Neither docker or podman has been found, please install or make sure that it's in your PATH\n"
+    printf "${COLOR_LIGHT_RED}Error: Neither docker or podman has been found, please install or make sure that it's in your PATH\n"
     exit 1  # Exit with a non-zero status to indicate an error
 fi
 
@@ -52,7 +52,7 @@ FULLTOKEN=$($CONTAINER_ENGINE exec influxdb_setup influx auth create \
 
 ARR=($FULLTOKEN)
 TOKEN=${ARR[1]}
-printf "Your read-write token is:  ${COLOR_RED}${TOKEN}${COLOR_NC}\n"
+printf "Your read-write token is:  ${COLOR_LIGHT_RED}${TOKEN}${COLOR_NC}\n"
 # echo "Your read-write token is: ${ARR[1]}"
 
 search_text=$(grep -i "DB_TOKEN" ".env")
@@ -62,8 +62,8 @@ sed -i "s|$search_text|$replace_text|g" ".env"
 
 printf "Remove setup instance: influxdb_setup\n"
 
- $CONTAINER_ENGINE rm -f influxdb_setup
-printf "Start container stack"
+ $CONTAINER_ENGINE rm -f influxdb_setup 2&>/dev/null
+printf "Start container stack\n"
 
 set -o allexport
 source .env
