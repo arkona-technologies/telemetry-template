@@ -130,6 +130,10 @@ graph LR
 - [Monitor Arista switches](.readme/arista.md)
 - [Monitor manifold](.readme/manifold.md)
 
+## Influx commands
+
+- [Export/Import some data from a database (NOT the whole database)](.readme/optional-configuration.md#-Export-Import-some-data-from-a-database-NOT-the-whole-database)
+
 # Hardware recommendations
 
 As a very rough recommendation there are two scenarios:

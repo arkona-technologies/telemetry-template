@@ -98,3 +98,16 @@ You see that the data is not older than some days, now you can duplicate the que
 > 4. As the downsampled data is coarsely resolved, the overlapping lines often won't match exactly as you can see in the picture below.
 
 ![](current-vs-downsampled.png)
+
+
+# Influx 2 cli commands
+
+## Export/Import some data from a database (NOT the whole database)
+
+Install and configure the influx cli first, you can [install latest influxCLI](https://docs.influxdata.com/influxdb/v2/tools/influx-cli/?t=Linux#install-the-influx-cli)
+Configure it to always use your database with: `influx config create -a -n <config_name> -u http://<influx_host>:8086 -o <organization> -p <user:password> -t <admin_token>`
+
+You can save and load data from a bucket, e.g. the data of the last 30 days as a .csv:
+
+**Save:** `influx query 'from(bucket: "whatever-bucket") |> range(start: -30d)' --raw > data.csv`
+**Load:** `influx write --bucket <whatever-bucket> --file data.csv  or via GUI`
