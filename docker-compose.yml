@@ -22,6 +22,8 @@ services:
       - V1_RP_NAME=v1-rp
       - V1_AUTH_USERNAME=${DB_USER}
       - V1_AUTH_PASSWORD=${DB_PASSWORD}
+      - INFLUXD_STORAGE_WRITE_TIMEOUT=20s
+      - INFLUXD_HTTP_WRITE_TIMEOUT=20s
 # grafana
   grafana:
     image: grafana/grafana-oss
@@ -95,5 +97,3 @@ services:
       - DB_TOKEN=${DB_TOKEN}
       - VERBOSITY=1
       - MAX_MACHINES_PER_WORKER=4
-      - INFLUXD_STORAGE_WRITE_TIMEOUT=20s
-      - INFLUXD_HTTP_WRITE_TIMEOUT=20s
