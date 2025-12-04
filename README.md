@@ -6,7 +6,7 @@
 
 ## Overview
 
-`telemetry-template` is a containerized software package for monitoring multiple Arkona Technologies BLADE//runner processors. This repository provides a Docker Compose setup to conveniently deploy the telemetry service, InfluxDB, and Grafana. The Docker Compose file provisions both the database and Grafana installation, eliminating the need for additional configuration.
+`Telemetry-template` is a containerized software package for monitoring multiple Arkona Technologies BLADE//runner processors. This repository provides a Docker Compose setup to conveniently deploy the telemetry service, InfluxDB, and Grafana. The Docker Compose file provisions both the database and Grafana installation, eliminating the need for additional configuration.
 
 **If you, for somewhat reason, want an even simpler setup with influxdb 1.8, switch to "main" branch**
 
@@ -22,11 +22,14 @@
 
 ## Prerequisites
 
-Before deploying the Docker Compose setup, ensure the following prerequisites are met:
+Before deploying the Docker Compose setup, __*ensure the following prerequisites are met*__:
 
-- git installed
-   - best case, it's used to clone the repository which could also be done by downloading the zip file from the website
 - Apt package manager, otherwise rsyslog has to be installed manually before setup
+- Make sure that the partition you use is big enough, __especially if it's a directory used by the OS__, including the users home directory in a non-separated linux installation (which is the default in many distros)
+   - ! read the [hardware recommendations](#hardware-recommendations) before installing !
+- git installed (optional)
+   - used to clone the repository which could also be done by downloading the zip file from the website
+
 
 ## Installation
 
@@ -138,11 +141,16 @@ graph LR
 
 As a very rough recommendation there are two scenarios:
 
-Small installations like up to 8 blades with the default configuration can be monitored by a mid range PC, roughly: {cpu: i5/Ryzen 5, ram: 16GB RAM, disk: SSD with 100GB space}.
+Small installations like up to __8__ blades with the default configuration can be monitored by a mid range PC. 
+- __roughly at least__: {cpu: __i5/Ryzen 5__, ram: __16GB RAM__, disk: __SSD__ with __200GB__ space}.
 
-Bigger installations like up to ~40 blades or more* with the default configuration can be monitored by a higher range PC {i7/i9/Ryzen 7/Ryzen 9, 64GB RAM, SSD raid with 300GB space}. It scales better with more cores/threads than pure clock speed. 64GB of RAM are not needed, but 32GB could be right at the edge without any in-mem handling for the database, and therefore not recommended for that scenario.
+Bigger installations like __40__ blades or more** with the default configuration can be monitored by a higher range PC or server.
 
-> *Provided numbers are to be handled with caution. The lab has around 45 blades running, all being monitored on one server (32 core EPYC, 192GB RAM, SSD raid, data stored for 7d plus downsampled data for a year plus some other data and services with a load of 30GB RAM used, 140GB RAM cached for influx, 30% CPU in average and __*~300GB*__ of data in influx.
+- __roughly at least__: {cpu: __i7/i9/Ryzen 7/Ryzen 9/__,ram: __64GB RAM__,disks: __SSD raid10 with 500GB__ space}.
+   - It scales better with more cores/threads than pure clock speed. Server CPUs with more cores (24+) are recommended.
+   - More RAM is better as the system responds much better the more it can hold data in memory
+
+> **Provided numbers are to be handled with caution as they can differ due to setup and usage. Our lab has around 45 blades running, all being monitored on one server (32 core EPYC, 192GB RAM, SSD raid10, data stored for 7d plus downsampled data for a year plus some other data and services with a load of 30GB RAM used, 140GB RAM cached for influx, 30% CPU in average and __*~300GB*__ of data in influx.
 
 ## Links
 
