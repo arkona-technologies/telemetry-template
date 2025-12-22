@@ -132,6 +132,8 @@ graph LR
 - [Downsampling data in influxDB > v1](.readme/optional-configuration.md#-Downsampling-data)
 - [Monitor Arista switches](.readme/arista.md)
 - [Monitor manifold](.readme/manifold.md)
+- [Triggering GPO with GET requests via Grafana](https://github.com/Grimmoth/grafanaGETbridge/tree/main)
+   - Small tool that can be used to trigger API requests on alarms that require http GET method which is not supported by Grafana out-of-the-box.
 
 ## Influx commands
 
