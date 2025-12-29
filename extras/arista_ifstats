@@ -41,6 +41,15 @@ timestamp = int(time.time() * 1e9)
 for ifname, stats in interfaces.items():
     if "Ethernet" in ifname or "Management" in ifname:
         tags = f'interface={ifname}'
+
+        desc = stats.get('description')
+        if not desc:
+            desc_val = '""'
+        else:
+            # Wrap actual descriptions in quotes and escape internal quotes
+            clean_desc = desc.replace('"', '\\"')
+            desc_val = f'"{clean_desc}"'
+
         fields = {
             'inBpsRate': stats.get('inBpsRate', 0),
             'inPktsRate': stats.get('inPktsRate', 0),
@@ -48,7 +57,7 @@ for ifname, stats in interfaces.items():
             'outBpsRate': stats.get('outBpsRate', 0),
             'outPktsRate': stats.get('outPktsRate', 0),
             'outPpsRate': stats.get('outPpsRate', 0),
-            'description': stats.get('description','')
+            'description': desc_val
         }
         field_str = ','.join(f'{k}={v}' for k, v in fields.items())
         print(f'arista_interface,{tags} {field_str} {timestamp}')
