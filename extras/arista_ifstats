@@ -47,7 +47,8 @@ for ifname, stats in interfaces.items():
             'inPpsRate': stats.get('inPpsRate', 0),
             'outBpsRate': stats.get('outBpsRate', 0),
             'outPktsRate': stats.get('outPktsRate', 0),
-            'outPpsRate': stats.get('outPpsRate', 0)
+            'outPpsRate': stats.get('outPpsRate', 0),
+            'description': stats.get('description','')
         }
         field_str = ','.join(f'{k}={v}' for k, v in fields.items())
         print(f'arista_interface,{tags} {field_str} {timestamp}')
