@@ -42,6 +42,19 @@ Arista(config)# management api http-commands
 Arista(config-mgmt-api-http-cmds)# no shutdown
 Arista(config-mgmt-api-http-cmds)# protocol https
 Arista(config-mgmt-api-http-cmds)# no protocol http
+Arista(config)#write memory
+```
+
+#### Enable gnmi with https:
+
+```
+Arista> enable
+Arista# configure terminal
+Arista(config)# management api gnmi
+Arista(config-mgmt-api-http-cmds)# transport grpc default
+Arista(config-mgmt-api-http-cmds)# port 50051
+Arista(config-mgmt-api-http-cmds)# provider eos-native
+Arista(config)#write memory
 ```
 
 #### Setup telegraf
@@ -65,6 +78,33 @@ Arista(config-mgmt-api-http-cmds)# no protocol http
       timeout = "5s"
       data_format = "influx"
       interval = "30s"
+
+     [[inputs.gnmi]]
+       addresses = ["127.0.0.1:50051"]
+       username = "admin"
+       password = "atadmin"
+       encoding = "proto"
+
+       [[inputs.gnmi.subscription]]
+         name = "interface_counters"
+#         origin = "eos-interfaces"
+         path = "/interfaces/interface/state/counters"
+         subscription_mode = "sample"
+         sample_interval = "10s"
+
+       [[inputs.gnmi.subscription]]
+         name = "lldp_neighbors"
+#         origin = "eos-lldp"
+         path = "/lldp/interfaces/interface/neighbors/neighbor/state/system-name"
+         subscription_mode = "on_change"
+         heartbeat_interval = "60s" # if supported, report every 10 min even if unchanged
+  
+       [[inputs.gnmi.subscription]]
+         name = "lldp_neighbors_sample"
+#         origin = "eos-lldp"
+         path = "/lldp/interfaces/interface/neighbors/neighbor/state/system-name"
+         subscription_mode = "sample"
+         sample_interval = "10s"
     ```
       - this config will be loaded in addition to the telegraf.conf file which should include a lot of arista-specific metrics already
 1. Create environment file (used by systemd) in `/persist/secure/telegraf`
@@ -90,7 +130,7 @@ Arista(config-mgmt-api-http-cmds)# no protocol http
 1. Enable telegraf with `[sudo] systemctl enable telegraf`
 1. Reboot switch to see if made configs are persistent. If not, check [these steps](./arista_telemetry_troubleshoot.md).
 
-## Monitor Arista interface traffic rates with script
+## Monitor Arista interface traffic rates with script (optional, only needed if gnmi is not working properly)
 
 On the switch:
 
