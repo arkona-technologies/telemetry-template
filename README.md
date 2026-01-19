@@ -144,11 +144,11 @@ graph LR
 As a very rough recommendation there are two scenarios:
 
 Small installations like up to __8__ blades with the default configuration can be monitored by a mid range PC. 
-- __roughly at least__: {cpu: __i5/Ryzen 5__, ram: __16GB RAM__, disk: __SSD__ with __200GB__ space}.
+- __minimum requirements__: {cpu: __i5/Ryzen 5__, ram: __16GB RAM__, disk: __SSD__ with __200GB__ space}.
 
 Bigger installations like __40__ blades or more** with the default configuration can be monitored by a higher range PC or server.
 
-- __roughly at least__: {cpu: __i7/i9/Ryzen 7/Ryzen 9/__,ram: __64GB RAM__,disks: __SSD raid10 with 500GB__ space}.
+- __minimum requirements__: {cpu: __i7/i9/Ryzen 7/Ryzen 9/__,ram: __64GB RAM__,disks: __SSD raid10 with 500GB__ space}.
    - It scales better with more cores/threads than pure clock speed. Server CPUs with more cores (24+) are recommended.
    - More RAM is better as the system responds much better the more it can hold data in memory
 
