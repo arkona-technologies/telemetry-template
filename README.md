@@ -150,7 +150,7 @@ Bigger installations like __40__ blades or more** with the default configuration
 
 - __minimum requirements__: {cpu: __i7/i9/Ryzen 7/Ryzen 9/__,ram: __64GB RAM__,disks: __SSD raid10 with 500GB__ space}.
    - It scales better with more cores/threads than pure clock speed. Server CPUs with more cores (24+) are recommended.
-   - More RAM is better as the system responds much better the more it can hold data in memory
+   - More RAM is better as the system responds much better the more data it can hold in memory
 
 > **Provided numbers are to be handled with caution as they can differ due to setup and usage. Our lab has around 45 blades running, all being monitored on one server (32 core EPYC, 192GB RAM, SSD raid10, data stored for 7d plus downsampled data for a year plus some other data and services with a load of 30GB RAM used, 140GB RAM cached for influx, 30% CPU in average and __*~300GB*__ of data in influx.
 
