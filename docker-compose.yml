@@ -57,7 +57,12 @@ services:
     restart: always
     ports:
       - "3100:3100"
-    command: -config.file=/etc/loki/local-config.yaml
+    command: -config.file=/etc/loki/local-config.yaml -config.expand-env=true
+    environment:
+      - RETENTION_PERIOD=720h
+    volumes:
+      - ./loki/local-config.yaml:/etc/loki/local-config.yaml
+      - ./loki/data:/tmp/loki/
     networks:
       - telemetry
 # promtail for loki
