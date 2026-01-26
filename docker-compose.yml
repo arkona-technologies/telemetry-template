@@ -56,12 +56,12 @@ services:
     image: grafana/loki:2.9.0
     restart: always
     ports:
-      - "3100:3100"
+      - "3100:3100" #if changed, also change in loki&promtail configs
     command: -config.file=/etc/loki/local-config.yaml -config.expand-env=true
     environment:
       - RETENTION_PERIOD=720h
     volumes:
-      - ./loki/local-config.yaml:/etc/loki/local-config.yaml
+      - ./loki/local-config.yaml:/etc/loki/local-config.yaml:ro
       - ./loki/data:/tmp/loki/
     networks:
       - telemetry
