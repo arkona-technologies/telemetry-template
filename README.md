@@ -1,14 +1,16 @@
+![Telemetry Logo](.readme/blade-runner.png)
+
 # Arkona Technologies Telemetry Template (version 2)
 
+**NOTE !! Please read through the [prerequisites](#prerequisites) and [hardware recommendations](#hardware-recommendations) first !!**
 
-
-![Telemetry Logo](.readme/blade-runner.png)
+**NOTE !! Default retention policy is SEVEN DAYS !!**
+- You can edit that in the .env files "DB_RETENTION"
 
 ## Overview
 
 `Telemetry-template` is a containerized software package for monitoring multiple Arkona Technologies BLADE//runner processors. This repository provides a Docker Compose setup to conveniently deploy the telemetry service, InfluxDB, and Grafana. The Docker Compose file provisions both the database and Grafana installation, eliminating the need for additional configuration.
 
-**If you, for somewhat reason, want an even simpler setup with influxdb 1.8, switch to "main" branch**
 
 ## Features
 
@@ -176,5 +178,5 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Contributing
 
-Feel free to contribute by submitting issues or pull requests. Your feedback is valuable to us!
+Feel free to contribute by submitting issues or pull requests. Your feedback is much appreciated!
 
