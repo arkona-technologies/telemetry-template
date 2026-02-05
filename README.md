@@ -7,6 +7,8 @@
 **NOTE !! Default retention policy is SEVEN DAYS !!**
 - You can edit that in the .env files "DB_RETENTION"
 
+
+
 ## Overview
 
 `Telemetry-template` is a containerized software package for monitoring multiple Arkona Technologies BLADE//runner processors. This repository provides a Docker Compose setup to conveniently deploy the telemetry service, InfluxDB, and Grafana. The Docker Compose file provisions both the database and Grafana installation, eliminating the need for additional configuration.
@@ -18,7 +20,7 @@
 - **Integrated Database:** The setup provisions InfluxDB, a powerful and efficient time-series database, for storing telemetry data.
 - **Visualization with Grafana:** Grafana is included in the setup, providing a user-friendly interface for visualizing and analyzing telemetry data.
 - **Scalable Monitoring:** Monitor multiple BLADE//runner processors seamlessly with the scalability of containerized deployments.
-- **Added features in version 2 (compared to main branch):**
+- **Added features in version 2:**
    - Using influxDB version ^2.7
    - Setting up rsyslog, loki and promtail to provide syslog inspection via Grafana
 
@@ -27,13 +29,22 @@
 Before deploying the Docker Compose setup, __*ensure the following prerequisites are met*__:
 
 - Apt package manager, otherwise rsyslog has to be installed manually before setup
-- Make sure that the partition you use is big enough, __especially if it's a directory used by the OS__, including the users home directory in a non-separated linux installation (which is the default in many distros)
-   - ! read the [hardware recommendations](#hardware-recommendations) before installing !
+- Make sure that the partition you use has enough free space (__at least ~100GB!__), __especially if it's a directory used by the OS__, including the users home directory in a non-separated linux installation (which is the default in many distros)
+   - __! read the [hardware recommendations](#hardware-recommendations) before installing !__
 - git installed (optional)
    - used to clone the repository which could also be done by downloading the zip file from the website
 
 
 ## Installation
+
+You can install the package in different ways, depending on the use-case. The default is an easy installation where everything, including the database, runs in containers. The options are:
+
+<table><tr><th>Just get me going (DEFAULT)</th><th> I want to set up an optimized monitoring environment</th></tr>
+<tr>
+<td>If you want to try out the vtelemetry package or just want to setup monitoring as quickly and easy as possible, just follow the instructions below.</td>
+<td>If you want to have an optimized environment for long-term installations in larger facilities that might also grow, please read through the <a href=".readme/optimizations.md">optimization recommendations</a> first.</td>
+</tr>
+</table>
 
 1. Clone this repository to your local machine:
 
