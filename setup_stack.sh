@@ -18,6 +18,8 @@ printf  "${COLOR_LIGHT_BLUE}[InfluxDB]${COLOR_NC} Setting up influxDB bucket ${C
 
 $CONTAINER_ENGINE compose -f docker-compose.yml down
 
+./permissions.sh
+
 mkdir -p influxdb2
  $CONTAINER_ENGINE rm -f influxdb_setup
 # Step 1: Run InfluxDB container

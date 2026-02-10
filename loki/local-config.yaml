@@ -4,11 +4,11 @@ server:
   http_listen_port: 3100
 
 common:
-  path_prefix: /tmp/loki
+  path_prefix: /loki
   storage:
     filesystem:
-      chunks_directory: /tmp/loki/chunks
-      rules_directory: /tmp/loki/rules
+      chunks_directory: /loki/chunks
+      rules_directory: /loki/rules
   replication_factor: 1
   ring:
     instance_addr: 127.0.0.1
@@ -17,11 +17,11 @@ common:
 
 # Add the retention limit here
 limits_config:
-  retention_period: ${RETENTION_PERIOD:-744h} # Uses env var, defaults to 31 days
+  retention_period: ${RETENTION_PERIOD} # Uses env var, defaults to 31 days
 
 # Add the Compactor configuration
 compactor:
-  working_directory: /tmp/loki/compactor
+  working_directory: /loki/compactor
   shared_store: filesystem
   compaction_interval: 10m
   retention_enabled: true
@@ -31,9 +31,9 @@ compactor:
 schema_config:
   configs:
     - from: "2020-10-24"
-      store: boltdb-shipper
-      object_store: filesystem
-      schema: v11
       index:
+        period: 24h
         prefix: index_
-        period: 24h # Required for retention to work
+      object_store: filesystem
+      schema: v13 # Updated from v11
+      store: tsdb   # Updated from boltdb-shipper for better performance

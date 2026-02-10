@@ -26,9 +26,8 @@ services:
       - INFLUXD_HTTP_WRITE_TIMEOUT=20s
 # grafana
   grafana:
-    image: grafana/grafana-oss
+    image: grafana/grafana-oss:12
     restart: always
-    user: root
     networks:
       - telemetry
     ports:
@@ -40,12 +39,12 @@ services:
       - ./grafana/provisioning:/etc/grafana/provisioning
       - ./grafana/dashboards:/etc/grafana/dashboards
     environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PW}
       - PV_DB_NAME=${DB_NAME}
       - PV_DB_PASSWORD=${DB_PASSWORD}
       - PV_DB_USER=${DB_USER}
       - PV_DB_TOKEN=${DB_TOKEN}
-      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PW}
       - GF_SECURITY_ALLOW_EMBEDDING=true
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
@@ -55,30 +54,32 @@ services:
   loki:
     image: grafana/loki:2.9.0
     restart: always
+    user: "10001"
     ports:
       - "3100:3100" #if changed, also change in loki&promtail configs
     command: -config.file=/etc/loki/local-config.yaml -config.expand-env=true
     environment:
-      - RETENTION_PERIOD=720h
+      - RETENTION_PERIOD=${RETENTION_PERIOD:-720h}
     volumes:
       - ./loki/local-config.yaml:/etc/loki/local-config.yaml
-      - ./loki/data:/tmp/loki/
+      - ./loki/data:/loki
     networks:
       - telemetry
 # promtail for loki
   promtail:
     image: grafana/promtail:2.9.0
     restart: always
-    user: root
+    group_add:
+      - '${ADM_GID:-4}'      # 'adm' group (Debian/Ubuntu /var/log access)
+      - '${JOURNAL_GID:-101}' # 'systemd-journal' group access
     network_mode: host
-    # ports:
-    #   - "1514:1514"
     volumes:
-      - /var/log:/var/log
-      - ./promtail/config.yml:/etc/promtail/config.yml
+      - /var/log:/var/log:ro
+      - /run/log/journal:/run/log/journal:ro
+      - /var/log/journal:/var/log/journal:ro
+      - ./promtail/config.yml:/etc/promtail/config.yml:ro
+      - /tmp/positions.yaml:/tmp/positions.yaml # Ensure file exists on host first
     command: -config.file=/etc/promtail/config.yml
-    # networks:
-    #   - telemetry
 # vtelemetry
   vtelemetry:
     image: arkonatechnologies/vtelemetry2
