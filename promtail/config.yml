@@ -9,13 +9,29 @@ clients:
   - url: http://localhost:3100/loki/api/v1/push
 
 scrape_configs:
+  # Rsyslog log files
   - job_name: system
     static_configs:
     - targets:
         - localhost
       labels:
         job: varlogs
-        __path__: /var/log/
+        __path__: /var/log/*log
+
+  # 2. Journald Scraping
+  - job_name: journal
+    journal:
+      max_age: 12h
+      path: /var/log/journal
+      labels:
+        job: systemd-journal
+    relabel_configs:
+      - source_labels: ['__journal__systemd_unit']
+        target_label: 'unit'
+      - source_labels: ['__journal__hostname']
+        target_label: 'hostname'
+
+  # 3. Syslog Receiver
   - job_name: syslog
     syslog:
       listen_address: 0.0.0.0:1514
