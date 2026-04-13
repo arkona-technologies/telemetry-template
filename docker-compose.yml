@@ -78,7 +78,7 @@ services:
       - /run/log/journal:/run/log/journal:ro
       - /var/log/journal:/var/log/journal:ro
       - ./promtail/config.yml:/etc/promtail/config.yml:ro
-      - /tmp/positions.yaml:/tmp/positions.yaml # Ensure file exists on host first
+      - ./promtail/positions.yaml:/tmp/positions.yaml # Ensure file exists on host first
     command: -config.file=/etc/promtail/config.yml
 # vtelemetry
   vtelemetry:
