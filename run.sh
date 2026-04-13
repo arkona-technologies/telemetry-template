@@ -29,6 +29,7 @@ ensure_docker_group(){
   if ! id -nG "$(logname)" | grep -qw "docker"; then
     echo $(logname) does not belong to "docker"
     sudo usermod -aG docker "$(logname)"
+    newgrp docker
     printf "${COLOR_LIGHT_BLUE}[GROUPS]${COLOR_NC} Re-Starting Script with docker group membership\n"
     exec sg "docker" "$0 $*"
     exit

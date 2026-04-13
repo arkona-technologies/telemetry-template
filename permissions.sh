@@ -27,17 +27,17 @@ echo "JOURNAL_GID=$JOURNAL_GID" >> $ENV_FILE
 # 3. Fix permissions for Grafana
 echo "🔒 Adjusting Grafana folder permissions..."
 mkdir -p $GRAFANA_DATA_DIR
-chown -R 472:472 $GRAFANA_DATA_DIR
+sudo chown -R 472:472 $GRAFANA_DATA_DIR
 
 # 4. Fix permissions for Loki
 echo "🔒 Adjusting Loki data permissions..."
 mkdir -p $LOKI_DATA_DIR
-chown -R 10001:10001 $LOKI_DATA_DIR
+sudo chown -R 10001:10001 $LOKI_DATA_DIR
 
 # 5. Create persistent positions file for Promtail
 touch ./promtail/positions.yaml
-chmod 664 ./promtail/positions.yaml
-chown :$ADM_GID ./promtail/positions.yaml
+sudo chmod 664 ./promtail/positions.yaml
+sudo chown :$ADM_GID ./promtail/positions.yaml
 
 # 6. Ensure persistent journald exists
 if [ ! -d "/var/log/journal" ]; then
