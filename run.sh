@@ -6,7 +6,7 @@ PODMAN=$(which podman)
 DOCKER=$(which docker)
 NO_SYSLOG=$1
 
-if [[ -z "$PODMAN" && -z "$DOCKER" ]] then
+if [[ -z "$PODMAN" && -z "$DOCKER" ]]; then
   printf "${COLOR_LIGHT_RED}Neither docker or podman have been found, you can install it with the wizard:\n${COLOR_LIGHT_GRAY}Select 'Check/Install docker' or 'Check/Install podman' to install one of them if not found"
   exit 1
 fi
