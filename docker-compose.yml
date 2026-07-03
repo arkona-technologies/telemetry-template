@@ -4,7 +4,8 @@ networks:
 services:
 # influxDB
   influxdb:
-    image: influxdb:3-core
+    image: influxdb:3.10-core
+    container_name: influxdb
     restart: always
     hostname: ${HOSTNAME:-telemetry-host}
     networks:
@@ -12,24 +13,24 @@ services:
     ports:
       - '8086:8181'
     volumes:
-      - ./influxdb3/data:/var/lib/influxdb3/data 
+      - ./influxdb3/data:/home/influxdb3/.influxdb3 
       - ./influxdb3/auth:/etc/influxdb3/auth:ro
     command:
       - influxdb3
       - serve
       - --node-id=${HOSTNAME:-telemetry-node} # Interpolated by compose on the host side
       - --object-store=file
-      - --data-dir=/var/lib/influxdb3/data
+      - --data-dir=/home/influxdb3/.influxdb3
       - --http-bind=0.0.0.0:8181
     environment:
-      - INFLUXDB3_PERMISSION_TOKENS_FILE=/etc/influxdb3/auth/tokens.json
-      # CLI tools config
+      - INFLUXDB3_ADMIN_TOKEN_FILE=/etc/influxdb3/auth/admin-token.json
       - INFLUX_HOST=http://localhost:8181
       - INFLUX_TOKEN=${DB_TOKEN}
       - INFLUX_DATABASE=${DB_NAME}
 # grafana
   grafana:
     image: grafana/grafana-oss:13.0.2
+    container_name: grafana
     restart: always
     networks:
       - telemetry
@@ -56,6 +57,7 @@ services:
 # loki for logs
   loki:
     image: grafana/loki:2.9.0
+    container_name: loki
     restart: always
     user: "10001"
     ports:
@@ -71,6 +73,7 @@ services:
 # Grafana Alloy replacing Promtail
   alloy:
     image: grafana/alloy:v1.17.1 # Use the latest stable version
+    container_name: alloy
     restart: always
     group_add:
       - '${ADM_GID:-4}'       # 'adm' group
@@ -92,6 +95,7 @@ services:
 # vtelemetry
   vtelemetry:
     image: arkonatechnologies/vtelemetry2
+    container_name: vtel
     restart: always
     networks:
       - telemetry

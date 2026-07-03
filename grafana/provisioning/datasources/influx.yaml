@@ -4,16 +4,16 @@ datasources:
   - name: ${PV_DB_NAME}
     type: influxdb
     access: proxy
-    url: http://influxdb:8181          # Points to the InfluxDB 3 native listener 
+    url: http://influxdb:8181          # Standard container-to-container port for Influx 3
     editable: true
     isDefault: true
     uid: "GIQf3g9MVz"
     jsonData:
-      version: "SQL"                   # Forces the driver to drop down to SQL
-      dbName: ${PV_DB_NAME}            # Targeted Influx 3 database 
-      insecureConnection: true         # Critical: Instructs gRPC to bypass local TLS encryption
-      insecureGrpc: true               # This forces Grafana to drop TLS entirely over FlightSQL
-      tlsSkipVerify: true              # Standard fallback safety
+      version: "SQL"                   # Toggles native SQL processing language
+      dbName: ${PV_DB_NAME}            # Targeted database name
+      insecureGrpc: true               # CRUCIAL: Disables gRPC TLS wrapper enforcement
+      tlsSkipVerify: true              # Standard HTTP layer bypass fallback
+      httpHeaderName1: "Authorization"
     secureJsonData:
-      # InfluxDB 3's underlying engine requires the raw token passed to the standard core field
-      token: ${PV_DB_TOKEN}
+      token: ${PV_DB_TOKEN}            # Clear token value (now correctly prefixed with apiv3_)
+      httpHeaderValue1: "Bearer ${PV_DB_TOKEN}"
