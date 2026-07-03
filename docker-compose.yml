@@ -103,8 +103,12 @@ services:
       - WHITELIST=p_t_p,genlock,system
       - INFLUX_API=2
       - DB_NAME=${DB_NAME}
+      - DB_BUCKET=${DB_NAME}
       - DB_PORT=${DB_PORT}
       - DB_HOST=influxdb
       - DB_TOKEN=${DB_TOKEN}
+      - DB_ORG=${DB_ORG}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
       - VERBOSITY=1
       - MAX_MACHINES_PER_WORKER=4

@@ -4,12 +4,16 @@ datasources:
   - name: ${PV_DB_NAME}
     type: influxdb
     access: proxy
-    url: http://influxdb:8086
+    url: http://influxdb:8181          # Points to the InfluxDB 3 native listener 
     editable: true
     isDefault: true
     uid: "GIQf3g9MVz"
     jsonData:
-      version: InfluxQL 
-      database: ${PV_DB_NAME} 
+      version: "SQL"                   # Forces the driver to drop down to SQL
+      dbName: ${PV_DB_NAME}            # Targeted Influx 3 database 
+      insecureConnection: true         # Critical: Instructs gRPC to bypass local TLS encryption
+      insecureGrpc: true               # This forces Grafana to drop TLS entirely over FlightSQL
+      tlsSkipVerify: true              # Standard fallback safety
     secureJsonData:
-      password: ${PV_DB_TOKEN}
+      # InfluxDB 3's underlying engine requires the raw token passed to the standard core field
+      token: ${PV_DB_TOKEN}
