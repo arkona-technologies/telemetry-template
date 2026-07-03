@@ -5,6 +5,8 @@ ENV_FILE=".env"
 GRAFANA_DATA_DIR="./grafana/var"
 LOKI_DATA_DIR="./loki/data"
 ALLOY_DATA_DIR="./alloy/data"
+INFLUX_DIR="./influxdb3"
+INFLUX_DATA_DIR="./influxdb3/data"
 
 echo " 🚀 Starting Pre-flight check for Monitoring Stack..."
 
@@ -24,6 +26,12 @@ sed -i "/^ADM_GID=/d" $ENV_FILE 2>/dev/null || touch $ENV_FILE
 sed -i "/^JOURNAL_GID=/d" $ENV_FILE
 echo "ADM_GID=$ADM_GID" >> $ENV_FILE
 echo "JOURNAL_GID=$JOURNAL_GID" >> $ENV_FILE
+
+# Ensure local directories exist
+mkdir -p ./influxdb3/data
+mkdir -p ./influxdb3/auth
+chmod -R 775 $INFLUX_DIR
+chown -R 1500:1500 $INFLUX_DATA_DIR
 
 # 3. Fix permissions for Grafana
 echo " 🔒 Adjusting Grafana folder permissions..."

@@ -3,23 +3,28 @@ networks:
 
 services:
 # influxDB
-influxdb:
-    image: docker.io/influxdata/influxdb:3-core
+  influxdb:
+    image: influxdb:3-core
     restart: always
+    hostname: ${HOSTNAME:-telemetry-host}
     networks:
       - telemetry
     ports:
-      - '8086:8086'
+      - '8086:8181'
     volumes:
-      - ./influxdb3/data:/var/lib/influxdb3/data # Data/Parquet storage engine paths
-      - ./influxdb3/auth:/etc/influxdb3/auth:ro # Hosts the generated permission tokens file
+      - ./influxdb3/data:/root/.influxdb 
+      - ./influxdb3/auth:/etc/influxdb3/auth:ro
+    command:
+      - influxdb3
+      - serve
+      - --node-id=${HOSTNAME:-telemetry-node} # Interpolated by compose on the host side
+      - --object-store=file
+      - --data-dir=/var/lib/influxdb3/data
+      - --http-bind=0.0.0.0:8181
     environment:
-      - INFLUXDB3_OBJECT_STORE=file
-      - INFLUXDB3_DATA_DIR=/var/lib/influxdb3/data
-      - INFLUXDB3_HTTP_BIND_ADDR=0.0.0.0:8086
       - INFLUXDB3_PERMISSION_TOKENS_FILE=/etc/influxdb3/auth/tokens.json
-      # --- AUTO-CONFIG FOR THE CLI INTERNALLY ---
-      - INFLUX_HOST=http://localhost:8086
+      # CLI tools config
+      - INFLUX_HOST=http://localhost:8181
       - INFLUX_TOKEN=${DB_TOKEN}
       - INFLUX_DATABASE=${DB_NAME}
 # grafana
@@ -97,13 +102,9 @@ influxdb:
       - BLACKLIST=\.audio\.signals,\.output\.signals,\.user_labels,\.monitoring_objects\.audio,software_update,audio_source_slices,peak_meter
       - WHITELIST=p_t_p,genlock,system
       - INFLUX_API=2
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
       - DB_PORT=${DB_PORT}
       - DB_HOST=influxdb
-      - DB_BUCKET=${DB_NAME}
-      - DB_ORG=${DB_ORG}
       - DB_TOKEN=${DB_TOKEN}
       - VERBOSITY=1
       - MAX_MACHINES_PER_WORKER=4

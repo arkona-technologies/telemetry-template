@@ -38,8 +38,8 @@ ensure_docker_group(){
 }
 
 remove_directories(){
-  printf "${COLOR_GRAY}Remove local directories\n  - ./grafana/var\n  - ./influxdb2\n"
-  sudo rm -R ./influxdb2 > /dev/null
+  printf "${COLOR_GRAY}Remove local directories\n  - ./grafana/var\n  - ./influxdb3\n"
+  sudo rm -R ./influxdb3 > /dev/null
   sudo rm -R ./grafana/var > /dev/null
 }
 
