@@ -1,4 +1,4 @@
-apiVersion: 2
+apiVersion: 1
 
 datasources:
   - name: ${PV_DB_NAME}
@@ -7,12 +7,9 @@ datasources:
     url: http://influxdb:8086
     editable: true
     isDefault: true
-    user: ${PV_DB_USER}
     uid: "GIQf3g9MVz"
     jsonData:
-      dbName: ${PV_DB_NAME}
-      httpHeaderName1: "Authorization"
+      version: InfluxQL 
+      database: ${PV_DB_NAME} 
     secureJsonData:
-      # user: ${PV_DB_USER}
-      httpHeaderValue1: "Token ${PV_DB_TOKEN}"
-      password: ${PV_DB_PASSWORD}
+      password: ${PV_DB_TOKEN}
