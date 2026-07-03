@@ -75,6 +75,8 @@ services:
     ports:
       - "12345:12345"
       - "1514:1514"
+    networks:
+      - telemetry
     volumes:
       - /var/log:/var/log:ro
       - /run/log/journal:/run/log/journal:ro
