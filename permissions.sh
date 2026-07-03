@@ -30,8 +30,8 @@ echo "JOURNAL_GID=$JOURNAL_GID" >> $ENV_FILE
 # Ensure local directories exist
 mkdir -p ./influxdb3/data
 mkdir -p ./influxdb3/auth
-chmod -R 775 $INFLUX_DIR
-chown -R 1500:1500 $INFLUX_DATA_DIR
+sudo chmod -R 775 $INFLUX_DIR
+sudo chown -R 1500:1500 $INFLUX_DATA_DIR
 
 # 3. Fix permissions for Grafana
 echo " 🔒 Adjusting Grafana folder permissions..."

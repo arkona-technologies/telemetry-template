@@ -32,7 +32,7 @@ $CONTAINER_ENGINE compose -f docker-compose.yml down
 
 # Step 1: Generate a secure cryptographic string to act as the primary Read/Write token
 # (Equivalent to your old read-write auth create step)
-TOKEN=$(openssl rand -hex 32)
+TOKEN="apiv3_$(openssl rand -hex 32)"
 
 # Step 2: Write out InfluxDB 3's required tokens JSON permissions format
 # This explicitly grants our new token unlimited access to the targeted telemetry database

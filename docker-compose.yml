@@ -12,7 +12,7 @@ services:
     ports:
       - '8086:8181'
     volumes:
-      - ./influxdb3/data:/root/.influxdb 
+      - ./influxdb3/data:/var/lib/influxdb3/data 
       - ./influxdb3/auth:/etc/influxdb3/auth:ro
     command:
       - influxdb3
@@ -29,7 +29,7 @@ services:
       - INFLUX_DATABASE=${DB_NAME}
 # grafana
   grafana:
-    image: grafana/grafana-oss:12.4.2
+    image: grafana/grafana-oss:13.0.2
     restart: always
     networks:
       - telemetry
