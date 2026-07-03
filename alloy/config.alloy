@@ -1,0 +1,95 @@
+loki.source.file "system" {
+	targets = [{
+		__address__ = "localhost",
+		__path__    = "/var/log/*log",
+		job         = "varlogs",
+	}]
+	forward_to = [loki.write.default.receiver]
+
+	file_match {
+		enabled = true
+	}
+	legacy_positions_file = "/tmp/positions.yaml"
+}
+
+discovery.relabel "journal" {
+	targets = []
+
+	rule {
+		source_labels = ["__journal__systemd_unit"]
+		target_label  = "unit"
+	}
+
+	rule {
+		source_labels = ["__journal__hostname"]
+		target_label  = "hostname"
+	}
+}
+
+loki.source.journal "journal" {
+	max_age       = "12h0m0s"
+	path          = "/var/log/journal"
+	relabel_rules = discovery.relabel.journal.rules
+	forward_to    = [loki.write.default.receiver]
+	labels        = {
+		job = "systemd-journal",
+	}
+}
+
+discovery.relabel "syslog" {
+	targets = []
+
+	rule {
+		source_labels = ["__syslog_message_hostname"]
+		target_label  = "host"
+	}
+
+	rule {
+		source_labels = ["__syslog_message_hostname"]
+		target_label  = "hostname"
+	}
+
+	rule {
+		source_labels = ["__syslog_message_severity"]
+		target_label  = "level"
+	}
+
+	rule {
+		source_labels = ["__syslog_message_app_name"]
+		target_label  = "application"
+	}
+
+	rule {
+		source_labels = ["__syslog_message_facility"]
+		target_label  = "facility"
+	}
+
+	rule {
+		source_labels = ["__syslog_connection_hostname"]
+		target_label  = "connection_hostname"
+	}
+}
+
+loki.source.syslog "syslog" {
+	listener {
+		address               = "0.0.0.0:1514"
+		protocol              = "tcp"
+		idle_timeout          = "1m0s"
+		label_structured_data = true
+		labels                = {
+			job = "syslog",
+		}
+		max_message_length  = 0
+		udp_queue_size      = 0
+		udp_host_cache_size = 0
+	}
+	forward_to    = [loki.write.default.receiver]
+	relabel_rules = discovery.relabel.syslog.rules
+}
+
+loki.write "default" {
+	endpoint {
+		url = "http://loki:3100/loki/api/v1/push"
+	}
+	external_labels = {}
+}

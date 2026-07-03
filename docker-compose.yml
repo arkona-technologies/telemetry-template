@@ -56,7 +56,7 @@ services:
     restart: always
     user: "10001"
     ports:
-      - "3100:3100" #if changed, also change in loki&promtail configs
+      - "3100:3100" #if changed, also change in loki&alloy configs
     command: -config.file=/etc/loki/local-config.yaml -config.expand-env=true
     environment:
       - RETENTION_PERIOD=${RETENTION_PERIOD:-720h}
@@ -65,21 +65,27 @@ services:
       - ./loki/data:/loki
     networks:
       - telemetry
-# promtail for loki
-  promtail:
-    image: grafana/promtail:2.9.0
+# Grafana Alloy replacing Promtail
+  alloy:
+    image: grafana/alloy:v1.17.1 # Use the latest stable version
     restart: always
     group_add:
-      - '${ADM_GID:-4}'      # 'adm' group (Debian/Ubuntu /var/log access)
-      - '${JOURNAL_GID:-101}' # 'systemd-journal' group access
-    network_mode: host
+      - '${ADM_GID:-4}'       # 'adm' group
+      - '${JOURNAL_GID:-101}'  # 'systemd-journal' group
+    ports:
+      - "12345:12345"
+      - "1514:1514"
     volumes:
       - /var/log:/var/log:ro
       - /run/log/journal:/run/log/journal:ro
       - /var/log/journal:/var/log/journal:ro
-      - ./promtail/config.yml:/etc/promtail/config.yml:ro
-      - ./promtail/positions.yaml:/tmp/positions.yaml # Ensure file exists on host first
-    command: -config.file=/etc/promtail/config.yml
+      - ./alloy/config.alloy:/etc/alloy/config.alloy:ro
+      - ./alloy/data:/var/lib/alloy/data # Alloy's data/positions directory
+    command: 
+      - run 
+      - --server.http.listen-addr=0.0.0.0:12345 
+      - --storage.path=/var/lib/alloy/data 
+      - /etc/alloy/config.alloy
 # vtelemetry
   vtelemetry:
     image: arkonatechnologies/vtelemetry2

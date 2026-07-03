@@ -22,7 +22,7 @@
 - **Scalable Monitoring:** Monitor multiple BLADE//runner processors seamlessly with the scalability of containerized deployments.
 - **Added features in version 2:**
    - Using influxDB version ^2.7
-   - Setting up rsyslog, loki and promtail to provide syslog inspection via Grafana
+   - Setting up rsyslog, loki and alloy to provide syslog inspection via Grafana
 
 ## Prerequisites
 
@@ -76,7 +76,7 @@ You can install the package in different ways, depending on the use-case. The de
 5. Go to the main menu and select "Install"
 
    It will first look if docker or podman is available as a command. If not it will tell to install one of them via the wizard, when installed the command has to be run again.
-   If docker or podman is installed, the command will try to setup rsyslog first, so please provide the sudo password when asked. Afterwards it will run a setup instance of influxDB to provide the mandatory authorization token and finally start the telemetry service, InfluxDB, Loki, Promtail and Grafana in detached mode.
+   If docker or podman is installed, the command will try to setup rsyslog first, so please provide the sudo password when asked. Afterwards it will run a setup instance of influxDB to provide the mandatory authorization token and finally start the telemetry service, InfluxDB, Loki, Alloy and Grafana in detached mode.
 
 ![Stack Overview](.readme/whiptail.png)
 
@@ -100,7 +100,7 @@ graph LR
    grafana("Grafana")
    influxdb[("InfluxDB")]
    loki[("Loki")]
-   promtail("Promtail")
+   alloy("Alloy")
    vtel("V//telemetry")
    rsyslog("Rsyslog \n Collects data from host")
    blade1("AT300 #1")
@@ -121,9 +121,9 @@ graph LR
       
       vtel == pushes data to ==> influxdb
       influxdb == fetches data from ==> grafana
-      promtail == aggregates data from ==> loki
-      promtail 
-      rsyslog == forwards logs to ==> promtail
+      alloy == aggregates data from ==> loki
+      alloy 
+      rsyslog == forwards logs to ==> alloy
    end
 ``` -->
 
@@ -172,7 +172,7 @@ Bigger installations like __40__ blades or more** with the default configuration
 - [VTelemetry2](https://hub.docker.com/r/arkonatechnologies/vtelemetry2)
 - [InfluxDB](https://hub.docker.com/_/influxdb)
 - [Grafana-OSS](https://hub.docker.com/r/grafana/grafana-oss)
-- [Loki, Promtail](https://grafana.com/docs/loki/latest/send-data/promtail/)
+- [Loki, Alloy](https://grafana.com/docs/loki/latest/send-data/alloy/)
 - [Rsyslog](https://www.rsyslog.com/doc/index.html)
 - [Docker](https://www.docker.com/)
 

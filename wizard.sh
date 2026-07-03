@@ -193,7 +193,7 @@ edit_config() {
   CHOICE=$($WIZARD --title "Telemetry" --menu "Choose config file to edit:" 15 60 4 \
     "1" "docker compose" \
     "2" ".env" \
-    "3" "promtail" \
+    "3" "alloy" \
     "b" "Back" 3>&1 1>&2 2>&3)
 
   exitstatus=$?
@@ -211,7 +211,7 @@ edit_config() {
           ;;
         "3")
           determine_editor
-          $EDITOR promtail/config.yml
+          $EDITOR alloy/config.alloy
           edit_config
           ;;
         *)
