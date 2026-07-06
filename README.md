@@ -1,13 +1,12 @@
 ![Telemetry Logo](.readme/blade-runner.png)
 
-# Arkona Technologies Telemetry Template (version 2)
+# Arkona Technologies Telemetry Template (version 3)
 
 **NOTE !! Please read through the [prerequisites](#prerequisites) and [hardware recommendations](#hardware-recommendations) first !!**
 
 **NOTE !! Default retention policy is SEVEN DAYS !!**
 - You can edit that in the .env files "DB_RETENTION"
-
-
+- InfluxDB3 core does NOT ALLOW changing retention policies afterwards, those are set on database creation
 
 ## Overview
 
@@ -20,9 +19,8 @@
 - **Integrated Database:** The setup provisions InfluxDB, a powerful and efficient time-series database, for storing telemetry data.
 - **Visualization with Grafana:** Grafana is included in the setup, providing a user-friendly interface for visualizing and analyzing telemetry data.
 - **Scalable Monitoring:** Monitor multiple BLADE//runner processors seamlessly with the scalability of containerized deployments.
-- **Added features in version 2:**
-   - Using influxDB version ^2.7
-   - Setting up rsyslog, loki and alloy to provide syslog inspection via Grafana
+- **Added features in version 3 vs 2:**
+   - Using influxDB version ^3.10
 
 ## Prerequisites
 
@@ -49,7 +47,7 @@ You can install the package in different ways, depending on the use-case. The de
 1. Clone this repository to your local machine:
 
    ```bash
-   git clone https://github.com/arkona-technologies/telemetry-template.git
+   git clone https://github.com/arkona-technologies/telemetry-template/tree/v3.git
    ```
 
 2. Go into the telemetry-template directory and open the wizard with `./wizard.sh`
@@ -78,7 +76,7 @@ You can install the package in different ways, depending on the use-case. The de
    It will first look if docker or podman is available as a command. If not it will tell to install one of them via the wizard, when installed the command has to be run again.
    If docker or podman is installed, the command will try to setup rsyslog first, so please provide the sudo password when asked. Afterwards it will run a setup instance of influxDB to provide the mandatory authorization token and finally start the telemetry service, InfluxDB, Loki, Alloy and Grafana in detached mode.
 
-![Stack Overview](.readme/whiptail.png)
+![Stack Overview - Note: in this version, promtail is replaced by alloy and influx is of version 3](.readme/whiptail.png)
 
 >The wizard tries to enable a simple setup on a variety of systems, so if you run into issues, please provide feedback on which system you had trouble. Besides providing some overview it tries to cover essential setup steps like installing a missing docker or podman installation, setting lingering for users and more.
 
@@ -132,8 +130,6 @@ graph LR
 - Filtered / Sorted Logging of all devices that are logging to the telemetry stack with Loki
 - Flexible alarming system with Grafana
 - Shareable and embeddable dashboards
-   - e.g. to display in a manifold multiviewer head
-      - currently you're bound to grafana version 9 for that, soon will be updated to support latest grafana versions
 - BLADE//runner specific images for use in grafana canvas panels, to use those, execute:
 
    `ls ./grafana/images/* | xargs -I {} docker cp {} telemetry-template-grafana-1:/usr/share/grafana/public/img/icons/iot/`
@@ -142,7 +138,9 @@ graph LR
 
 ## Optional configuration
 
-- [Downsampling data in influxDB > v1](.readme/optional-configuration.md#-Downsampling-data)
+NOTE: The credential system for influx3 has changed, but data ingestion is compatible to v2, though there is only a token, user, password, organization are just being ignored.
+
+<!-- - [Downsampling data in influxDB > v1](.readme/optional-configuration.md#-Downsampling-data) -->
 - [Monitor Arista switches](.readme/arista.md)
 - [Monitor manifold](.readme/manifold.md)
 - [Triggering GPO with GET requests via Grafana](https://github.com/Grimmoth/grafanaGETbridge/tree/main)
@@ -150,7 +148,12 @@ graph LR
 
 ## Influx commands
 
-- [Export/Import some data from a database (NOT the whole database)](.readme/optional-configuration.md#-Export-Import-some-data-from-a-database-NOT-the-whole-database)
+- [Querying with CLI (and export)](https://docs.influxdata.com/influxdb3/core/query-data/execute-queries/influxdb3-cli/)
+- [Writing with CLI (and import)](https://docs.influxdata.com/influxdb3/core/get-started/write/#write-data-using-the-cli)
+   - to be able to read the file, move it into `<telemetry-template>/influxdb3/data/` on the host
+   - using the cli in the influx container, the file path will be mounted on `/home/influxdb3/.influxdb3`
+   - influx uses 1500:1500 permissions 
+- [Write data with telegraf (from csv file)](https://docs.influxdata.com/influxdb3/core/write-data/use-telegraf/csv/)
 
 # Hardware recommendations
 
