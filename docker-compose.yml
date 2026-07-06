@@ -24,9 +24,9 @@ services:
       - --http-bind=0.0.0.0:8181
     environment:
       - INFLUXDB3_ADMIN_TOKEN_FILE=/etc/influxdb3/auth/admin-token.json
-      - INFLUX_HOST=http://localhost:8181
-      - INFLUX_TOKEN=${DB_TOKEN}
-      - INFLUX_DATABASE=${DB_NAME}
+      - INFLUXDB3_HOST=http://localhost:8181
+      - INFLUXDB3_AUTH_TOKEN=${DB_TOKEN}
+      - INFLUXDB3_DATABASE=${DB_NAME}
 # grafana
   grafana:
     image: grafana/grafana-oss:13.0.2
