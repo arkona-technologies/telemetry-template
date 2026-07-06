@@ -5,7 +5,7 @@ set +o allexport
 PODMAN=$(which podman)
 DOCKER=$(which docker)
 NO_SYSLOG=$1
-
+CONTAINER_ENGINE=$(which podman||which docker)
 if [[ -z "$PODMAN" && -z "$DOCKER" ]]; then
   printf "${COLOR_LIGHT_RED}Neither docker or podman have been found, you can install it with the wizard:\n${COLOR_LIGHT_GRAY}Select 'Check/Install docker' or 'Check/Install podman' to install one of them if not found"
   exit 1
@@ -38,7 +38,8 @@ ensure_docker_group(){
 }
 
 remove_directories(){
-  printf "${COLOR_GRAY}Remove local directories\n  - ./grafana/var\n  - ./influxdb3\n"
+  printf "${COLOR_GRAY}Stopping containers\nRemove local directories\n  - ./grafana/var\n  - ./influxdb3\n"
+  $CONTAINER_ENGINE compose down --remove-orphans
   sudo rm -R ./influxdb3 > /dev/null
   sudo rm -R ./grafana/var > /dev/null
 }

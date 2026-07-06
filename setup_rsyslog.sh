@@ -24,8 +24,8 @@ replace_module='module(load="imudp")'
 replace_input='input(type="imudp" port="514")'
 
 
-sed -i "s|$search_module|$replace_module|g" "$RSYSLOG" >/dev/null
-sed -i "s|$search_input|$replace_input|g" "$RSYSLOG" >/dev/null
+sed -i "s|$search_module|$replace_module|g" "$RSYSLOG" > /dev/null
+sed -i "s|$search_input|$replace_input|g" "$RSYSLOG" > /dev/null
 # Search for the string in the file
 if ! grep -q "$SEARCH_STRING" "$RSYSLOG"; then
   printf "${COLOR_LIGHT_BLUE}[Rsyslog]${COLOR_NC} Adding forwarding rule to rsyslog config.\n"

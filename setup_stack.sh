@@ -21,10 +21,10 @@ replace_text="HOSTNAME=$HOSTNAME"
 if [ -n "$search_text" ]; then
   sed -i "s|$search_text|$replace_text|g" ".env"
 else
-  echo "HOSTNAME=$HOSTNAME" >> ".env"
+  printf "HOSTNAME=$HOSTNAME" >> ".env"
 fi
 
-printf  "${COLOR_LIGHT_BLUE}[InfluxDB]${COLOR_NC} Setting up influxDB database ${COLOR_LIGHT_RED}$DB_NAME${COLOR_NC} and token\n"
+printf  "${COLOR_LIGHT_BLUE}[InfluxDB]${COLOR_NC} Setting up telemetry strack\n"
 
 $CONTAINER_ENGINE compose down --remove-orphans
 
@@ -53,72 +53,66 @@ replace_text="DB_TOKEN=$TOKEN"
 if [ -n "$search_text" ]; then
   sed -i "s|$search_text|$replace_text|g" ".env"
 else
-  echo "DB_TOKEN=$TOKEN" >> ".env"
+  printf "DB_TOKEN=$TOKEN" >> ".env"
 fi
 
 printf "Your InfluxDB 3 read-write token has been generated: ${COLOR_LIGHT_RED}${TOKEN}${COLOR_NC}\n"
 printf "Token configuration successfully written to ./influxdb3/auth/permissions.json\n"
-printf "To see, how you can generate additional non-admin tokens, execute:\n ${COLOR_WHITE} \"docker exec -it <influxdb-container> influxdb3 create token --help\"${COLOR_NC}\n"
 printf "Start container stack via docker-compose now.\n"
 
 set -o allexport
 source .env
 set +o allexport
 
-$CONTAINER_ENGINE compose --env-file .env -f docker-compose.yml up -d
+$CONTAINER_ENGINE compose --env-file .env -f docker-compose.yml up -d --wait
 
-dbgrep=$(docker exec influxdb influxdb3 show databases | grep -i $DB_NAME)
+# printf "\n  Execute ${COLOR_WHITE} \"$CONTAINER_ENGINE exec influxdb influxdb3 create database --retention-period $DB_RETENTION $DB_NAME\"\n ${COLOR_NC} to create the database"
 
-if [ -n "$dbgrep" ]; then
+printf "\nTrying to create database...$DB_NAME with retention period $DB_RETENTION"
+sleep 2
 
-  echo "--------------------------------------------------------"
-  echo "${COLOR_LIGHT_GREEN}Database $DB_NAME created succesfully${COLOR_NC}"
-  echo "--------------------------------------------------------"
-
-else
-    echo "--------------------------------------------------------"
-    echo "${COLOR_LIGHT_RED}WARNING${COLOR_NC}: Database $DB_NAME has not been found"
-    echo "Either creation of database failed or the influxdb3 cli command failed."
-    echo "If the database exists, it should be enlisted using the following command:"
-    echo "  ${COLOR_WHITE}$CONTAINER_ENGINE exec influxdb influxdb3 show databases${COLOR_NC}"
-    echo "--------------------------------------------------------"
-  # Attempt counter
-  max_attempts=4
-  attempt=1
-  success=false
-
-  while [ $attempt -le $max_attempts ]; do
-    echo "Checking InfluxDB status (Attempt $attempt of $max_attempts)..."
-    running=$($CONTAINER_ENGINE inspect -f '{{.State.Status}}' influxdb 2>/dev/null)
-
-    if [ "$running" = "running" ]; then
-      echo "InfluxDB container is running. Executing database creation..."
-
-      if $CONTAINER_ENGINE exec influxdb influxdb3 create database --retention-period "$DB_RETENTION" "$DB_NAME"; then
+# Attempt counter
+max_attempts=4
+attempt=1
+success=false
+while [ $attempt -le $max_attempts ]; do
+  printf "\nChecking InfluxDB status (Attempt $attempt of $max_attempts)..."
+  running=$($CONTAINER_ENGINE inspect -f '{{.State.Status}}' influxdb 2>/dev/null)
+  if [ "$running" = "running" ]; then
+    printf "\nInfluxDB container is running. Executing database creation..."
+    dbgrep=$($CONTAINER_ENGINE exec influxdb influxdb3 show databases | grep -i $DB_NAME)
+    if [ -n "$dbgrep" ]; then
+      success=true
+      printf "\n    --------------------------------------------------------"
+      printf "\n    ${COLOR_LIGHT_GREEN}Database $DB_NAME created succesfully${COLOR_NC}"
+      printf "\n    --------------------------------------------------------\n"
+      break
+    else
+      if $CONTAINER_ENGINE exec influxdb influxdb3 create database --retention-period $DB_RETENTION "$DB_NAME"; then
+        printf "\n    --------------------------------------------------------"
+        printf "\n    ${COLOR_LIGHT_GREEN}Database $DB_NAME created succesfully${COLOR_NC}"
+        printf "\n    --------------------------------------------------------\n"
+        printf "To see how you can generate additional databases and non-admin tokens, execute:\n ${COLOR_WHITE} \"  docker exec influxdb influxdb3 create --help\"${COLOR_NC}\n"
         success=true
         break
       else
-        echo "Execution failed. Database might still be initializing."
+        printf "\n${COLOR_YELLOW}Execution failed. Database might still be initializing.${COLOR_NC}\n"
       fi
-    else
-      echo "Container state is: ${running:-stopped/not found}."
     fi
-
-    if [ $attempt -lt $max_attempts ]; then
-      echo "Waiting 5 seconds before retrying..."
-      sleep 5
-    fi
-    attempt=$((attempt + 1))
-  done
-
-
-  if [ "$success" = false ]; then
-    echo "--------------------------------------------------------"
-    echo "${COLOR_LIGHT_RED}WARNING${COLOR_NC}: Automatic database provisioning timed out."
-    echo "You can manually initialize it later by running:"
-    echo ""
-    echo "  $CONTAINER_ENGINE exec influxdb influxdb3 create database --retention-period $DB_RETENTION $DB_NAME"
-    echo "--------------------------------------------------------"
+  else
+    printf "Container state is: ${running:-stopped/not found}."
   fi
-
+  if [ $attempt -lt $max_attempts ]; then
+    printf "Waiting 5 seconds before retrying..."
+    sleep 5
+  fi
+  attempt=$((attempt + 1))
+done
+if [ "$success" = false ]; then
+  printf "\n    --------------------------------------------------------"
+  printf "\n    ${COLOR_LIGHT_RED}WARNING${COLOR_NC}: Automatic database provisioning timed out."
+  printf "\n    You can manually initialize it later by running:"
+  printf "\n    "
+  printf "\n      $CONTAINER_ENGINE exec influxdb influxdb3 create database --retention-period $DB_RETENTION $DB_NAME"
+  printf "\n    --------------------------------------------------------\n"
 fi
