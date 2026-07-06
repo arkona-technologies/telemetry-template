@@ -58,7 +58,7 @@ fi
 
 printf "Your InfluxDB 3 read-write token has been generated: ${COLOR_LIGHT_RED}${TOKEN}${COLOR_NC}\n"
 printf "Token configuration successfully written to ./influxdb3/auth/permissions.json\n"
-printf "To see, how you can generate additional non-admin tokens, execute:\n \"docker exec -it <influxdb-container> influxdb3 create token --help\"\n"
+printf "To see, how you can generate additional non-admin tokens, execute:\n ${COLOR_WHITE} \"docker exec -it <influxdb-container> influxdb3 create token --help\"${COLOR_NC}\n"
 printf "Start container stack via docker-compose now.\n"
 
 set -o allexport
@@ -67,41 +67,58 @@ set +o allexport
 
 $CONTAINER_ENGINE compose --env-file .env -f docker-compose.yml up -d
 
-# Attempt counter
-max_attempts=4
-attempt=1
-success=false
+dbgrep=$(docker exec influxdb influxdb3 show databases | grep -i $DB_NAME)
 
-while [ $attempt -le $max_attempts ]; do
-  echo "Checking InfluxDB status (Attempt $attempt of $max_attempts)..."
-  running=$($CONTAINER_ENGINE inspect -f '{{.State.Status}}' influxdb 2>/dev/null)
+if [ -n "$dbgrep" ]; then
 
-  if [ "$running" = "running" ]; then
-    echo "InfluxDB container is running. Executing database creation..."
+  echo "--------------------------------------------------------"
+  echo "${COLOR_LIGHT_GREEN}Database $DB_NAME created succesfully${COLOR_NC}"
+  echo "--------------------------------------------------------"
 
-    if $CONTAINER_ENGINE exec influxdb influxdb3 create database --retention-period "$DB_RETENTION" "$DB_NAME"; then
-      success=true
-      break
+else
+    echo "--------------------------------------------------------"
+    echo "${COLOR_LIGHT_RED}WARNING${COLOR_NC}: Database $DB_NAME has not been found"
+    echo "Either creation of database failed or the influxdb3 cli command failed."
+    echo "If the database exists, it should be enlisted using the following command:"
+    echo "  ${COLOR_WHITE}$CONTAINER_ENGINE exec influxdb influxdb3 show databases${COLOR_NC}"
+    echo "--------------------------------------------------------"
+  # Attempt counter
+  max_attempts=4
+  attempt=1
+  success=false
+
+  while [ $attempt -le $max_attempts ]; do
+    echo "Checking InfluxDB status (Attempt $attempt of $max_attempts)..."
+    running=$($CONTAINER_ENGINE inspect -f '{{.State.Status}}' influxdb 2>/dev/null)
+
+    if [ "$running" = "running" ]; then
+      echo "InfluxDB container is running. Executing database creation..."
+
+      if $CONTAINER_ENGINE exec influxdb influxdb3 create database --retention-period "$DB_RETENTION" "$DB_NAME"; then
+        success=true
+        break
+      else
+        echo "Execution failed. Database might still be initializing."
+      fi
     else
-      echo "Execution failed. Database might still be initializing."
+      echo "Container state is: ${running:-stopped/not found}."
     fi
-  else
-    echo "Container state is: ${running:-stopped/not found}."
+
+    if [ $attempt -lt $max_attempts ]; then
+      echo "Waiting 5 seconds before retrying..."
+      sleep 5
+    fi
+    attempt=$((attempt + 1))
+  done
+
+
+  if [ "$success" = false ]; then
+    echo "--------------------------------------------------------"
+    echo "${COLOR_LIGHT_RED}WARNING${COLOR_NC}: Automatic database provisioning timed out."
+    echo "You can manually initialize it later by running:"
+    echo ""
+    echo "  $CONTAINER_ENGINE exec influxdb influxdb3 create database --retention-period $DB_RETENTION $DB_NAME"
+    echo "--------------------------------------------------------"
   fi
 
-  if [ $attempt -lt $max_attempts ]; then
-    echo "Waiting 5 seconds before retrying..."
-    sleep 5
-  fi
-  attempt=$((attempt + 1))
-done
-
-
-if [ "$success" = false ]; then
-  echo "--------------------------------------------------------"
-  echo "WARNING: Automatic database provisioning timed out."
-  echo "You can manually initialize it later by running:"
-  echo ""
-  echo "  $CONTAINER_ENGINE exec influxdb influxdb3 create database --retention-period $DB_RETENTION $DB_NAME"
-  echo "--------------------------------------------------------"
 fi
