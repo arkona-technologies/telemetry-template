@@ -95,7 +95,7 @@ services:
 # vtelemetry
   vtelemetry:
     image: arkonatechnologies/vtelemetry2
-    container_name: vtel
+    container_name: vtelemetry
     restart: always
     networks:
       - telemetry

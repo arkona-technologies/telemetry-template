@@ -79,7 +79,7 @@ while [ $attempt -le $max_attempts ]; do
   if [ "$running" = "running" ]; then
     echo "InfluxDB container is running. Executing database creation..."
 
-    if $CONTAINER_ENGINE exec influxdb influxdb3 create database --retention-period "$DB_RETENTION" "$DB_NAME" --token "$TOKEN"; then
+    if $CONTAINER_ENGINE exec influxdb influxdb3 create database --retention-period "$DB_RETENTION" "$DB_NAME"; then
       success=true
       break
     else
@@ -102,6 +102,6 @@ if [ "$success" = false ]; then
   echo "WARNING: Automatic database provisioning timed out."
   echo "You can manually initialize it later by running:"
   echo ""
-  echo "  $CONTAINER_ENGINE exec influxdb influxdb3 create database $DB_NAME --token $TOKEN"
+  echo "  $CONTAINER_ENGINE exec influxdb influxdb3 create database --retention-period $DB_RETENTION $DB_NAME"
   echo "--------------------------------------------------------"
 fi
