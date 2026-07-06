@@ -79,7 +79,7 @@ while [ $attempt -le $max_attempts ]; do
   if [ "$running" = "running" ]; then
     echo "InfluxDB container is running. Executing database creation..."
 
-    if $CONTAINER_ENGINE exec influxdb influxdb3 create database "$DB_NAME" --token "$TOKEN"; then
+    if $CONTAINER_ENGINE exec influxdb influxdb3 create database --retention-period "$DB_RETENTION" "$DB_NAME" --token "$TOKEN"; then
       success=true
       break
     else
