@@ -69,7 +69,7 @@ services:
       - ./loki/data:/loki
     networks:
       - telemetry
-# Grafana Alloy replacing Promtail
+# Grafana Alloy
   alloy:
     image: grafana/alloy:v1.17.1 # Use the latest stable version
     container_name: alloy
@@ -78,8 +78,8 @@ services:
       - '${ADM_GID:-4}'       # 'adm' group
       - '${JOURNAL_GID:-101}'  # 'systemd-journal' group
     ports:
-      - "12345:12345"
       - "1514:1514"
+      # - "12345:12345"                             # optional debug UI
     volumes:
       - /var/log:/var/log:ro
       - /run/log/journal:/run/log/journal:ro
@@ -104,7 +104,7 @@ services:
       - MACHINES=${BLADES}
       - BLACKLIST=\.audio\.signals,\.output\.signals,\.user_labels,\.monitoring_objects\.audio,software_update,audio_source_slices,peak_meter
       - WHITELIST=p_t_p,genlock,system
-      - INFLUX_API=2
+      - INFLUX_API=2                                        # 1 | 2
       - DB_NAME=${DB_NAME}
       - DB_BUCKET=${DB_NAME}
       - DB_PORT=${DB_PORT}
@@ -113,5 +113,12 @@ services:
       - DB_ORG=${DB_ORG}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
-      - VERBOSITY=1
+      - VERBOSITY=1                                         # 1 | 2 | 3
       - MAX_MACHINES_PER_WORKER=4
+      # - POLL=nothing # nothing | non-floats | everything  # default nothing       
+      # - POLL_INTERVAL_MS=5000                             # default 100           
+      # - SUBMISSION_TIMEOUT_MS=15000                       # default 15000         
+      # - SENDS_PER_POLL=100                                # default 100           
+      # - DEBOUNCE_MS=1000                                  # default 1000          
+      # - MIN_DEBOUNCE_MS=100                               # default 100           
+      # - MAX_DEBOUNCE_MS=60000                             # default 60000         

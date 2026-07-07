@@ -66,9 +66,9 @@ set +o allexport
 
 $CONTAINER_ENGINE compose --env-file .env -f docker-compose.yml up -d --wait
 
-# printf "\n  Execute ${COLOR_WHITE} \"$CONTAINER_ENGINE exec influxdb influxdb3 create database --retention-period $DB_RETENTION $DB_NAME\"\n ${COLOR_NC} to create the database"
+# printf "\n  Execute ${COLOR_WHITE} \"$CONTAINER_ENGINE exec influxdb influxdb3 create database --retention-period $RETENTION_PERIOD $DB_NAME\"\n ${COLOR_NC} to create the database"
 
-printf "\nTrying to create database...$DB_NAME with retention period $DB_RETENTION"
+printf "\nTrying to create database...$DB_NAME with retention period $RETENTION_PERIOD"
 sleep 2
 
 # Attempt counter
@@ -88,7 +88,7 @@ while [ $attempt -le $max_attempts ]; do
       printf "\n    --------------------------------------------------------\n"
       break
     else
-      if $CONTAINER_ENGINE exec influxdb influxdb3 create database --retention-period $DB_RETENTION "$DB_NAME"; then
+      if $CONTAINER_ENGINE exec influxdb influxdb3 create database --retention-period $RETENTION_PERIOD "$DB_NAME"; then
         printf "\n    --------------------------------------------------------"
         printf "\n    ${COLOR_LIGHT_GREEN}Database $DB_NAME created succesfully${COLOR_NC}"
         printf "\n    --------------------------------------------------------\n"
@@ -113,6 +113,6 @@ if [ "$success" = false ]; then
   printf "\n    ${COLOR_LIGHT_RED}WARNING${COLOR_NC}: Automatic database provisioning timed out."
   printf "\n    You can manually initialize it later by running:"
   printf "\n    "
-  printf "\n      $CONTAINER_ENGINE exec influxdb influxdb3 create database --retention-period $DB_RETENTION $DB_NAME"
+  printf "\n      $CONTAINER_ENGINE exec influxdb influxdb3 create database --retention-period $RETENTION_PERIOD $DB_NAME"
   printf "\n    --------------------------------------------------------\n"
 fi

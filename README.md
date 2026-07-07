@@ -5,7 +5,7 @@
 **NOTE !! Please read through the [prerequisites](#prerequisites) and [hardware recommendations](#hardware-recommendations) first !!**
 
 **NOTE !! Default retention policy is SEVEN DAYS !!**
-- You can edit that in the .env files "DB_RETENTION"
+- You can edit that in the .env files "RETENTION_PERIOD"
 - InfluxDB3 core does NOT ALLOW changing retention policies afterwards, those are set on database creation
 
 ## Overview
@@ -64,7 +64,7 @@ You can install the package in different ways, depending on the use-case. The de
    DB_USER=arkona
    DB_PORT=8086
    DB_ORG=arkona
-   DB_RETENTION=7d # can be n d/w (days/weeks)
+   RETENTION_PERIOD=7d # can be n d/w (days/weeks)
    DB_TOKEN=
 
    GRAFANA_USER=arkona
