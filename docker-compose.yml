@@ -74,6 +74,8 @@ services:
     image: grafana/alloy:v1.17.1 # Use the latest stable version
     container_name: alloy
     restart: always
+    networks:
+      - telemetry
     group_add:
       - '${ADM_GID:-4}'       # 'adm' group
       - '${JOURNAL_GID:-101}'  # 'systemd-journal' group
