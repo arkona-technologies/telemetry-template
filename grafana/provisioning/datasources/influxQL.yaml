@@ -1,0 +1,19 @@
+apiVersion: 1
+
+datasources:
+  - name: "${PV_DB_NAME} InfluxQL"
+    type: influxdb
+    access: proxy
+    url: http://influxdb:8181          # Standard container-to-container port for Influx 3
+    editable: true
+    isDefault: false
+    uid: "influx3-influxql"
+    jsonData:
+      version: "InfluxQL"                   # Toggles native SQL processing language
+      dbName: ${PV_DB_NAME}            # Targeted database name
+      httpMode: "POST"                 # Crucial: Maps InfluxQL requests to correct API verbs
+      tlsSkipVerify: true
+      httpHeaderName1: "Authorization"
+    secureJsonData:
+      token: ${PV_DB_TOKEN}            # Clear token value (now correctly prefixed with apiv3_)
+      httpHeaderValue1: "Bearer ${PV_DB_TOKEN}"
