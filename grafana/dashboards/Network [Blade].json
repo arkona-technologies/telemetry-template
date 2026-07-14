@@ -31,7 +31,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -95,7 +95,7 @@
 					"alias": "link_up (port $tag_ports)",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -131,7 +131,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -209,7 +209,7 @@
 					"alias": "Genlock $tag_ip #$tag_instances",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -249,7 +249,7 @@
 					"alias": "PTP Clock $tag_ip",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -286,7 +286,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -367,7 +367,7 @@
 					"alias": "TX_ST {Ports: $tag_ports}",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -415,7 +415,7 @@
 					"alias": "link_up_changed_count {Ports: $tag_ports}",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -461,7 +461,7 @@
 					"alias": "TX_ST",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -508,7 +508,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -593,7 +593,7 @@
 					"alias": "RX_ST {Ports: $tag_ports}",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -641,7 +641,7 @@
 					"alias": "link_up_changed_count {Ports: $tag_ports}",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -690,7 +690,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -774,7 +774,7 @@
 					"alias": "$tag_ip",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -826,7 +826,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -918,7 +918,7 @@
 					"alias": "$tag_ip",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -962,7 +962,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -1050,7 +1050,7 @@
 					"alias": "$tag_ip",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -1096,7 +1096,7 @@
 					"alias": "$tag_ip",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -1163,7 +1163,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -1247,7 +1247,7 @@
 					"alias": "$tag_ip",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -1297,7 +1297,7 @@
 					"alias": "$tag_ip",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -1507,7 +1507,7 @@
 				},
 				"datasource": {
 					"type": "influxdb",
-					"uid": "GIQf3g9MVz"
+					"uid": "influx3-influxql"
 				},
 				"definition": "SHOW TAG VALUES  WITH KEY = \"ip\" ",
 				"hide": 0,

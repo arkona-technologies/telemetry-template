@@ -115,10 +115,12 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - VERBOSITY=1                                         # 1 | 2 | 3
       - MAX_MACHINES_PER_WORKER=4
-      # - POLL=nothing # nothing | non-floats | everything  # default nothing       
-      # - POLL_INTERVAL_MS=5000                             # default 100           
+      - POLL=non-floats # nothing | non-floats | everything  # default nothing       
+      - POLL_INTERVAL_MS=30000                             # default 100           
       # - SUBMISSION_TIMEOUT_MS=15000                       # default 15000         
       # - SENDS_PER_POLL=100                                # default 100           
       # - DEBOUNCE_MS=1000                                  # default 1000          
       # - MIN_DEBOUNCE_MS=100                               # default 100           
       # - MAX_DEBOUNCE_MS=60000                             # default 60000         
+      # - VAPI_USER=                                        #
+      # - VAPI_PASSWORD=                                    #

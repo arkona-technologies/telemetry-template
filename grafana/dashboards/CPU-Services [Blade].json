@@ -74,7 +74,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -129,7 +129,7 @@
 				{
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -169,7 +169,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -233,7 +233,7 @@
 					"alias": "sys1",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -266,7 +266,7 @@
 					"alias": "sys0",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -300,7 +300,7 @@
 					"alias": "boot",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -337,7 +337,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"fieldConfig": {
 				"defaults": {
@@ -422,7 +422,7 @@
 					"alias": "Freeram ",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -468,7 +468,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"fieldConfig": {
 				"defaults": {
@@ -553,7 +553,7 @@
 					"alias": "Load_avg",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -598,7 +598,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -685,7 +685,7 @@
 					"alias": "",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -731,7 +731,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -820,7 +820,7 @@
 					"alias": "",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -873,7 +873,7 @@
 				"current": {},
 				"datasource": {
 					"type": "influxdb",
-					"uid": "GIQf3g9MVz"
+					"uid": "influx3-influxql"
 				},
 				"definition": "show tag values with key=\"ip\"",
 				"hide": 0,

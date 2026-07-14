@@ -57,7 +57,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -142,7 +142,7 @@
 					"alias": "$tag_ip tx_all_streams",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -188,7 +188,7 @@
 					"alias": "$tag_ip tx_frame_octetsok",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -263,7 +263,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -348,7 +348,7 @@
 					"alias": "$tag_ip",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -394,7 +394,7 @@
 					"alias": "$tag_ip",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -443,7 +443,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -513,7 +513,7 @@
 					"alias": "$tag_ip",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -550,7 +550,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -620,7 +620,7 @@
 					"alias": "$tag_ip",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -743,7 +743,7 @@
 				},
 				"datasource": {
 					"type": "influxdb",
-					"uid": "GIQf3g9MVz"
+					"uid": "influx3-influxql"
 				},
 				"definition": "show tag values with key=\"ip\"",
 				"hide": 0,

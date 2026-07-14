@@ -31,7 +31,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -109,7 +109,7 @@
 					"alias": "Genlock $tag_ip #$tag_instances",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -149,7 +149,7 @@
 					"alias": "PTP Clock $tag_ip",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -186,7 +186,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "don't try to interpret these curves, this panel is just meant to check whether we've lost the GPS signal",
 			"fieldConfig": {
@@ -356,7 +356,7 @@
 					"alias": "minutes $tag_ip/$tag_gps_receivers",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -406,7 +406,7 @@
 					"alias": "seconds $tag_ip/$tag_gps_receivers",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -459,7 +459,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -543,7 +543,7 @@
 					"alias": "$tag_ip",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -595,7 +595,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -681,7 +681,7 @@
 					"alias": " Agent $tag_agents @ $tag_ip",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -744,7 +744,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -832,7 +832,7 @@
 					"alias": "$tag_ip/agent $tag_agents",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -885,7 +885,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -973,7 +973,7 @@
 					"alias": "syncs received $tag_ip/agent $tag_agents",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -1021,7 +1021,7 @@
 					"alias": "num sync $tag_ip/agent $tag_agents",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -1069,7 +1069,7 @@
 					"alias": "num delayres rec $tag_ip/agent $tag_agents",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -1117,7 +1117,7 @@
 					"alias": "num delay $tag_ip/agent $tag_agents",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -1168,7 +1168,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -1255,7 +1255,7 @@
 					"alias": "syncs received $tag_ip/agent $tag_agents",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -1311,7 +1311,7 @@
 					"alias": "num syncs $tag_ip/agent $tag_agents",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -1367,7 +1367,7 @@
 					"alias": "num delayres received $tag_ip/agent $tag_agents",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -1438,7 +1438,7 @@
 				},
 				"datasource": {
 					"type": "influxdb",
-					"uid": "GIQf3g9MVz"
+					"uid": "influx3-influxql"
 				},
 				"definition": "SHOW TAG VALUES with key=\"ip\"",
 				"description": "Machines listed in InfluxDB",
@@ -1462,7 +1462,7 @@
 				},
 				"datasource": {
 					"type": "influxdb",
-					"uid": "GIQf3g9MVz"
+					"uid": "influx3-influxql"
 				},
 				"definition": "SHOW TAG VALUES with key=\"agents\"",
 				"description": "agents listed in InfluxDB",

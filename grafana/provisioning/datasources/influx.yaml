@@ -7,7 +7,7 @@ datasources:
     url: http://influxdb:8181          # Standard container-to-container port for Influx 3
     editable: true
     isDefault: true
-    uid: "GIQf3g9MVz"
+    uid: "influx3-flightsql"
     jsonData:
       version: "SQL"                   # Toggles native SQL processing language
       dbName: ${PV_DB_NAME}            # Targeted database name

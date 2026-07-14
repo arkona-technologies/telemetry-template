@@ -32,7 +32,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"fieldConfig": {
 				"defaults": {
@@ -95,7 +95,7 @@
 					"alias": " video $tag_video_receivers",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -132,7 +132,7 @@
 					"alias": "audio $tag_audio_receivers",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -173,7 +173,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -265,7 +265,7 @@
 					"alias": "$tag_input",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -306,7 +306,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -398,7 +398,7 @@
 					"alias": "$tag_output",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -439,7 +439,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -617,7 +617,7 @@
 					"alias": "$tag_ip $tag_video_transmitters",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -657,7 +657,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -721,7 +721,7 @@
 					"alias": "$tag_video_transmitters",
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [
 						{
@@ -757,7 +757,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"fieldConfig": {
 				"defaults": {
@@ -857,7 +857,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"fieldConfig": {
 				"defaults": {
@@ -1067,7 +1067,7 @@
 		{
 			"datasource": {
 				"type": "influxdb",
-				"uid": "GIQf3g9MVz"
+				"uid": "influx3-influxql"
 			},
 			"description": "",
 			"fieldConfig": {
@@ -1148,7 +1148,7 @@
 				{
 					"datasource": {
 						"type": "influxdb",
-						"uid": "GIQf3g9MVz"
+						"uid": "influx3-influxql"
 					},
 					"groupBy": [],
 					"measurement": "video_transmitter.pool",
@@ -1197,7 +1197,7 @@
 				},
 				"datasource": {
 					"type": "influxdb",
-					"uid": "GIQf3g9MVz"
+					"uid": "influx3-influxql"
 				},
 				"definition": "show tag values with key=\"ip\"",
 				"hide": 0,
