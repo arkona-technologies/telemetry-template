@@ -4,7 +4,7 @@
 
 **NOTE !! Please read through the [prerequisites](#prerequisites) and [hardware recommendations](#hardware-recommendations) first !!**
 
-**NOTE !! Default retention policy is SEVEN DAYS !!**
+**NOTE !! Default retention policy is FOUR DAYS !!**
 - You can edit that in the .env files "RETENTION_PERIOD"
 - InfluxDB3 core does NOT ALLOW changing retention policies afterwards, those are set on database creation
 

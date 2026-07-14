@@ -224,8 +224,11 @@ edit_config() {
 }
 
 main() {
-    CHOICE=$($WIZARD --title "Telemetry" --menu "Welcome to the telemetry wizard.\nFor a first setup, do the following:\n - check for a container engine installation first (docker or podman)\n - edit your config files (usually only .env is necessary)\n - Install with or without rsyslog\nFor more information, refer to: https://github.com/arkona-technologies/telemetry-template" 22 80 7 \
-    "1" "Install" \
+    PWD=$(pwd)
+    IS_ROOT=$(df . --output=target | tail -n +2)
+    SPACE_LEFT=$(df . -h --output=avail | tail -n +2)
+    CHOICE=$($WIZARD --title "Telemetry on $IS_ROOT:$SPACE_LEFT" --menu "Welcome to the telemetry wizard.\n\nFor a first setup, do the following:\n - check for a container engine installation first (docker or podman)\n - edit your config files (usually only .env is necessary)\n - Install with or without rsyslog\nMore information: https://github.com/arkona-technologies/telemetry-template\n\nPartition: $IS_ROOT\nSpace left: $SPACE_LEFT" 25 90 8 \
+    "1" "Install - space left on this device: $SPACE_LEFT" \
     "2" "Install - without rsyslog" \
     "3" "Start telemetry" \
     "4" "Stop telemetry" \
