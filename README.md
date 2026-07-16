@@ -149,10 +149,26 @@ NOTE: The credential system for influx3 has changed, but data ingestion is compa
 ## Influx commands
 
 - [Querying with CLI (and export)](https://docs.influxdata.com/influxdb3/core/query-data/execute-queries/influxdb3-cli/)
+   ```
+   influxdb3 query \
+     --host "http://your-source-influx:8181" \
+     --database "your_source_db" \
+     --token "your_source_token" \
+     --format parquet \
+     --output ./export_last_2_days.parquet \
+     "SELECT * FROM your_measurement_table WHERE time >= NOW() - INTERVAL '2 DAYS'"
+   ```
 - [Writing with CLI (and import)](https://docs.influxdata.com/influxdb3/core/get-started/write/#write-data-using-the-cli)
    - to be able to read the file, move it into `<telemetry-template>/influxdb3/data/` on the host
    - using the cli in the influx container, the file path will be mounted on `/home/influxdb3/.influxdb3`
    - influx uses 1500:1500 permissions 
+   ```
+   influxdb3 import upload \
+     --host "http://your-destination-influx:8181" \
+     --database "your_destination_db" \
+     --token "your_destination_token" \
+     ./export_last_2_days.parquet
+   ```
 - [Write data with telegraf (from csv file)](https://docs.influxdata.com/influxdb3/core/write-data/use-telegraf/csv/)
 
 # Hardware recommendations
