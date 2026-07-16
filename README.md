@@ -151,6 +151,26 @@ graph LR
 ## Influx commands
 
 - [Export/Import some data from a database (NOT the whole database)](.readme/optional-configuration.md#-Export-Import-some-data-from-a-database-NOT-the-whole-database)
+- InfluxCLI Export
+   ```
+   influx query \
+     --host "http://your-source-influx:8086" \
+     --org "your_source_org" \
+     --token "your_source_token" \
+     'from(bucket: "your_source_bucket") 
+        |> range(start: -2d) 
+        |> filter(fn: (r) => r["_measurement"] == "your_measurement")' \
+     > ./export_last_2_days.csv
+   ```
+- InfluxCLI Import
+   ```
+   influx write \
+     --host "http://your-destination-influx:8086" \
+     --org "your_destination_org" \
+     --bucket "your_destination_bucket" \
+     --token "your_destination_token" \
+     --file ./export_last_2_days.csv
+   ```
 
 # Hardware recommendations
 
