@@ -37,7 +37,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: ${INFLUX_CONTAINER_MEM_LIMIT}           # no limit if empty
+          memory: ${INFLUX_CONTAINER_MEM_LIMIT:-0}           # no limit if empty
         reservations:
           memory: 6G                                      # bare minimum
 # grafana
@@ -87,7 +87,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: ${LOKI_MEM_LIMIT}                 # hard container limit befor OOM kill
+          memory: ${LOKI_MEM_LIMIT:-0}                 # hard container limit befor OOM kill
         reservations:
           memory: 512M
 # Grafana Alloy replacing Promtail
@@ -112,7 +112,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: ${ALLOY_MEM_LIMIT}
+          memory: ${ALLOY_MEM_LIMIT:-0}
     command: 
       - run 
       - --server.http.listen-addr=0.0.0.0:12345 
