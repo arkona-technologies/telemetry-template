@@ -1,12 +1,14 @@
-![Telemetry Logo](.readme/blade-runner.png)
+<!-- ![Telemetry Logo](.readme/blade-runner.png) -->
 
 # Arkona Technologies Telemetry Template (version 3)
 
-**NOTE !! Please read through the [prerequisites](#prerequisites) and [hardware recommendations](#hardware-recommendations) first !!**
+> **NOTE !! Please read through the [prerequisites](#prerequisites) and [hardware recommendations](#hardware-recommendations) first**
 
-**NOTE !! Default retention policy is FOUR DAYS !!**
+> **NOTE !! Default retention policy is FOUR DAYS**
 - You can edit that in the .env files "RETENTION_PERIOD"
 - InfluxDB3 core does NOT ALLOW changing retention policies afterwards, those are set on database creation
+
+> **NOTE !! This is a template. There is *NO GUARANTEE* that applied settings are the optimum for your individual usage.**
 
 ## Overview
 
@@ -26,11 +28,18 @@
 
 Before deploying the Docker Compose setup, __*ensure the following prerequisites are met*__:
 
-- Apt package manager, otherwise rsyslog has to be installed manually before setup
-- Make sure that the partition you use has enough free space (__at least ~100GB!__), __especially if it's a directory used by the OS__, including the users home directory in a non-separated linux installation (which is the default in many distros)
+1. Apt package manager, otherwise rsyslog has to be installed manually before setup
+2. Create a partition for telemetry data separated from the OS __(not `/` or `/home`)__ and make sure that the partition you use presumably has enough free space
    - __! read the [hardware recommendations](#hardware-recommendations) before installing !__
-- git installed (optional)
-   - used to clone the repository which could also be done by downloading the zip file from the website
+   - When you use the wizard, it will show the free space of the partition your telemetry directory is on
+- Check the amount of memory and if limits should be set (especially for permanent installations - _advanced_)
+   - This can be done in the wizard and changed in the .env file
+      - The wizard option "1 Pre-allocate memory limits" will determine recommended settings for the containers based on how much total RAM is available on the host.
+   - Limits can prevent containers and/or the host to run into OOM issues. Be aware that:
+      - Setting container memory limits could also trigger OOM kill commands on the container if the application exceeds the limit.
+      - Podman or a _rootless_ docker installation might run into permission issues when trying to set cgroup memory limitations
+
+> **NOTE !! Settings like memory limits or the amount of free disk space are just recommended defaults which are heavily dependent on the actual environment and usage. There is *NO GUARANTEE* that applied settings are the optimum for your individual usage. !!**
 
 
 ## Installation
@@ -185,6 +194,8 @@ Bigger installations like __40__ blades or more** with the default configuration
    - More RAM is better as the system responds much better the more data it can hold in memory
 
 > **Provided numbers are to be handled with caution as they can differ due to setup and usage. Our lab has around 45 blades running, all being monitored on one server (32 core EPYC, 192GB RAM, SSD raid10, data stored for 7d plus downsampled data for a year plus some other data and services with a load of 30GB RAM used, 140GB RAM cached for influx, 30% CPU in average and __*~300GB*__ of data in influx.
+
+> For hosts with limited resources it is recommended to set memory limits for containers and applications in the wizard to avoid exceeding the capabilites.
 
 ## Links
 

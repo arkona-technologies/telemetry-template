@@ -33,6 +33,15 @@ services:
       - INFLUXDB3_ADMIN_TOKEN_FILE=/etc/influxdb3/auth/admin-token.json
       - INFLUXDB3_HOST=http://127.0.0.1:8181
       - INFLUXDB3_AUTH_TOKEN=${DB_TOKEN}
+      - INFLUXDB3_MAX_MEMORY_BYTES=${INFLUX3_MAX_MEMORY_BYTES}
+      - INFLUXDB3_QUERY_MEMORY_POOL_BYTES=${INFLUX3_QUERY_MEMORY_POOL_BYTES}
+      - INFLUXDB3_SINGLE_QUERY_MEMORY_LIMIT_BYTES=${INFLUX3_SINGLE_QUERY_MEMORY_LIMIT_BYTES}
+    deploy:
+      resources:
+        limits:
+          memory: ${INFLUX_CONTAINER_MEM_LIMIT}
+        reservations:
+          memory: 2G
 # grafana
   grafana:
     image: grafana/grafana-oss:13.0.2
@@ -61,6 +70,10 @@ services:
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
       - GF_DASHBOARDS_MIN_REFRESH_INTERVAL=100ms
       - GF_FEATURE_TOGGLES_ENABLE=canvasPanelPanZoom
+    deploy:
+      resources:
+        limits:
+          memory: ${GRAFANA_MEM_LIMIT}
 # loki for logs
   loki:
     image: grafana/loki:2.9.0
@@ -73,11 +86,18 @@ services:
     command: -config.file=/etc/loki/local-config.yaml -config.expand-env=true
     environment:
       - RETENTION_PERIOD=${RETENTION_PERIOD:-720h}
+      - GOMEMLIMIT=${LOKI_GOMEMLIMIT}
     volumes:
       - ./loki/local-config.yaml:/etc/loki/local-config.yaml
       - ./loki/data:/loki
     networks:
       - telemetry
+    deploy:
+      resources:
+        limits:
+          memory: ${LOKI_MEM_LIMIT}
+        reservations:
+          memory: 512M
 # Grafana Alloy
   alloy:
     image: grafana/alloy:v1.17.1 # Use the latest stable version
@@ -98,6 +118,10 @@ services:
       - /var/log/journal:/var/log/journal:ro
       - ./alloy/config.alloy:/etc/alloy/config.alloy:ro
       - ./alloy/data:/var/lib/alloy/data # Alloy's data/positions directory
+    deploy:
+      resources:
+        limits:
+          memory: ${ALLOY_MEM_LIMIT}
     command: 
       - run 
       - --server.http.listen-addr=0.0.0.0:12345 
