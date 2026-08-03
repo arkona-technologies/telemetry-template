@@ -308,6 +308,7 @@ pre_allocate_limits(){
   printf "Loki GOMEMLIMIT:                  ${LOKI_GOMEMLIMIT}\n"
   printf "Alloy Limit:                      ${ALLOY_MEM_LIMIT:-No Limit}\n"
   printf "Grafana Limit:                    ${GRAFANA_MEM_LIMIT:-No Limit}\n"
+  main
 }
 main() {
     PWD=$(pwd)

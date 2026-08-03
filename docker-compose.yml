@@ -39,7 +39,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: ${INFLUX_CONTAINER_MEM_LIMIT}
+          memory: ${INFLUX_CONTAINER_MEM_LIMIT:-0}
         reservations:
           memory: 2G
 # grafana
@@ -73,7 +73,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: ${GRAFANA_MEM_LIMIT}
+          memory: ${GRAFANA_MEM_LIMIT:-0}
 # loki for logs
   loki:
     image: grafana/loki:2.9.0
@@ -95,7 +95,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: ${LOKI_MEM_LIMIT}
+          memory: ${LOKI_MEM_LIMIT:-0}
         reservations:
           memory: 512M
 # Grafana Alloy
@@ -121,7 +121,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: ${ALLOY_MEM_LIMIT}
+          memory: ${ALLOY_MEM_LIMIT:-0}
     command: 
       - run 
       - --server.http.listen-addr=0.0.0.0:12345 
