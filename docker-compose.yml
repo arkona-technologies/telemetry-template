@@ -1,12 +1,19 @@
 networks:
   telemetry:
 
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "3"
+
 services:
 # influxDB
   influxdb:
     image: influxdb:3.10-core
     container_name: influxdb
     restart: always
+    logging: *default-logging
     hostname: ${HOSTNAME:-telemetry-host}
     networks:
       - telemetry
@@ -31,6 +38,7 @@ services:
     image: grafana/grafana-oss:13.0.2
     container_name: grafana
     restart: always
+    logging: *default-logging
     networks:
       - telemetry
     ports:
@@ -58,6 +66,7 @@ services:
     image: grafana/loki:2.9.0
     container_name: loki
     restart: always
+    logging: *default-logging
     user: "10001"
     ports:
       - "3100:3100" #if changed, also change in loki&alloy configs
@@ -74,6 +83,7 @@ services:
     image: grafana/alloy:v1.17.1 # Use the latest stable version
     container_name: alloy
     restart: always
+    logging: *default-logging
     networks:
       - telemetry
     group_add:
@@ -98,6 +108,7 @@ services:
     image: arkonatechnologies/vtelemetry2
     container_name: vtelemetry
     restart: always
+    logging: *default-logging
     networks:
       - telemetry
     depends_on:
