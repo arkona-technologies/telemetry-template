@@ -31,6 +31,15 @@ services:
       - V1_AUTH_PASSWORD=${DB_PASSWORD}
       - INFLUXD_STORAGE_WRITE_TIMEOUT=20s
       - INFLUXD_HTTP_WRITE_TIMEOUT=20s
+      - GOMEMLIMIT=${INFLUX_GOMEMLIMIT}                   # Force Go GC to trigger aggressively near the limit (~85% of total container limit)
+      - INFLUXD_QUERY_MAX_MEMORY_BYTES=2147483648         # Max memory bytes a SINGLE query can allocate (e.g., 2 GiB = 2147483648 bytes)
+      - INFLUXD_STORAGE_CACHE_MAX_MEMORY_SIZE=1g          # In-memory storage engine limits - Increase on systems with lots of RAM to reduce disk churn
+    deploy:
+      resources:
+        limits:
+          memory: ${INFLUX_CONTAINER_MEM_LIMIT}           # no limit if empty
+        reservations:
+          memory: 6G                                      # bare minimum
 # grafana
   grafana:
     image: grafana/grafana-oss:12.4.2
@@ -65,15 +74,22 @@ services:
     logging: *default-logging
     user: "10001"
     ports:
-      - "3100:3100" #if changed, also change in loki&alloy configs
+      - "3100:3100"                                 # if changed, also change in loki&alloy configs
     command: -config.file=/etc/loki/local-config.yaml -config.expand-env=true
     environment:
       - RETENTION_PERIOD=${RETENTION_PERIOD:-720h}
+      - GOMEMLIMIT=${LOKI_GOMEMLIMIT}               # application memory limit
     volumes:
       - ./loki/local-config.yaml:/etc/loki/local-config.yaml
       - ./loki/data:/loki
     networks:
       - telemetry
+    deploy:
+      resources:
+        limits:
+          memory: ${LOKI_MEM_LIMIT}                 # hard container limit befor OOM kill
+        reservations:
+          memory: 512M
 # Grafana Alloy replacing Promtail
   alloy:
     image: grafana/alloy:v1.17.1 # Use the latest stable version
@@ -93,6 +109,10 @@ services:
       - /var/log/journal:/var/log/journal:ro
       - ./alloy/config.alloy:/etc/alloy/config.alloy:ro
       - ./alloy/data:/var/lib/alloy/data # Alloy's data/positions directory
+    deploy:
+      resources:
+        limits:
+          memory: ${ALLOY_MEM_LIMIT}
     command: 
       - run 
       - --server.http.listen-addr=0.0.0.0:12345 

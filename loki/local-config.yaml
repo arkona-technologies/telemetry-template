@@ -18,6 +18,14 @@ common:
 # Add the retention limit here
 limits_config:
   retention_period: ${RETENTION_PERIOD} # Uses env var, defaults to 31 days
+# Enforce maximum memory cap per query to prevent runaway LogQL queries
+  max_query_length: 721h                     # Cap query window (e.g. 30 days)
+  max_query_parallelism: 16                  # Prevent massive parallel query allocations
+
+ingester:
+  chunk_idle_period: 15m                    # How long a chunk can sit idle in RAM before flushing to disk
+  max_chunk_age: 2h                         # Force flush chunk to disk after 2 hours
+  chunk_target_size: 1572864                 # Target chunk size in RAM (~1.5MB)
 
 # Add the Compactor configuration
 compactor:
