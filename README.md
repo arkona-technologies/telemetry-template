@@ -211,3 +211,10 @@ This project is licensed under the [MIT License](LICENSE).
 
 Feel free to contribute by submitting issues or pull requests. Your feedback is much appreciated!
 
+
+# Extras
+
+## Export-script.sh
+
+An editable script that will export all data from the last 3 days from the bladerunner database to a shareable .csv file.
+This is often necessary as the amount of data lets the influx export function run into an OOM issue.
