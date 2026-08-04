@@ -10,7 +10,7 @@ x-logging: &default-logging
 services:
 # influxDB
   influxdb:
-    image: influxdb:3.10-core
+    image: influxdb:3-core
     container_name: influxdb
     restart: always
     logging: *default-logging
@@ -44,7 +44,7 @@ services:
           memory: 2G
 # grafana
   grafana:
-    image: grafana/grafana-oss:13.0.2
+    image: grafana/grafana
     container_name: grafana
     restart: always
     logging: *default-logging
