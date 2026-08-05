@@ -14,16 +14,22 @@ if [ -z "$CONTAINER_ENGINE" ]; then
     exit 1  # Exit with a non-zero status to indicate an error
 fi
 
+replace_env_variable(){
+  KEY=$1
+  VALUE=$2
+  search_text=$(grep -i "$KEY" ".env")
+  replace_text="$KEY=$VALUE"
+  sed -i "s|$search_text|$replace_text|g" ".env"
+}
+
 HOSTNAME=$(hostname)
 search_text=$(grep -i "HOSTNAME" ".env")
-replace_text="HOSTNAME=$HOSTNAME"
 
 if [ -n "$search_text" ]; then
-  sed -i "s|$search_text|$replace_text|g" ".env"
+  replace_env_variable "HOSTNAME" "$HOSTNAME"
 else
-  printf "HOSTNAME=$HOSTNAME" >> ".env"
+  printf "HOSTNAME=$HOSTNAME\n" >> ".env"
 fi
-
 printf  "${COLOR_LIGHT_BLUE}[InfluxDB]${COLOR_NC} Setting up telemetry strack\n"
 
 $CONTAINER_ENGINE compose down --remove-orphans
@@ -48,12 +54,11 @@ sudo chown -R 1500:1500 ./influxdb3/auth
 
 # Step 3: Apply the generated token directly to your environment configuration file
 search_text=$(grep -i "DB_TOKEN" ".env")
-replace_text="DB_TOKEN=$TOKEN"
 
 if [ -n "$search_text" ]; then
-  sed -i "s|$search_text|$replace_text|g" ".env"
+  replace_env_variable "DB_TOKEN" "$TOKEN"
 else
-  printf "DB_TOKEN=$TOKEN" >> ".env"
+  printf "DB_TOKEN=$TOKEN\n" >> ".env"
 fi
 
 printf "Your InfluxDB 3 read-write token has been generated: ${COLOR_LIGHT_RED}${TOKEN}${COLOR_NC}\n"
