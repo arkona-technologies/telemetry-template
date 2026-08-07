@@ -6,7 +6,7 @@ datasources:
     access: proxy
     url: http://influxdb:8181          # Standard container-to-container port for Influx 3
     editable: true
-    isDefault: falst
+    isDefault: false
     uid: "influx3-flightsql"
     jsonData:
       version: "SQL"                   # Toggles native SQL processing language
