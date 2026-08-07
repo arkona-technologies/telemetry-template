@@ -255,28 +255,7 @@ pre_allocate_limits(){
   # 2. Check 48 GiB threshold
   IS_LARGE_HOST=$(awk -v ram="$TOTAL_RAM_GIB" 'BEGIN { print (ram >= 48) ? 1 : 0 }')
 
-  if [ "$IS_LARGE_HOST" -eq 1 ]; then
-    # Host >= 48 GiB: Unlimited for Alloy & Grafana
-    ALLOY_MEM_LIMIT=""
-    GRAFANA_MEM_LIMIT=""
-
-    # Loki limits
-    LOKI_MEM_LIMIT="8G"
-    LOKI_GOMEMLIMIT="6.4GiB"
-
-    # Allocate 80% of total host RAM to InfluxDB 3 stack budget
-    INFLUX_STACK_BUDGET_KB=$(awk -v kb="$TOTAL_RAM_KB" 'BEGIN { print kb * 0.80 }')
-  else
-    # Host < 48 GiB: Fixed sidecar limits (1G Alloy, 2G Grafana, 4G Loki = 7G reserved)
-    ALLOY_MEM_LIMIT="1G"
-    GRAFANA_MEM_LIMIT="2G"
-    LOKI_MEM_LIMIT="4G"
-    LOKI_GOMEMLIMIT="3.2GiB"
-
-    # Subtract 7 GiB (7340032 KiB) for sidecars, then allocate 80% of remaining RAM to Influx 3
-    REMAINING_RAM_KB=$(awk -v kb="$TOTAL_RAM_KB" 'BEGIN { print (kb - 7340032 > 0) ? kb - 7340032 : kb * 0.5 }')
-    INFLUX_STACK_BUDGET_KB=$(awk -v kb="$REMAINING_RAM_KB" 'BEGIN { print kb * 0.80 }')
-  fi
+  INFLUX_STACK_BUDGET_KB=$(awk -v kb="$TOTAL_RAM_KB" 'BEGIN { print kb * 0.80 }')
 
   # 3. Calculate InfluxDB 3 memory allocations
   # Container hard limit (80% of Influx budget)
@@ -294,20 +273,13 @@ pre_allocate_limits(){
   replace_env_variable "INFLUX3_QUERY_MEMORY_POOL_BYTES" "${INFLUX3_QUERY_MEMORY_POOL_BYTES}"
   replace_env_variable "INFLUX3_SINGLE_QUERY_MEMORY_LIMIT_BYTES" "${INFLUX3_SINGLE_QUERY_MEMORY_LIMIT_BYTES}"
   replace_env_variable "INFLUX_CONTAINER_MEM_LIMIT" "${INFLUX_CONTAINER_LIMIT}"
-  replace_env_variable "ALLOY_MEM_LIMIT" "${ALLOY_MEM_LIMIT}"
-  replace_env_variable "GRAFANA_MEM_LIMIT" "${GRAFANA_MEM_LIMIT}"
-  replace_env_variable "LOKI_MEM_LIMIT" "${LOKI_MEM_LIMIT}"
-  replace_env_variable "LOKI_GOMEMLIMIT" "${LOKI_GOMEMLIMIT}"
+
   printf "--- Configuration Generated ---\n"
   printf "Host Total RAM:                   ${TOTAL_RAM_GIB} GiB\n"
   printf "InfluxDB Container Limit:         ${INFLUX_CONTAINER_LIMIT}\n"
   printf "InfluxDB Max Memory (Bytes):      ${INFLUX3_MAX_MEMORY_BYTES}\n"
   printf "InfluxDB Query Pool (Bytes):      ${INFLUX3_QUERY_MEMORY_POOL_BYTES}\n"
   printf "InfluxDB Single Query Max (Bytes):${INFLUX3_SINGLE_QUERY_MEMORY_LIMIT_BYTES}\n"
-  printf "Loki Container Limit:             ${LOKI_MEM_LIMIT}\n"
-  printf "Loki GOMEMLIMIT:                  ${LOKI_GOMEMLIMIT}\n"
-  printf "Alloy Limit:                      ${ALLOY_MEM_LIMIT:-No Limit}\n"
-  printf "Grafana Limit:                    ${GRAFANA_MEM_LIMIT:-No Limit}\n"
   main
 }
 main() {

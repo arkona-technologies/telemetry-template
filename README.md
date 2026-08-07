@@ -2,13 +2,13 @@
 
 # Arkona Technologies Telemetry Template (version 3)
 
-> **NOTE !! Please read through the [prerequisites](#prerequisites) and [hardware recommendations](#hardware-recommendations) first**
-
-> **NOTE !! Default retention policy is FOUR DAYS**
-- You can edit that in the .env files "RETENTION_PERIOD"
-- InfluxDB3 core does NOT ALLOW changing retention policies afterwards, those are set on database creation
-
-> **NOTE !! This is a template. There is *NO GUARANTEE* that applied settings are the optimum for your individual usage.**
+> **NOTE: Please read through the [prerequisites](#prerequisites) and [hardware recommendations](#hardware-recommendations) first**
+>
+> **NOTE: Default retention policy is FOUR DAYS**
+> - You can edit that in the .env files "RETENTION_PERIOD"
+> - Can also be changed on the running influxdb container with: `influxdb3 update database --database <database> --retention-period <number>d`
+>
+> **NOTE: This is a template. There is *NO GUARANTEE* that applied settings are the optimum for your individual usage.**
 
 ## Overview
 
@@ -34,12 +34,18 @@ Before deploying the Docker Compose setup, __*ensure the following prerequisites
    - When you use the wizard, it will show the free space of the partition your telemetry directory is on
 - Check the amount of memory and if limits should be set (especially for permanent installations - _advanced_)
    - This can be done in the wizard and changed in the .env file
-      - The wizard option "1 Pre-allocate memory limits" will determine recommended settings for the containers based on how much total RAM is available on the host.
-   - Limits can prevent containers and/or the host to run into OOM issues. Be aware that:
-      - Setting container memory limits could also trigger OOM kill commands on the container if the application exceeds the limit.
-      - Podman or a _rootless_ docker installation might run into permission issues when trying to set cgroup memory limitations
+      - The wizard option "1 Pre-allocate memory limits" will determine recommended settings for the influx container based on how much total RAM is available on the host.
+      - In the .env file, additional limits for grafana, loki and alloy can be set (_advanced_) 
 
-> **NOTE !! Settings like memory limits or the amount of free disk space are just recommended defaults which are heavily dependent on the actual environment and usage. There is *NO GUARANTEE* that applied settings are the optimum for your individual usage. !!**
+> **NOTE Limits can prevent containers and/or the host to run into OOM issues. Be aware that:**
+>
+> - **Setting container memory limits could also trigger OOM kill commands on the container if the application exceeds the limit.**
+>
+> - **Podman or a _rootless_ docker installation might run into permission issues when trying to set cgroup memory limitations**
+>
+> **NOTE Settings like memory limits or the amount of free disk space are just recommended defaults which are heavily dependent on the actual environment and usage.**
+>
+> **There is *NO GUARANTEE* that applied settings are the optimum for your individual usage.**
 
 
 ## Installation
@@ -73,7 +79,7 @@ You can install the package in different ways, depending on the use-case. The de
    DB_USER=arkona
    DB_PORT=8086
    DB_ORG=arkona
-   RETENTION_PERIOD=7d # can be n d/w (days/weeks)
+   RETENTION_PERIOD=4d # can be n d/w (days/weeks)
    DB_TOKEN=
 
    GRAFANA_USER=arkona
