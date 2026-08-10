@@ -11,6 +11,44 @@ if [[ -z "$PODMAN" && -z "$DOCKER" ]]; then
   exit 1
 fi
 
+check_for_avx2(){
+  # Check /proc/cpuinfo for the avx2 flag
+  if grep -q -i 'avx2' /proc/cpuinfo; then
+      echo "SUCCESS: AVX2 instruction set detected. InfluxDB 3 can run on this system."
+      exit 0
+  else
+      cat << "EOF"
+  ERROR: AVX2 instruction set NOT detected!
+  InfluxDB 3 requires AVX2 (x86-64-v3) support and will fail with
+  'Illegal instruction (core dumped)' without it.
+
+  ====================================================================
+                 HOW TO ENABLE AVX2 IN YOUR HYPERVISOR               
+  ====================================================================
+
+  • Proxmox VE:
+    Go to VM -> Hardware -> Processors -> Change Type to 'host' 
+    (or 'x86-64-v3').
+
+  • QEMU / KVM (libvirt):
+    Pass '-cpu host' or '-cpu x86-64-v3' in your startup flags.
+    In libvirt XML: <cpu mode='host-passthrough'/>
+
+  • VMware ESXi / Workstation:
+    Ensure EVC (Enhanced vMotion Compatibility) mode is not masking AVX2.
+    Set baseline to Haswell generation or newer, or disable EVC.
+
+  • Hyper-V:
+    Ensure host CPU supports AVX2 (Haswell / Excavator or newer) and turn
+    OFF Processor Compatibility mode ("Migrate to a physical computer 
+    with a different processor version").
+  ====================================================================
+EOF
+      exit 1
+  fi
+}
+
+
 ensure_linger(){
   LINGER_STATUS=$(loginctl show-user $(logname) | grep -i 'linger' | sed 's/Linger=//g')
   if [[ "$LINGER_STATUS" == "no" ]]
@@ -44,7 +82,7 @@ remove_directories(){
   sudo rm -R ./grafana/var > /dev/null
 }
 
-
+check_for_avx2
 remove_directories
 
 if [[ -z "$NO_SYSLOG" ]]
@@ -63,5 +101,4 @@ if [[ -z "$PODMAN" ]]
  else
   ./setup_stack.sh
 fi
-
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/env bash
 export NEWT_COLORS='
   window=black,black
   border=brightblue,black
@@ -20,6 +20,44 @@ TOTAL_RAM_KB=$(awk '/MemTotal/ {print $2}' /proc/meminfo)
 TOTAL_RAM_GIB=$(awk -v kb="$TOTAL_RAM_KB" 'BEGIN { print kb / 1048576 }')
 PODMAN=$(type podman)
 DOCKER=$(type docker)
+AVX2=
+
+if grep -q -i 'avx2' /proc/cpuinfo; then
+  AVX2="AVX2 instructions found"
+else
+  printf "
+\n    ERROR: AVX2 instruction set NOT detected!
+\n  InfluxDB 3 requires AVX2 (x86-64-v3) support and will fail with
+\n  'Illegal instruction (core dumped)' without it.
+\n
+\n  ====================================================================
+\n                 HOW TO ENABLE AVX2 IN YOUR HYPERVISOR               
+\n  ====================================================================
+\n
+\n  • Proxmox VE:
+\n    Go to VM -> Hardware -> Processors -> Change Type to 'host' 
+\n    (or 'x86-64-v3').
+\n
+\n  • QEMU / KVM (libvirt):
+\n    Pass '-cpu host' or '-cpu x86-64-v3' in your startup flags.
+\n    In libvirt XML: <cpu mode='host-passthrough'/>
+\n
+\n  • VMware ESXi / Workstation:
+\n    Ensure EVC (Enhanced vMotion Compatibility) mode is not masking AVX2.
+\n    Set baseline to Haswell generation or newer, or disable EVC.
+\n
+\n  • Hyper-V:
+\n    Ensure host CPU supports AVX2 (Haswell / Excavator or newer) and turn
+\n    OFF Processor Compatibility mode (\"Migrate to a physical computer 
+\n    with a different processor version\").
+\n  ====================================================================
+\n"
+  exit 1
+fi
+
+# source "./run.sh"
+# check_for_avx2
+
 check_for_whiptail() {
   if ! command -v whiptail 2>&1 >/dev/null
   then
@@ -294,7 +332,7 @@ main() {
     - Run option 1 \"Pre-allocate memory limits\"   (optional)
       - Check memory limits in .env               (optional)
  3. Install with or without rsyslog
-For more information, read the README.md or online: https://github.com/arkona-technologies/telemetry-template
+  For more information, read the README.md or online: https://github.com/arkona-technologies/telemetry-template
       
       Host: $HOST
       Disk: Partition: $IS_ROOT - Space left: $SPACE_LEFT
