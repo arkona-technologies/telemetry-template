@@ -15,7 +15,7 @@ check_for_avx2(){
   # Check /proc/cpuinfo for the avx2 flag
   if grep -q -i 'avx2' /proc/cpuinfo; then
       echo "SUCCESS: AVX2 instruction set detected. InfluxDB 3 can run on this system."
-      exit 0
+      # exit 0
   else
       cat << "EOF"
   ERROR: AVX2 instruction set NOT detected!
