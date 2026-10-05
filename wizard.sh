@@ -18,8 +18,8 @@ WIZARD=
 OS=$(. /etc/os-release && echo "${ID}")
 TOTAL_RAM_KB=$(awk '/MemTotal/ {print $2}' /proc/meminfo)
 TOTAL_RAM_GIB=$(awk -v kb="$TOTAL_RAM_KB" 'BEGIN { print kb / 1048576 }')
-PODMAN=$(type podman)
-DOCKER=$(type docker)
+PODMAN=$(which podman)
+DOCKER=$(which docker)
 AVX2=
 
 if grep -q -i 'avx2' /proc/cpuinfo; then
