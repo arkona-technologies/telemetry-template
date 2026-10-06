@@ -86,6 +86,12 @@ You can install the package in different ways, depending on the use-case. The de
 
 7. Create dashboards in Grafana to visualize telemetry data from BLADE//runner processors. Take a look at the supplied Dashboards as a guide.
 
+### Blade Configuration
+
+To send logs to the server, each blade needs to be configured to send its syslog data via UDP to `<IP of the telemetry host>:514`. (Port and protocol can be changed in rsyslog configuration)
+
+If basic auth is used to handle users and permissions, this might be needed to set on the docker compose file for the vtelemetry instance (VAPI_USER, VAPI_PASSWORD). The user doesn't require any write permissions.
+
 ## Overview
 
 ![Stack Overview](.readme/stack-overview.png)
