@@ -409,7 +409,7 @@ setup_syslog() {
           [ $restore_e -eq 1 ] && set -e
           return 1
         else
-          PORT=$(cat "$TMP_OUT")
+          NAMESPACE=$(cat "$TMP_OUT")
           STEP=7
         fi
         ;;
