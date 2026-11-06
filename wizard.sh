@@ -479,13 +479,13 @@ export_data() {
   STOP_DATE=$(date -u "+%Y-%m-%dT%H:%M:%SZ")
   STEPS="10"
   FILENAME="export_$(date -u "+%Y%m%d_%H%M%SZ").csv"
-  FILTER="|> filter(fn: (r) => r._measurement == "temperature")"
+  FILTER="|> filter(fn: (r) => true)"
   STEP=1
 
   while true; do
     case "$STEP" in
       1)
-        whiptail --title "Step 1 of 4: Start Date/Time" \
+        whiptail --title "Step 1 of 5: Start Date/Time" \
           --ok-button "Next" \
           --cancel-button "Cancel" \
           --inputbox "Enter Start Date (UTC RFC3339 format):" 10 60 "$START_DATE" \
@@ -504,7 +504,7 @@ export_data() {
         ;;
 
       2)
-        whiptail --title "Step 2 of 4: Stop Date/Time" \
+        whiptail --title "Step 2 of 5: Stop Date/Time" \
           --ok-button "Next" \
           --cancel-button "Back" \
           --inputbox "Enter Stop Date (UTC RFC3339 format):" 10 60 "$STOP_DATE" \
@@ -524,7 +524,7 @@ export_data() {
         ;;
 
       3)
-        whiptail --title "Step 3 of 4: Steps (Seconds)" \
+        whiptail --title "Step 3 of 5: Steps (Seconds)" \
           --ok-button "Next" \
           --cancel-button "Back" \
           --inputbox "Enter step interval in seconds:" 10 50 "$STEPS" \
@@ -544,7 +544,7 @@ export_data() {
         ;;
 
       4)
-        whiptail --title "Step 4 of 4: Output Filename" \
+        whiptail --title "Step 4 of 5: Output Filename" \
           --ok-button "Next" \
           --cancel-button "Back" \
           --inputbox "Enter output file path:" 10 60 "$FILENAME" \
@@ -567,7 +567,7 @@ export_data() {
         whiptail --title "Step 5 of 5: filter (optional)" \
           --ok-button "Next" \
           --cancel-button "Back" \
-          --inputbox "Enter filter:" 10 60 "$FILTER" \
+          --inputbox "Enter flux query filter (default will pass through all data):\nFilter example:\n '|> filter(fn: (r) => r._measurement == "temperature")'" 10 60 "$FILTER" \
           2> "$TMP_OUT" </dev/tty
         EXIT_CODE=$?
 
