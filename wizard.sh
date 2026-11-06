@@ -150,6 +150,7 @@ check_for_docker() {
               sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
               sudo groupadd docker
               sudo usermod -aG docker $USER
+              newgrp docker
               sudo systemctl enable --now docker
             elif command -v dnf 2>&1 >/dev/null
             then
@@ -168,6 +169,7 @@ check_for_docker() {
               printf "Official GPG key:\n     060A 61C5 1B55 8A7F 742B 77AA C52F EB6B 621E 9F35\n\n"
               sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
               sudo usermod -aG docker $USER
+              newgrp docker
               sudo systemctl enable --now docker
             else
               printf "install package docker to use the wizard installer\nPlease refer to: https://docs.docker.com/engine/install/"
@@ -462,6 +464,168 @@ edit_config() {
       echo "You canceled."
   fi
 }
+export_data() {
+  local restore_e=0
+  case "$-" in
+    *e*) restore_e=1; set +e ;;
+  esac
+
+  local TMP_OUT
+  TMP_OUT=$(mktemp)
+  trap 'rm -f "$TMP_OUT"' RETURN
+
+  # --- Default Values (RFC3339 UTC) ---
+  START_DATE=$(date -u -d "1 hour ago" "+%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || date -u "+%Y-%m-%dT%H:%M:%SZ")
+  STOP_DATE=$(date -u "+%Y-%m-%dT%H:%M:%SZ")
+  STEPS="10"
+  FILENAME="export_$(date -u "+%Y%m%d_%H%M%SZ").csv"
+  FILTER="|> filter(fn: (r) => r._measurement == "temperature")"
+  STEP=1
+
+  while true; do
+    case "$STEP" in
+      1)
+        whiptail --title "Step 1 of 4: Start Date/Time" \
+          --ok-button "Next" \
+          --cancel-button "Cancel" \
+          --inputbox "Enter Start Date (UTC RFC3339 format):" 10 60 "$START_DATE" \
+          2> "$TMP_OUT" </dev/tty
+        EXIT_CODE=$?
+
+        # Step 1 Cancel/ESC aborts
+        if [ $EXIT_CODE -ne 0 ]; then
+          whiptail --title "Aborted" --msgbox "Operation cancelled." 8 40 </dev/tty
+          [ $restore_e -eq 1 ] && set -e
+          return 1
+        fi
+
+        START_DATE=$(cat "$TMP_OUT")
+        STEP=2
+        ;;
+
+      2)
+        whiptail --title "Step 2 of 4: Stop Date/Time" \
+          --ok-button "Next" \
+          --cancel-button "Back" \
+          --inputbox "Enter Stop Date (UTC RFC3339 format):" 10 60 "$STOP_DATE" \
+          2> "$TMP_OUT" </dev/tty
+        EXIT_CODE=$?
+
+        if [ $EXIT_CODE -eq 1 ]; then
+          STEP=1
+        elif [ $EXIT_CODE -ne 0 ]; then
+          # ESC key (255)
+          [ $restore_e -eq 1 ] && set -e
+          return 1
+        else
+          STOP_DATE=$(cat "$TMP_OUT")
+          STEP=3
+        fi
+        ;;
+
+      3)
+        whiptail --title "Step 3 of 4: Steps (Seconds)" \
+          --ok-button "Next" \
+          --cancel-button "Back" \
+          --inputbox "Enter step interval in seconds:" 10 50 "$STEPS" \
+          2> "$TMP_OUT" </dev/tty
+        EXIT_CODE=$?
+
+        if [ $EXIT_CODE -eq 1 ]; then
+          STEP=2
+        elif [ $EXIT_CODE -ne 0 ]; then
+          # ESC key
+          [ $restore_e -eq 1 ] && set -e
+          return 1
+        else
+          STEPS=$(cat "$TMP_OUT")
+          STEP=4
+        fi
+        ;;
+
+      4)
+        whiptail --title "Step 4 of 4: Output Filename" \
+          --ok-button "Next" \
+          --cancel-button "Back" \
+          --inputbox "Enter output file path:" 10 60 "$FILENAME" \
+          2> "$TMP_OUT" </dev/tty
+        EXIT_CODE=$?
+
+        if [ $EXIT_CODE -eq 1 ]; then
+          STEP=3
+        elif [ $EXIT_CODE -ne 0 ]; then
+          # ESC key
+          [ $restore_e -eq 1 ] && set -e
+          return 1
+        else
+          FILENAME=$(cat "$TMP_OUT")
+          STEP=5
+        fi
+        ;;
+
+      5)
+        whiptail --title "Step 5 of 5: filter (optional)" \
+          --ok-button "Next" \
+          --cancel-button "Back" \
+          --inputbox "Enter filter:" 10 60 "$FILTER" \
+          2> "$TMP_OUT" </dev/tty
+        EXIT_CODE=$?
+
+        if [ $EXIT_CODE -eq 1 ]; then
+          STEP=4
+        elif [ $EXIT_CODE -ne 0 ]; then
+          # ESC key
+          [ $restore_e -eq 1 ] && set -e
+          return 1
+        else
+          FILTER=$(cat "$TMP_OUT")
+          STEP=6
+        fi
+        ;;
+      6)
+        SUMMARY="Ready to run with the following settings:
+
+  Start:    ${START_DATE}
+  Stop:     ${STOP_DATE}
+  Steps:    ${STEPS}s
+  File:     ${FILENAME}
+
+  Proceed with execution?"
+
+        whiptail --title "Confirmation" \
+          --yes-button "Run" \
+          --no-button "Back" \
+          --yesno "$SUMMARY" 14 55 </dev/tty
+        EXIT_CODE=$?
+
+        if [ $EXIT_CODE -eq 1 ]; then
+          # "Back" clicked
+          STEP=4
+        elif [ $EXIT_CODE -eq 0 ]; then
+          break
+        else
+          # ESC key
+          [ $restore_e -eq 1 ] && set -e
+          return 0
+        fi
+        ;;
+    esac
+  done
+
+  [ $restore_e -eq 1 ] && set -e
+
+  clear
+  echo "Executing with configured values:"
+  echo "---------------------------------"
+  echo "FROM:     $START_DATE"
+  echo "TO:       $STOP_DATE"
+  echo "STEPS:    ${STEPS}s"
+  echo "FILE:     $FILENAME"
+
+  # Ready to pass directly into influx/flux:
+  # influx query 'from(bucket:"my-bucket") |> range(start: '"$START_DATE"', stop: '"$STOP_DATE"') |> aggregateWindow(every: '"${STEPS}s"', fn: mean)' > "$FILENAME"
+  ./extras/export-script.sh
+}
 replace_env_variable(){
 KEY=$1
 VALUE=$2
@@ -546,7 +710,8 @@ Host:
     "7" "Check/Install docker" \
     "8" "Check/Install podman" \
     "9" "Check/Install vsk" \
-    "10" "Setup syslog on blades" 3>&1 1>&2 2>&3)
+    "10" "Setup syslog on blades" \
+    "11" "Export data from influx" 3>&1 1>&2 2>&3)
 
     exitstatus=$?
     if [ $exitstatus = 0 ]; then
@@ -579,8 +744,10 @@ Host:
             check_for_vsk
             ;;
           "10")
-            # check_for_vsk
             setup_syslog
+            ;;
+          "11")
+            export_data
             ;;
         esac
     else

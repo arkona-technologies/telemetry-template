@@ -1,58 +1,77 @@
-#!/bin/bash
+#!/usr/bin/env bash
+source .env 2>/dev/null || true
 
 # Configuration settings
 HOST="http://localhost:8086"
-ORG="arkona"
-TOKEN="$TOKEN"
-BUCKET="bladerunner"
-OUTPUT_FILE="./export_last_3_days.csv"
+ORG=${DB_ORG:-"arkona"}
+TOKEN=${DB_TOKEN:-"TOKEN"}
+BUCKET=${DB_NAME:-"bladerunner"}
+OUTPUT_FILE=${FILENAME:-"./export.csv"}
+FILTER_EXPR="${RAW_FILTER:-true}"
+
+# Escape quotes
+FILTER_EXPR="${FILTER_EXPR//\\/\\\\}"
+FILTER_EXPR="${FILTER_EXPR//\"/\\\"}"
+
 # Clear out old outputs
 rm -f "$OUTPUT_FILE"
 rm -f ./temp_slice.csv
 
-# 1. Establish a rigid, FIXED anchor time for "now" (UTC)
-NOW_TIMESTAMP=$(date -u +%s)
+# Step window size (seconds)
+STEP_SECONDS=${STEPS:-60}
 
-# Calculate the static start time (3 days ago = 259200 seconds)
-START_TIMESTAMP=$((NOW_TIMESTAMP - 259200))
-END_TIMESTAMP=$NOW_TIMESTAMP
+# Helper: Convert date string or epoch to Unix timestamp (seconds)
+to_epoch() {
+  local val="$1"
+  if [[ "$val" =~ ^[0-9]+$ ]]; then
+    echo "$val"
+  else
+    date -u -d "$val" +%s
+  fi
+}
 
-# Step window size (10 minutes = 600 seconds)
-STEP_SECONDS=600
+# --- Resolve Start & Stop Timestamps ---
+# Defaults: Stop = now, Start = 2 hours ago
+DEFAULT_STOP=$(date -u +%s)
+DEFAULT_START=$((DEFAULT_STOP - 7200))
 
-echo "Anchor Time (Fixed Present): $(date -u -d @$NOW_TIMESTAMP +'%Y-%m-%dT%H:%M:%SZ')"
+START_TIMESTAMP=$(to_epoch "${START_DATE:-$DEFAULT_START}")
+END_TIMESTAMP=$(to_epoch "${STOP_DATE:-$DEFAULT_STOP}")
+
+echo "Anchor Time (Fixed Present): $(date -u -d @"$END_TIMESTAMP" +'%Y-%m-%dT%H:%M:%SZ')"
 echo "Beginning fixed chronological window export..."
 
 CURRENT_START=$START_TIMESTAMP
 
-while [ $CURRENT_START -lt $END_TIMESTAMP ]; do
+# Always quote variables in test brackets to prevent "unary operator expected"
+while [ "$CURRENT_START" -lt "$END_TIMESTAMP" ]; do
   CURRENT_STOP=$((CURRENT_START + STEP_SECONDS))
-  
-  # Ensure we don't accidentally query past our fixed end anchor
-  if [ $CURRENT_STOP -gt $END_TIMESTAMP ]; then
+
+  # Ensure we don't query past our fixed end anchor
+  if [ "$CURRENT_STOP" -gt "$END_TIMESTAMP" ]; then
     CURRENT_STOP=$END_TIMESTAMP
   fi
 
   # Convert unix epoch integers to absolute ISO/RFC3339 strings for Flux
-  ISO_START=$(date -u -d @$CURRENT_START +'%Y-%m-%dT%H:%M:%SZ')
-  ISO_STOP=$(date -u -d @$CURRENT_STOP +'%Y-%m-%dT%H:%M:%SZ')
+  ISO_START=$(date -u -d @"$CURRENT_START" +'%Y-%m-%dT%H:%M:%SZ')
+  ISO_STOP=$(date -u -d @"$CURRENT_STOP" +'%Y-%m-%dT%H:%M:%SZ')
 
   echo "Querying: ${ISO_START} to ${ISO_STOP}"
-
-  # 2. Execute query. Timeout is defined INSIDE the Flux query engine context.
+  Execute query
   influx query \
     --host "$HOST" \
     --org "$ORG" \
     --token "$TOKEN" \
     --raw \
     "from(bucket: \"$BUCKET\") 
-       |> range(start: ${ISO_START}, stop: ${ISO_STOP})" > ./temp_slice.csv
+       |> range(start: ${ISO_START}, stop: ${ISO_STOP})
+       |> filter(fn: (r) => ${FILTER_EXPR})" > ./temp_slice.csv
 
   QUERY_STATUS=$?
 
   if [ $QUERY_STATUS -eq 0 ] && [ -f ./temp_slice.csv ]; then
-    # If the slice returned rows beyond just the basic CSV headers, append it
-    if [ $(wc -l < ./temp_slice.csv) -gt 4 ]; then
+    # If the slice returned rows beyond basic CSV headers, append it
+    if [ "$(wc -l < ./temp_slice.csv)" -gt 4 ]; then
       cat ./temp_slice.csv >> "$OUTPUT_FILE"
     fi
     # Advance to the next block only on SUCCESS
@@ -60,10 +79,8 @@ while [ $CURRENT_START -lt $END_TIMESTAMP ]; do
   else
     echo "⚠️ Query crashed or EOF hit for window ${ISO_START}. Retrying this specific window in 3 seconds..."
     sleep 3
-    # Note: CURRENT_START is not incremented here, causing a clean loop retry on the same block
   fi
 
-  # Gentle breathing room for the InfluxDB engine garbage collector
   sleep 0.2
 done
 
