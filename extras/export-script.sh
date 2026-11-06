@@ -1,51 +1,68 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 set -o allexport
-source ../.env
+source ../.env 2>/dev/null || true
 set +o allexport
+
 # --- Configuration Settings ---
 CONTAINER_NAME="${DB_CONTAINER_NAME:-influxdb}"       # Name of your running InfluxDB 3 container
 DATABASE="${DB_NAME:-bladerunner}"                    # InfluxDB 3 database name
 TOKEN="$DB_TOKEN"                                     # Admin or READ token
 HOST_URL="http://localhost:${DB_PORT:-8181}"          # Default HTTP API port for InfluxDB 3
-OUTPUT_FILE=${OUTPUT_FILE:-./export.csv}
+OUTPUT_FILE=${FILENAME:-${OUTPUT_FILE:-./export.csv}}
 TEMP_FILE="./temp_slice.csv"
-DURATION=${DURATION_S:-259200}
-STEP_DURATION=${STEP_DURATION_S:-600}
+
+# Step window size (default 600 seconds)
+STEP_SECONDS=${STEP_DURATION_S:-${STEPS:-600}}
+
+# SQL Filter clause handling (e.g., host = 'server-01' or tag = 'value')
+RAW_SQL_FILTER="${SQL_FILTER:-$RAW_FILTER}"
+# Escape single quotes for SQL safety
+RAW_SQL_FILTER="${RAW_SQL_FILTER//\'/\'\'}"
+# Only prepend AND if a filter was provided
+FILTER_CLAUSE="${RAW_SQL_FILTER:+ AND (${RAW_SQL_FILTER})}"
+
 # Clear old files on host
 rm -f "$OUTPUT_FILE" "$TEMP_FILE"
 
-# 1. Establish a rigid, FIXED anchor time for "now" (UTC)
-NOW_TIMESTAMP=$(date -u +%s)
+# Helper: Convert date string (RFC3339/relative) or epoch to Unix timestamp (seconds)
+to_epoch() {
+  local val="$1"
+  if [[ "$val" =~ ^[0-9]+$ ]]; then
+    echo "$val"
+  else
+    date -u -d "$val" +%s
+  fi
+}
 
-# Calculate the static start time (3 days ago = 86400 seconds)
-START_TIMESTAMP=$((NOW_TIMESTAMP - ${DURATION:-}))
-END_TIMESTAMP=$NOW_TIMESTAMP
+# 1. Establish anchor times
+DEFAULT_STOP=$(date -u +%s)
+DEFAULT_START=$((DEFAULT_STOP - ${DURATION_S:-${DURATION:-259200}}))
 
-# Step window size (10 minutes = 600 seconds)
-STEP_SECONDS=600
+START_TIMESTAMP=$(to_epoch "${START_DATE:-$DEFAULT_START}")
+END_TIMESTAMP=$(to_epoch "${STOP_DATE:-$DEFAULT_STOP}")
 
-echo "Anchor Time (Fixed Present): $(date -u -d @$NOW_TIMESTAMP +'%Y-%m-%dT%H:%M:%SZ')"
+echo "Anchor Time (Fixed Present): $(date -u -d @"$END_TIMESTAMP" +'%Y-%m-%dT%H:%M:%SZ')"
 echo "Beginning fixed chronological window export from InfluxDB 3..."
 
 CURRENT_START=$START_TIMESTAMP
 IS_FIRST_SLICE=true
 
-while [ $CURRENT_START -lt $END_TIMESTAMP ]; do
+while [ "$CURRENT_START" -lt "$END_TIMESTAMP" ]; do
   CURRENT_STOP=$((CURRENT_START + STEP_SECONDS))
-  
+
   # Ensure we don't query past our fixed end anchor
-  if [ $CURRENT_STOP -gt $END_TIMESTAMP ]; then
+  if [ "$CURRENT_STOP" -gt "$END_TIMESTAMP" ]; then
     CURRENT_STOP=$END_TIMESTAMP
   fi
 
   # Convert unix epoch integers to ISO 8601 strings for SQL
-  ISO_START=$(date -u -d @$CURRENT_START +'%Y-%m-%dT%H:%M:%SZ')
-  ISO_STOP=$(date -u -d @$CURRENT_STOP +'%Y-%m-%dT%H:%M:%SZ')
+  ISO_START=$(date -u -d @"$CURRENT_START" +'%Y-%m-%dT%H:%M:%SZ')
+  ISO_STOP=$(date -u -d @"$CURRENT_STOP" +'%Y-%m-%dT%H:%M:%SZ')
 
   echo "Querying SQL window: ${ISO_START} to ${ISO_STOP}"
 
-  # Construct SQL query (Extracts all data in window across all measurements)
-  SQL_QUERY="SELECT * FROM $DATABASE WHERE time >= '$ISO_START' AND time < '$ISO_STOP'"
+  # Construct SQL query (with safe optional filter condition)
+  SQL_QUERY="SELECT * FROM $DATABASE WHERE time >= '$ISO_START' AND time < '$ISO_STOP'${FILTER_CLAUSE}"
 
   # 2. Execute influx3 query inside container and stream output directly to host file
   docker exec -i "$CONTAINER_NAME" influx3 query \
